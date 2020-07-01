@@ -1,0 +1,28 @@
+$font-color:#073453;
+
+.container{
+  display: inline-block;
+  margin-top: 1rem;
+}
+
+// h2{
+//   float: left;
+//   margin: 1rem 0.2rem 0 0.5rem;
+//   color: $font-color;
+// }
+
+.sc-htpNat {
+  width: 12rem;
+  border: 2px solid $font-color;  
+  border-radius: 0.5rem;
+  padding: 0.2rem;
+  float: right;
+  margin: 0 0 0 1rem;
+  z-index: 2;
+}  
+
+@media (min-width:1366px) {
+  .sc-htpNat {
+    width: 20rem;
+  }
+}

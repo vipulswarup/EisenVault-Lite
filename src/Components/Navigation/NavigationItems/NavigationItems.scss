@@ -1,0 +1,61 @@
+$sidebar-color: #E07050;
+$font-color:#073453;
+$white-color: white;
+
+.SideNav{
+    padding: 1.5rem 0 0 1.5rem;
+    background: url(../../../Assets/images/EisenVault-Lite-logo.png) $sidebar-color no-repeat;
+    background-blend-mode: multiply;
+    background-size: 12.8rem 5rem;
+    background-position: 1rem 1rem;
+    border-radius: 1.5rem;
+    height: 100%;
+}
+
+.Icon{
+  margin: 0 0.5rem;
+  color: $white-color;
+}
+
+h5{
+  color: $white-color;
+  padding-bottom: 1rem;
+}
+
+ul{
+  list-style: none;
+  padding-inline-start: 10px;
+}
+
+#sidebar{
+  
+  margin-top: 1rem;
+
+  & #dashboard{
+    margin-top: 6.5rem;
+    margin-bottom: 3rem;
+}
+
+  & a{
+    text-decoration: none;
+  }
+
+  & li{
+    color: $font-color;
+  }
+
+  & p{
+    display: inline;
+    color: $white-color;
+    margin-left: 1rem;
+    font-size: 14px;
+  }
+
+  & #middle_bar{
+  margin-bottom: 3rem;
+  }
+
+  & #lower_bar{
+    margin-bottom: 3rem;
+  }
+}

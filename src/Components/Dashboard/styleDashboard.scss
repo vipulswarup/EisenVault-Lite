@@ -1,0 +1,47 @@
+$font-color:#073453;
+
+.filesDetail{
+    margin-left: 1rem;
+    border: 1px solid $font-color;
+    border-radius: 1.5rem;
+    margin-top: 1rem;
+    color: $font-color;
+
+    & h3{
+        margin: 1rem ;
+        font-weight: 400;
+    }
+}
+
+.documentsList{
+    margin: 1rem;
+    border-spacing: 0 1rem;
+}
+
+.avtarStyle{
+    margin-left: 1rem;
+}
+
+.fa-file-pdf{
+    font-size: 1.4rem;
+    margin: 0 1rem 0 1rem;
+}
+
+.fileName{
+    padding:0.2rem 0 0.2rem 0;
+}
+
+.fileDetails{
+    padding:0.5rem 1rem 0.2rem 6rem; 
+}
+
+.view{
+    padding-right: 2rem;
+    padding-left: 10rem;
+}
+
+@media (min-width:1024px) and (max-width:1279px){
+    .fileDetails{
+        padding:0.2rem 5rem 0.2rem 4rem; 
+    }
+}

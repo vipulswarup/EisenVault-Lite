@@ -1,0 +1,83 @@
+$font-color:#073453;      
+$icon-color: #ee9796;
+
+#second_section{
+  display: inline-block;
+  margin: 0;
+
+  & h2{
+    color: #073453;
+    margin-left: 6rem;
+    float: left;
+  }
+}
+
+#doc_list {
+  border-collapse: separate;
+  border-spacing: 0 1rem;
+  margin: 1rem 2rem;
+  width: 95%; 
+}
+  
+.filesUpload {
+    color: $font-color;
+    margin-top: 1rem; 
+  }
+
+
+.filesUpload td.file_icon1 input[type=checkbox] {
+     margin: 0.9rem 0.3rem 0.9rem 1.9rem;
+     height:1.4rem;
+     width: 1.4rem;
+ }
+ input[type=checkbox] {
+  height:1.4rem;
+  width: 1.4rem;
+}
+
+ th#icon01 {
+  border-left: 1px solid #073453;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem; 
+  }
+
+  th {
+    border-top: 1px solid #073453;
+    border-bottom: 1px solid #073453;
+    border-collapse: separate;
+    padding-top:1rem;
+    padding-bottom:1rem;
+}
+th#action {
+  border-right: 1px solid #073453;
+  border-top-right-radius: 1rem;
+ border-bottom-right-radius: 1rem;
+}
+
+ .filesUpload td {
+   font-size: 16px;
+   }
+   
+   td.file_name-u{
+    color:$font-color;
+   }
+
+.fa-file-pdf{
+   font-size: 1.5rem;
+    margin-right: 1.5rem;      
+    color:$icon-color;
+ }
+
+.fa-times-circle {
+  color:$icon-color;
+  margin-left:4rem; 
+}
+
+.file_name-u {
+  padding-left: 3rem;
+   }
+
+.details-u {
+padding-left: 3rem;
+color:$font-color;
+}  

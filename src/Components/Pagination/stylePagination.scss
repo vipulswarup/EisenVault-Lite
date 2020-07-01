@@ -1,0 +1,34 @@
+$sidebar-color: #E07050;
+$font-color:#073453;
+
+/* Paginate style-1 */
+.style-1,
+.style-1 a{
+  color: #999999;
+  text-decoration: none;
+}
+
+.style-1 li{
+  display: inline-block;
+  list-style: none;
+  font-size: 14px;
+}
+
+.style-1 li a {
+    display: inline-block;
+    color: white;
+    background-color: $sidebar-color;
+    text-decoration: none;
+    padding: 4px;
+    margin-left: 0.4rem;
+    border: 1px solid $sidebar-color;
+    border-radius: 4px;
+  }
+
+.style-1 .paginate-disabled a {
+  color: #ececec;
+}
+
+.style-1 .paginate-active-link {
+  color: $font-color;
+}

@@ -1,0 +1,36 @@
+$icon-color: #ee9796;
+$bg-color: white;
+$grey-color: grey;
+$sidebar-color: #E07050;
+$white-color: whitesmoke;
+$font-color:#073453;
+
+.main_body{
+  font-family: 'Open Sans', sans-serif;
+  display: grid;
+  grid-template-columns: 30% 70%;
+}
+
+#second_section{
+  display: inline-block;
+  margin: 1.5rem;
+}
+
+.avtarStyle{
+  float: right;
+  margin: 0.2rem 1rem 0 1rem;
+}
+
+.base-footer{
+  font-size: 10px;
+  position: relative;
+  bottom: -15px;
+  text-align: center;
+}
+
+@media (min-width:1024px) and (max-width:1279px){
+
+  .main_body{
+      display: grid;
+  }
+  }

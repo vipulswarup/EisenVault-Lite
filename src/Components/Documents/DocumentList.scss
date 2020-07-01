@@ -1,0 +1,31 @@
+.files{
+  margin-left: 1rem;
+  margin-top: 1rem;
+  border: 1px solid #073453;
+  border-radius: 1.5rem;
+  height: 100%;
+  width: 95%;
+  color: #073453;
+  }
+  .files h2{
+    margin: 2rem 0 0 2rem;
+    font-weight: 100;
+    font-size: 20px;
+  }
+  .files .fas {
+    color: #ee9796;
+    text-align: center;
+    font-size: 1.8rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .files #doc_list {
+    border-collapse: separate;
+    border-spacing: 0 1rem;
+  }
+  
+  #doc_list{
+    width: 92%;
+  }
+  
