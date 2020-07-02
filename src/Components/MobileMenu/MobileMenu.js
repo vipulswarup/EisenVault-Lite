@@ -74,7 +74,7 @@ const MobileMenu = () => (
                 <p>&nbsp;FULL VERSION</p>
                 </li></Link>
 
-              <Link to="/myUploads">
+              <Link to="/changePassword">
                 <li> <FontAwesomeIcon 
                 className="Icon" 
                 icon={faKey}/>
