@@ -12,7 +12,7 @@ import LoginPage from "../Components/Login/Login"
 import TrashDisplayFiles from "../Components/Trash/TrashDisplay"
 
 import ManageShares from "../Components/ManageShares/ManageShares";
-
+import SharedWithMe from "../Components/sharedWithMe/sharedWithMe";
 import './styles.scss';
 
 const Routings = () => {
@@ -34,6 +34,7 @@ const Routings = () => {
         <Route path="/trashDisplay" component={TrashDisplayFiles} />
 
         <Route path="/manageShares" component={ManageShares} />
+        <Route path="/sharedWithMe" component={SharedWithMe} />
 
     </div>
    {/* </Switch> */}
