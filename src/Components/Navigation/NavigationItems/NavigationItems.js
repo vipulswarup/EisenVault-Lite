@@ -79,7 +79,7 @@ const NavigationItems = () => (
 
 
             <div id="trash">
-              <Link to="/myUploads">
+              <Link to="/changePassword">
                 <li> <FontAwesomeIcon 
                 className="Icon" 
                 icon={faKey}/>
