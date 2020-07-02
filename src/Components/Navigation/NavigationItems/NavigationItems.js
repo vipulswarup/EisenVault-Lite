@@ -52,7 +52,7 @@ const NavigationItems = () => (
               <p>&nbsp;MANAGE SHARES</p>
               </li></Link>
 
-              <Link to="/myUploads">
+              <Link to="/sharedWithMe">
               <li> <FontAwesomeIcon 
               className="Icon" 
               icon={faShareSquare}/>
@@ -79,7 +79,7 @@ const NavigationItems = () => (
 
 
             <div id="trash">
-              <Link to="/myUploads">
+              <Link to="/changePassword">
                 <li> <FontAwesomeIcon 
                 className="Icon" 
                 icon={faKey}/>

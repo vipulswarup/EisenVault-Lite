@@ -13,6 +13,11 @@ import TrashDisplayFiles from "../Components/Trash/TrashDisplay"
 
 import ManageShares from "../Components/ManageShares/ManageShares";
 
+import SharedWithMe from "../Components/sharedWithMe/sharedWithMe";
+
+import ChangePassword from "../Components/ChangePassword/ChangePassword";
+
+
 import './styles.scss';
 
 
@@ -61,9 +66,21 @@ const Routings = withRouter (({ location }) => {
         <Route path="/myUploads" component={MyUploads} />
         <Route path="/trashDisplay" component={TrashDisplayFiles} />
         <Route path="/manageShares" component={ManageShares} />
+
       </div>
     </Fragment>
   )
+
+
+        <Route path="/sharedWithMe" component={SharedWithMe} />
+
+        <Route path="/changePassword" component={ChangePassword} />
+
+
+    </div>
+   {/* </Switch> */}
+  </Router>;
+
 }
 )
 

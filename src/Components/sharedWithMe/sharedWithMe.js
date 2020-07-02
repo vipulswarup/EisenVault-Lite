@@ -2,16 +2,16 @@ import React, {useEffect,useState,Fragment} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import Avatar from "react-avatar";
-import './ManageShares.scss'
+import '../ManageShares/ManageShares.scss'
+import "./sharedWithMe.scss";
 import Search from "../SearchBar/SearchBar";
 import Pagination from "../Pagination/Pagination";
 import useModal from '../UI/Modal/useModal';
 import DeleteModal from '../UI/Modal/DeleteModal';
 
-function ManageShares(){
+function SharedWithMe(){
   const[FileState,setFileState]=useState([]);
   const {isShowing: isShowing1,toggle: toggle4} = useModal();
- 
 useEffect(()=>{
 let FileState=[
 {id:1 ,Item_Name:"Sample1.pdf",Shared_by:"Daniel Ross",Shared_On:"2 Days Ago"},
@@ -33,9 +33,10 @@ setFileState(
     return( 
       <Fragment>
         <DeleteModal isShowing = {isShowing1} hide={toggle4}/>
+
          <div id="second_section">
           <div>
-            <h2>Manage Shares</h2>
+            <h2>My Shares</h2>
             <Search />
 
             <Avatar className='avtarStyle'
@@ -43,16 +44,15 @@ setFileState(
                 round 
                 name="Shayane Basu" /> 
           
-                
-              <div className="filesShared">
-                <table id="doc_list">
-                  <tr id="icons">
+          <div className="filesUpload">
+        <table id="doc_list">
+          <tbody>
+          <tr id="icons">
                     <th id="item-names">Item Name</th>
                     <th id="shared">Shared By</th>
                     <th id="shared">Shared On</th>
                     <th id="action">Actions</th>
                   </tr>
-                  <tbody>
                   { FileState.map((d,i) => (
                     <tr  key={d.id} id="first_details">
                     <td class="file_name-u">
@@ -71,7 +71,6 @@ setFileState(
               </table>
             </div>
             </div>
-
           <footer className="base-footer">
           <Pagination/>
 
@@ -86,4 +85,4 @@ setFileState(
           )
           }
 
-export default ManageShares;
+export default SharedWithMe;
