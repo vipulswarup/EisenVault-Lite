@@ -1,0 +1,48 @@
+$icon-color: #ee9796;
+$bg-color: white;
+$grey-color: grey;
+$sidebar-color: #E07050;
+$white-color: whitesmoke;
+$font-color:#073453;
+
+#bg-bar{
+  height: 80%;
+  width: 100%;
+  background-color: $sidebar-color;
+}
+
+.login-box{
+  margin: 0 auto 1rem auto;
+  height: auto;
+  width: 45%;
+  text-align: center;
+  padding-top: 15rem;
+  background: url("/images/EisenVault-Lite-horizontal-01.png") $white-color no-repeat;
+  background-position: 4rem 1rem;
+  background-size: 30rem 12rem;
+
+  & input {
+      margin-bottom: 2.2rem;
+      width: 70%;
+      height: 2rem;
+      font-size: 18px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #747272;
+  }
+
+  & button{
+      background-color: $sidebar-color;
+      width: 70%;
+      padding: 1rem 0; 
+      color: white;
+  }
+
+  & #btn01{
+      margin-bottom: 1rem;
+  }
+
+  & #btn02{
+      margin-bottom: 2rem;
+  }
+}
