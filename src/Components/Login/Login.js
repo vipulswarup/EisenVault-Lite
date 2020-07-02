@@ -8,12 +8,14 @@ import './LoginPage.scss';
 const LoginPage = (props) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  // const userName = useState ('');
+  // const password = useState ('');
 
   const handleLogin = () => {
     setError(null);
     setLoading(true);
     axios.post('https://systest.eisenvault.net/alfresco/api/-default-/public/authentication/versions/1/tickets', 
-    { userId: 'admin', password: 'Systest@987' }).then(response => {
+    { userId: "admin", password: "Systest@987" }).then(response => {
       setLoading(false);
       setUserSession(response.data.token, response.data.user);
       props.history.push('/dashboard');
@@ -35,9 +37,9 @@ const LoginPage = (props) => {
 
         <div className="login-box">
             <div className="login-details">
-                <input type="text" id="user-name" placeholder="User Name" />
+                <input type="text" id="user-name" placeholder="User Name" required/>
                   <br />
-                <input type="password" placeholder="Password" id="pswd" />
+                <input type="password" placeholder="Password" id="pswd" required/>
             </div>
 
             <div id="btns_new">

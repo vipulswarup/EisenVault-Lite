@@ -8,15 +8,10 @@ import MobileMenu from "../Components/MobileMenu/MobileMenu";
 import MyUploads from "../Components/MyUploads/MyUploads";
 import Dashboard from "../Components/Dashboard/Dashboard";
 import documentsList from "../Components/Documents/DocumentList";
-
 import TrashDisplayFiles from "../Components/Trash/TrashDisplay"
-
 import ManageShares from "../Components/ManageShares/ManageShares";
-
 import SharedWithMe from "../Components/sharedWithMe/sharedWithMe";
-
 import ChangePassword from "../Components/ChangePassword/ChangePassword";
-
 
 import './styles.scss';
 
@@ -66,21 +61,11 @@ const Routings = withRouter (({ location }) => {
         <Route path="/myUploads" component={MyUploads} />
         <Route path="/trashDisplay" component={TrashDisplayFiles} />
         <Route path="/manageShares" component={ManageShares} />
-
+        <Route path="/sharedWithMe" component={SharedWithMe} />
+        <Route path="/changePassword" component={ChangePassword} />
       </div>
     </Fragment>
   )
-
-
-        <Route path="/sharedWithMe" component={SharedWithMe} />
-
-        <Route path="/changePassword" component={ChangePassword} />
-
-
-    </div>
-   {/* </Switch> */}
-  </Router>;
-
 }
 )
 
