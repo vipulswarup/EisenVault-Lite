@@ -1,6 +1,6 @@
 import React, { Fragment,useEffect,useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilePdf,faTrash,faUndo} from "@fortawesome/free-solid-svg-icons";
+// import { faFilePdf,faTrash,faUndo} from "@fortawesome/free-solid-svg-icons";
 import Avatar from "react-avatar";
 import Search from '../SearchBar/SearchBar';
 import Pagination from "../Pagination/Pagination";
@@ -13,6 +13,7 @@ import useModal from '../UI/Modal/useModal';
 import DeleteModal from '../UI/Modal/DeleteModal';
 
 //import MobileMenu from '../MobileMenu/MobileMenu';
+
 function TrashDisplayFiles(props){
   const[TrashFileState,setTrashFileState]=useState([]);
   const {isShowing: isShowing1,toggle: toggle4} = useModal();
@@ -91,8 +92,8 @@ return(
                 <td className="created_t">{d.created_On}</td>                     
                 <td className="deleted_t">{d.deleted_on}</td> 
                 <td className="delete-icon">
-                <FontAwesomeIcon icon={faTrash} className="TrashIcon" onClick={props.deleted}/>
-                <FontAwesomeIcon icon={faUndo} className="UndoIcon"/></td>           
+                <FontAwesomeIcon icon='faTrash' className="TrashIcon" onClick={props.deleted}/>
+                <FontAwesomeIcon icon='faUndo' className="UndoIcon"/></td>           
             </tr>
                 ))}
         </tbody></table>
