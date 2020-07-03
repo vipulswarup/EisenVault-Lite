@@ -16,15 +16,21 @@ const ModalAdd = ({ isShowing1, hide }) => isShowing1 ? ReactDOM.createPortal(
         <div>
           <div>
             <p>
+            <div className="label-input">
               <label>Name:</label>
               <input type="text" name="name">
               </input>
+              </div>
               <br></br>
+              <div className="label-input">
               <label>URL:</label>
               <input type="text" name="url"></input>
+              </div>
               <br></br>
+              <div className="label-input">
             <label>Description:</label>
             <textarea row="8" col="60"></textarea>
+            </div>
             </p>
           </div>
         </div>
