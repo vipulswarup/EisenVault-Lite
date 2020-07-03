@@ -71,7 +71,7 @@ const Dashboard = () => (
         <Avatar className='avtarStyle'
             color='#E07050' size='3rem'
             round 
-            name="Shayane Basu" /> 
+            name="Admin" /> 
       
       <div className="filesDetail">
         <h3>My Recent Activities</h3>

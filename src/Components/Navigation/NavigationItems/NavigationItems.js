@@ -12,8 +12,19 @@ import { faHome,
       faKey, 
       faSignOutAlt, 
       faTrash } from "@fortawesome/free-solid-svg-icons";
+import { removeUserLocal } from '../../../Utils/Common';
 
-const NavigationItems = () => (
+function NavigationItems(props) {
+
+  // const user = getUser();
+ 
+  // handle click event of logout button
+  const handleLogout = () => {
+    removeUserLocal();
+    props.history.push('/');
+  }
+  
+  return (
     <div>
     <section className="SideNav">
       
@@ -87,11 +98,15 @@ const NavigationItems = () => (
                 </li></Link>
 
                 <Link to="/myUploads">
-                <li> <FontAwesomeIcon 
+                <li> 
+                <FontAwesomeIcon 
                 className="Icon" 
                 icon={faSignOutAlt}/>
                 <p>SIGN OUT</p>
-                </li></Link>
+                </li>
+                </Link>
+
+                {/* <input type="button" onClick={handleLogout} value="Logout" /> */}
 
                 <Link to="/trashDisplay">
                 <li> <FontAwesomeIcon 
@@ -110,6 +125,7 @@ const NavigationItems = () => (
       </div>
     </section>
   </div> 
-);
+  );
+}
 
 export default NavigationItems;

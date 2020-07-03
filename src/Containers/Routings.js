@@ -56,7 +56,7 @@ const Routings = withRouter (({ location }) => {
       <div className="main_body">
         {location.pathname !== '/' && <NavigationItems /> }
 
-        <Route path="/dashboard" exact component ={Dashboard} />
+        <Route path="/dashboard" component ={Dashboard} />
         <Route path="/documentsList" component={documentsList} />
         <Route path="/myUploads" component={MyUploads} />
         <Route path="/trashDisplay" component={TrashDisplayFiles} />

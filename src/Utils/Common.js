@@ -1,23 +1,23 @@
 // return the user data from the session storage
 export const getUser = () => {
-    const userStr = sessionStorage.getItem('user');
+    const userStr = localStorage.getItem('userId');
     if (userStr) return JSON.parse(userStr);
     else return null;
   }
    
-  // return the token from the session storage
+  // return the token from the Local storage
   export const getToken = () => {
-    return sessionStorage.getItem('token') || null;
+    return localStorage.getItem('id') || null;
   }
    
-  // remove the token and user from the session storage
-  export const removeUserSession = () => {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('user');
+  // remove the token and user from the Local storage
+  export const removeUserLocal = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
   }
    
-  // set the token and user from the session storage
-  export const setUserSession = (token, user) => {
-    sessionStorage.setItem('token', token);
-    sessionStorage.setItem('user', JSON.stringify(user));
+  // set the token and user from the local storage
+  export const setUserLocal = (id, userId) => {
+    localStorage.setItem('id', JSON.stringify(id));
+    localStorage.setItem('userId', JSON.stringify(userId));
   }
