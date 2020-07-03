@@ -5,10 +5,7 @@ import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import Action from '../Action/Action';
 import Avatar from "react-avatar";
 import './MyUploads.scss';
-// import MobileMenu from '../MobileMenu/MobileMenu';
 import Search from "../SearchBar/SearchBar";
-import Pagination from "../Pagination/Pagination";
-// import NavigationItems from "../Navigation/NavigationItems/NavigationItems";
 
 function MyUploads(){
   const[FileState,setFileState]=useState([]);
@@ -36,7 +33,6 @@ setFileState(
       <Fragment>
 
           <div id="second_section">
-          <div>
             <h2>My Uploads</h2>
             <Search />
 
@@ -116,16 +112,6 @@ setFileState(
               </table>
               </div>
               </div>
-
-          <footer className="base-footer">
-          <Pagination/>
-
-            <p>Copyright © 2020 
-            <a href="https://www.argali.in/">
-              Argali Knowledge Services Pvt. Ltd., New Delhi, India</a></p>
-          </footer>
-          </div>
-
     </Fragment>
 
           )

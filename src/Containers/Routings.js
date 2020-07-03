@@ -4,7 +4,7 @@ import { Route, withRouter } from "react-router-dom";
 import LoginPage from "../Components/Login/Login"
 import NavigationItems from "../Components/Navigation/NavigationItems/NavigationItems";
 import MobileMenu from "../Components/MobileMenu/MobileMenu";
-
+import Footer from "../Components/Footer/Footer";
 import MyUploads from "../Components/MyUploads/MyUploads";
 import Dashboard from "../Components/Dashboard/Dashboard";
 import documentsList from "../Components/Documents/DocumentList";
@@ -55,6 +55,7 @@ const Routings = withRouter (({ location }) => {
       </div>
       <div className="main_body">
         {location.pathname !== '/' && <NavigationItems /> }
+        <div>
 
         <Route path="/dashboard" component ={Dashboard} />
         <Route path="/documentsList" component={documentsList} />
@@ -63,7 +64,11 @@ const Routings = withRouter (({ location }) => {
         <Route path="/manageShares" component={ManageShares} />
         <Route path="/sharedWithMe" component={SharedWithMe} />
         <Route path="/changePassword" component={ChangePassword} />
+        
+        {location.pathname !== '/' &&  <Footer />}
       </div>
+      </div>
+
     </Fragment>
   )
 }

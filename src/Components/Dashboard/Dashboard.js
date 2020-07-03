@@ -2,14 +2,10 @@ import React,{Fragment} from 'react';
 import './styleDashboard.scss';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf, faTimesCircle, faEye } from "@fortawesome/free-solid-svg-icons";
-// import MobileMenu from '../MobileMenu/MobileMenu';
 
 import Avatar from "react-avatar";
 
 import Search from "../SearchBar/SearchBar";
-import Pagination from "../Pagination/Pagination";
-// import NavigationItems from "../Navigation/NavigationItems/NavigationItems";
-
 
 const files = [
     {
@@ -63,7 +59,6 @@ const Dashboard = () => (
   <Fragment>
 
       <div id="second_section">
-      <div>
       <h2>Dashboard</h2>
 
         <Search />
@@ -99,16 +94,7 @@ const Dashboard = () => (
             ))}
         </table>
       </div>
-    </div>
-
-      <footer className="base-footer">
-      <Pagination/>
-
-        <p>Copyright © 2020 
-        <a href="https://www.argali.in/">
-          Argali Knowledge Services Pvt. Ltd., New Delhi, India</a></p>
-      </footer>
-      </div>
+  </div>
 
   </Fragment>
 

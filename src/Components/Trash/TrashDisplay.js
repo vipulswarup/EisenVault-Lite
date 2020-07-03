@@ -3,8 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash,faUndo} from "@fortawesome/free-solid-svg-icons";
 import Avatar from "react-avatar";
 import Search from '../SearchBar/SearchBar';
-import Pagination from "../Pagination/Pagination";
-//import NavigationItems from "../Navigation/NavigationItems/NavigationItems";
 import '../MyUploads/MyUploads.scss';
 import './TrashDisplay.scss';
 import '../../Containers/styles.scss';
@@ -12,7 +10,6 @@ import useModal from '../UI/Modal/useModal';
 import RestoreFile from '../UI/Modal/RestoreFile';
 import DeleteModal from '../UI/Modal/DeleteModal';
 
-//import MobileMenu from '../MobileMenu/MobileMenu';
 function TrashDisplayFiles(props){
   const[TrashFileState,setTrashFileState]=useState([]);
   const {isShowing: isShowing1,toggle: toggle4} = useModal();
@@ -40,7 +37,6 @@ return(
          <DeleteModal isShowing = {isShowing1} hide={toggle4}/>
          <RestoreFile isShowing={isShowing2} hide={toggle5}/>
          <div id="second_section">
-          <div>
             <h2>Trash</h2>
             <Search />
 
@@ -97,18 +93,12 @@ return(
                 <FontAwesomeIcon icon={faUndo} className="UndoIcon" onClick={toggle5}/></td>           
             </tr>
                 ))}
-        </tbody></table>
-         </div>
-         </div>
-                 <footer className="base-footer">
-                    <Pagination/>
-
-                     <p>Copyright © 2020 
-                     <a href="https://www.argali.in/">
-                      Argali Knowledge Services Pvt. Ltd., New Delhi, India</a></p>
-                 </footer>
-          </div> </Fragment>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</Fragment>
 )
-    }
+}
 
   export default TrashDisplayFiles;

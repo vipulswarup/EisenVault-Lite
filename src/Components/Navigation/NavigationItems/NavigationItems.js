@@ -72,19 +72,20 @@ function NavigationItems(props) {
           </div>
 
           <div id="lower_bar">
-              <Link to="/myUploads">
-              <li> <FontAwesomeIcon 
+              <li><a href="https://support.eisenvault.com/portal/home">
+              <FontAwesomeIcon 
               className="Icon" 
               icon={faHeadset}/>
               <p>SUPPORT</p>
-              </li></Link>
+              </a></li>
 
-              <Link to="/myUploads">
-              <li> <FontAwesomeIcon 
+              <li><a href="https://systest.eisenvault.net/share/page/"> 
+              <FontAwesomeIcon 
               className="Icon" 
               icon={faFileAlt}/>
               <p>&nbsp;FULL VERSION</p>
-              </li></Link>
+              </a>
+              </li>
 
             </div>
 

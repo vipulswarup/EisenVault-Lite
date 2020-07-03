@@ -5,7 +5,6 @@ import Avatar from "react-avatar";
 import '../ManageShares/ManageShares.scss'
 import "./sharedWithMe.scss";
 import Search from "../SearchBar/SearchBar";
-import Pagination from "../Pagination/Pagination";
 import useModal from '../UI/Modal/useModal';
 import DeleteModal from '../UI/Modal/DeleteModal';
 
@@ -35,7 +34,6 @@ setFileState(
         <DeleteModal isShowing = {isShowing1} hide={toggle4}/>
 
          <div id="second_section">
-          <div>
             <h2>My Shares</h2>
             <Search />
 
@@ -71,14 +69,6 @@ setFileState(
               </table>
             </div>
             </div>
-          <footer className="base-footer">
-          <Pagination/>
-
-            <p>Copyright © 2020 
-            <a href="https://www.argali.in/">
-              Argali Knowledge Services Pvt. Ltd., New Delhi, India</a></p>
-          </footer>
-          </div>
 
     </Fragment>
 
