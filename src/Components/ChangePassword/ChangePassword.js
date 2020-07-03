@@ -11,7 +11,7 @@ return(
     <Fragment>
          <div id="second_section">
           <div>
-            <h2>Trash</h2>
+            <h2>Change Password</h2>
             <Search />
 
             <Avatar className='avtarStyle'

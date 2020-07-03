@@ -16,15 +16,19 @@ const Modal = ({ isShowing, hide }) => isShowing ? ReactDOM.createPortal(
         <div className="popup-n">
           <div className="content">
             <p>
+              <div className="label-input">
               <label>Select Input</label>
               <input id="name01">
               </input>
+              </div>
               <datalist>
               <option value="Department"></option>
               </datalist>
               <br></br>
+              <div className="label-input">
               <label>New Name:</label>
               <input type="text" id="name01"></input>
+              </div>
             </p>
           </div>
         </div>
