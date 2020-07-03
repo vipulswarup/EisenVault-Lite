@@ -47,6 +47,7 @@ setFileState(
                 
               <div className="filesUpload">
                 <table id="doc_list">
+                  <tbody>
                   <tr id="icons">
                     <th id="icon01">
                       <input type="checkbox" onChange={(e)=>{
@@ -88,7 +89,7 @@ setFileState(
             <button className="btn-continue btn-d">DELETE</button>
           </Modal>
                 </tr>
-                  <tbody>
+                  
                   { FileState.map((d,i) => (
                     <tr  key={d.id} id="first_details">
                     <td className="file_icon1">

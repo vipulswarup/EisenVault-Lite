@@ -55,12 +55,12 @@ setFileState(
                   </tr>
                   { FileState.map((d,i) => (
                     <tr  key={d.id} id="first_details">
-                    <td class="file_name-u">
+                    <td className="file_name-u">
                     
                     <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> {d.Item_Name}</td>
-                    <td class="details-u-s">{d.Shared_by}</td>
-                    <td class="details-u-s">{d.Shared_On}</td>
-                    <td class="delete-u-s">
+                    <td className="details-u-s">{d.Shared_by}</td>
+                    <td className="details-u-s">{d.Shared_On}</td>
+                    <td className="delete-u-s">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
                       onClick={toggle4}
                        />

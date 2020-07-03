@@ -9,13 +9,14 @@ import '../MyUploads/MyUploads.scss';
 import './TrashDisplay.scss';
 import '../../Containers/styles.scss';
 import useModal from '../UI/Modal/useModal';
-
+import RestoreFile from '../UI/Modal/RestoreFile';
 import DeleteModal from '../UI/Modal/DeleteModal';
 
 //import MobileMenu from '../MobileMenu/MobileMenu';
 function TrashDisplayFiles(props){
   const[TrashFileState,setTrashFileState]=useState([]);
   const {isShowing: isShowing1,toggle: toggle4} = useModal();
+  const {isShowing:isShowing2,toggle:toggle5}=useModal();
 useEffect(()=>{
 let TrashFileState=[
 {id:1 ,Item_Name:"Sample1.pdf",created_On:"2 Month Ago",deleted_on:"1 Day ago"},
@@ -37,6 +38,7 @@ deleted_on:d.deleted_on
 return(
     <Fragment>
          <DeleteModal isShowing = {isShowing1} hide={toggle4}/>
+         <RestoreFile isShowing={isShowing2} hide={toggle5}/>
          <div id="second_section">
           <div>
             <h2>Trash</h2>
@@ -91,8 +93,8 @@ return(
                 <td className="created_t">{d.created_On}</td>                     
                 <td className="deleted_t">{d.deleted_on}</td> 
                 <td className="delete-icon">
-                <FontAwesomeIcon icon={faTrash} className="TrashIcon" onClick={props.deleted}/>
-                <FontAwesomeIcon icon={faUndo} className="UndoIcon"/></td>           
+                <FontAwesomeIcon icon={faTrash} className="TrashIcon" onClick={toggle4}/>
+                <FontAwesomeIcon icon={faUndo} className="UndoIcon" onClick={toggle5}/></td>           
             </tr>
                 ))}
         </tbody></table>
