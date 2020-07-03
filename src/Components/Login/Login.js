@@ -20,13 +20,12 @@ const LoginPage = (props) => {
     axios.post('https://systest.eisenvault.net/alfresco/api/-default-/public/authentication/versions/1/tickets', 
     { userId: userName.value, password: password.value}).then(response => {
       setLoading(false);
-      setUserLocal(response.data.id, response.data.userId);
-      // console.log(getToken, getUser, setUserLocal);
+      setUserLocal(response.data.entry.id, response.data.entry.userId);
       props.history.push('/dashboard');
     }).catch(error => {
       setLoading(false);
       if (error.response.status === 401) setError(error.response.data.message);
-      else setError("Something went wrong. Please try again later.");
+      else setError("Your authentication details have not been recognized or EisenVault may not be available at this time.");
     });
   }
 
@@ -49,8 +48,7 @@ const LoginPage = (props) => {
             </div>
 
             <div id="btns_new">
-                {/* <button id="btn01" type="button" onClick={handleLogin}>
-                  Login</button> */}
+                
                 {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}
                 <br />
                 <button id="btn01" type="button" value={loading ? 'Loading...' : 'Login'} 

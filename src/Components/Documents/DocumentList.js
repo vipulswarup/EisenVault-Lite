@@ -3,11 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobeAsia, faFile, faHdd, faFolder } from "@fortawesome/free-solid-svg-icons";
 import './DocumentList.scss';
 import Avatar from "react-avatar";
-// import MobileMenu from '../MobileMenu/MobileMenu';
 
 import Search from "../SearchBar/SearchBar";
-import Pagination from "../Pagination/Pagination";
-// import NavigationItems from "../Navigation/NavigationItems/NavigationItems";
 import IconBar from "../IconBar/IconBar";
 
 import Modal from '../UI/Modal/Modal';
@@ -70,7 +67,6 @@ return (
       <ModalTrash isShowing = {isShowing3} hide={toggle3}/>
 
       <div id="second_section">
-      <div>
       <h2>Document List</h2>
         <Search />
 
@@ -116,15 +112,6 @@ return (
         
       </ul>
 
-      </div>
-
-      <footer className="base-footer">
-      <Pagination/>
-
-        <p>Copyright © 2020 
-        <a href="https://www.argali.in/">
-          Argali Knowledge Services Pvt. Ltd., New Delhi, India</a></p>
-      </footer>
       </div>
 
   </Fragment>

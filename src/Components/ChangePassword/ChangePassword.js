@@ -10,8 +10,7 @@ function ChangePassword(props){
 return(
     <Fragment>
          <div id="second_section">
-          <div>
-            <h2>Trash</h2>
+            <h2>CHANGE PASSWORD</h2>
             <Search />
 
             <Avatar className='avtarStyle'
@@ -19,7 +18,6 @@ return(
                 round 
                 name="Shayane Basu" /> 
              
-      
         <div id="share-details-n">
             <div id="column-1">
                 <p>Enter Old Password</p>
@@ -35,13 +33,8 @@ return(
             <button className="btn02" type="button">Cancel</button>
          </div>
          </div>
-                 <footer className="base-footer">
-
-                     <p>Copyright © 2020 
-                     <a href="https://www.argali.in/">
-                      Argali Knowledge Services Pvt. Ltd., New Delhi, India</a></p>
-                 </footer>
-          </div> </Fragment>
+                
+          </Fragment>
 )
     }
 
