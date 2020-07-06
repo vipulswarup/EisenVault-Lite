@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf, faTimesCircle, faEye } from "@fortawesome/free-solid-svg-icons";
 
 import Avatar from "react-avatar";
-
+import { getUser } from "../../Utils/Common";
 import Search from "../SearchBar/SearchBar";
 
 const files = [
@@ -55,18 +55,23 @@ const files = [
     },
 ];
 
+console.log(getUser())
+const profileInitials= getUser().charAt(1);
+
 const Dashboard = () => (
   <Fragment>
 
       <div id="second_section">
       <h2>Dashboard</h2>
-
+        
         <Search />
         
         <Avatar className='avtarStyle'
             color='#E07050' size='3rem'
             round 
-            name="Admin" /> 
+            maxInitials= '2'
+            name= {profileInitials}
+            title= {getUser().slice(1, 6)}/>             
       
       <div className="filesDetail">
         <h3>My Recent Activities</h3>

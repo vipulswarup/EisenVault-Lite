@@ -12,17 +12,17 @@ import { faHome,
       faKey, 
       faSignOutAlt, 
       faTrash } from "@fortawesome/free-solid-svg-icons";
-import { removeUserLocal } from '../../../Utils/Common';
+// import { removeUserLocal } from '../../../Utils/Common';
 
 function NavigationItems(props) {
 
   // const user = getUser();
  
   // handle click event of logout button
-  const handleLogout = () => {
-    removeUserLocal();
-    props.history.push('/');
-  }
+  // const handleLogout = () => {
+  //   removeUserLocal();
+  //   props.history.push('/');
+  // }
   
   return (
     <div>
