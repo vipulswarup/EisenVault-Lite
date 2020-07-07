@@ -35,9 +35,10 @@ return(
             <button className="btn02" type="button">Cancel</button>
          </div>
          </div>
+         </div>
                 
           </Fragment>
-)
+);
     }
 
   export default ChangePassword;
