@@ -9,27 +9,30 @@ function ChangePassword(props){
   
 return(
     <Fragment>
-         <div id="second_section">
+        <div id="second_section">
             <h2>CHANGE PASSWORD</h2>
-          <div>
-            <h2>Change Password</h2>
-            <Search />
+            <div>
+                <Search />
 
-            <Avatar className='avtarStyle'
-                color='#E07050' size='3rem'
-                round 
-                name="Shayane Basu" /> 
-             
-        <div id="share-details-n">
-            <div id="column-1">
-                <p>Enter Old Password</p>
-                <p>Enter New Password</p>
-                <p>Confirm Password</p>
+                <Avatar className='avtarStyle'
+                    color='#E07050' size='3rem'
+                    round 
+                    name="Shayane Basu" /> 
+                
+                <div id="share-details-n">
+                <div id="column-1">
+                    <p>Enter Old Password</p>
+                    <p>Enter New Password</p>
+                    <p>Confirm Password</p>
+                </div>
+                <div id="column-2">
+                    <input type="password"></input>
+                    <input type="password"></input>
+                    <input type="password"></input>
+                </div>
+                <button className="btn01" type="button">Change</button>
+                <button className="btn02" type="button">Cancel</button>
             </div>
-            <div id="column-2">
-                <input type="password"></input>
-                <input type="password"></input>
-                <input type="password"></input>
             </div>
             <button className="btn01" type="button">Change</button>
             <button className="btn02" type="button">Cancel</button>
@@ -39,6 +42,9 @@ return(
                 
           </Fragment>
 );
+        </div>
+    </Fragment>
+)
     }
 
   export default ChangePassword;

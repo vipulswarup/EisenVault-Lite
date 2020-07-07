@@ -1,8 +1,9 @@
-import React from "react";
+import React, {Fragment} from "react";
 import SimpleReactPaginate from "simple-react-paginate";
 import "./stylePagination.scss";
 
 const Pagination = () => (
+<Fragment>
   <div className="content">
     <div className="list">
       <SimpleReactPaginate
@@ -17,6 +18,7 @@ const Pagination = () => (
     </div>
     
   </div>
+</Fragment>
 );
 
 export default Pagination;
