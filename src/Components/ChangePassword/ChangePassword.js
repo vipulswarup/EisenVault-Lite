@@ -11,7 +11,7 @@ return(
     <Fragment>
         <div id="second_section">
             <h2>CHANGE PASSWORD</h2>
-            <div>
+              <div>
                 <Search />
 
                 <Avatar className='avtarStyle'
@@ -37,12 +37,9 @@ return(
             <button className="btn01" type="button">Change</button>
             <button className="btn02" type="button">Cancel</button>
          </div>
-         </div>
-         </div>
+         
+         
                 
-          </Fragment>
-);
-        </div>
     </Fragment>
 )
     }

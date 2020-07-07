@@ -6,28 +6,42 @@ import Action from '../Action/Action';
 import Avatar from "react-avatar";
 import './MyUploads.scss';
 import Search from "../SearchBar/SearchBar";
-
+import axios from 'axios';
+// import { getToken } from '../../Utils/Common';
 function MyUploads(){
   const[FileState,setFileState]=useState([]);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
 
 useEffect(()=>{
-let FileState=[
-{id:1 ,Item_Name:"Sample1.pdf",Uploaded_On:"2 Days Ago"},
-{id:2 ,Item_Name:"Sample2.pdf",Uploaded_On:"12 Days Ago"},
-{id:3 ,Item_Name:"Sample3.pdf",Uploaded_On:"20 Days Ago"}
-];
+  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/207c3132-0cfd-483e-9cca-36bafea26725/children?skipCount=0&maxItems=100', 
+   {headers:{Authorization: "Basic " + btoa("TICKET_f704a0c65478261285b9c1d3d5b3758cef9f4919")
+  }
+   
+  
+  }
+  ).then((response) => {
+  console.log(response.data)
+  
+  setFileState(response.data.list.entries)
 
-setFileState(
-  FileState.map(d=>{
-    return{
-    select:false,
-    id:d.id,
-    Item_Name:d.Item_Name,
-    Uploaded_On:d.Uploaded_On
-        };
-      }));
-    },[]);
+});
+},[]);
+// let FileState=[
+// {id:1 ,Item_Name:"Sample1.pdf",Uploaded_On:"2 Days Ago"},
+// {id:2 ,Item_Name:"Sample2.pdf",Uploaded_On:"12 Days Ago"},
+// {id:3 ,Item_Name:"Sample3.pdf",Uploaded_On:"20 Days Ago"}
+// ];
+
+// setFileState(
+//   FileState.map(d=>{
+//     return{
+//     select:false,
+//     id:d.id,
+//     Item_Name:d.Item_Name,
+//     Uploaded_On:d.Uploaded_On
+//         };
+//       }));
+    // },[]);
 
     return( 
       <Fragment>
@@ -87,12 +101,12 @@ setFileState(
                 </tr>
                   
                   { FileState.map((d,i) => (
-                    <tr  key={d.id} id="first_details">
+                    <tr  key={d.entry.id} id="first_details">
                     <td className="file_icon1">
                       <input onChange={(event)=>{
                           let checked=event.target.checked;
                         setFileState(FileState.map((data)=>{
-                          if(d.id===data.id){
+                          if(d.entry.id===data.entry.id){
                             data.select=checked;
                           }return data;
                         }));
@@ -100,8 +114,8 @@ setFileState(
                       </td>
                     <td className="file_name-u">
                     
-                    <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> {d.Item_Name}</td>
-                    <td className="details-u">{d.Uploaded_On}</td>
+                    <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> {d.entry.name}</td>
+                    <td className="details-u">{d.entry.createdAt}</td>
                     <td className="delete-u">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
                       onClick={() => setmodalIsOpen(true)} />
