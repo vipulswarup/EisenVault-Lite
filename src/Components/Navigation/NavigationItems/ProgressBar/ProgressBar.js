@@ -12,10 +12,8 @@ function bytesToSize(bytes, seperator = "") {
 }
 
 const ProgressBar = () => {
-  // const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState(null);
   let [data, getData] = useState([]);
-
+  console.log(getToken())
   useEffect(() => {
     axios.get('https://systest.eisenvault.net/alfresco/s/aws-reposize',
     {headers:{
@@ -31,7 +29,7 @@ const ProgressBar = () => {
   }, []);
 
   return (
-    <div className='containerStyles'>
+    <div>
 
       <h5> Free Space: {bytesToSize(data.storeFreeSpace, " ")} </h5>
       <h5> Used Space: {bytesToSize(data.storageSpaceConsumed, " ")} </h5>

@@ -2,7 +2,6 @@ import React, { Fragment,useEffect,useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash,faUndo} from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
-import Avatar from "react-avatar";
 import Search from '../SearchBar/SearchBar';
 import '../MyUploads/MyUploads.scss';
 import './TrashDisplay.scss';
@@ -10,7 +9,8 @@ import '../../Containers/styles.scss';
 import useModal from '../UI/Modal/useModal';
 import RestoreFile from '../UI/Modal/RestoreFile';
 import DeleteModal from '../UI/Modal/DeleteModal';
-// import {getToken} from '../../Utils/Common';
+import ProfilePic from "../Avtar/Avtar";
+
 function TrashDisplayFiles(props){
   const[TrashFileState,setTrashFileState]=useState([]);
   const {isShowing: isShowing1,toggle: toggle4} = useModal();
@@ -26,22 +26,6 @@ useEffect(()=>{
   
   });
   },[]);
-// let TrashFileState=[
-// {id:1 ,Item_Name:"Sample1.pdf",created_On:"2 Month Ago",deleted_on:"1 Day ago"},
-// {id:2 ,Item_Name:"Sample2.pdf",created_On:"2 Weeks Ago",deleted_on:"1 Hour ago"},
-// {id:3 ,Item_Name:"Sample3.pdf",created_On:"20 Days Ago",deleted_on:"2 Day ago"}
-// ];
-// setTrashFileState(
-//   TrashFileState.map(d=>{
-//     return{
-// select:false,
-// id:d.id,
-// Item_Name:d.Item_Name,
-// created_On:d.created_On,
-// deleted_on:d.deleted_on
-//     };
-//   }));
-// },[]);
 
 return(
     <Fragment>
@@ -51,11 +35,7 @@ return(
             <h2>Trash</h2>
             <Search />
 
-            <Avatar className='avtarStyle'
-                color='#E07050' size='3rem'
-                round 
-                name="Shayane Basu" /> 
-             
+            <ProfilePic />
       
         <div className="filesUpload">
         <table id="doc_list">

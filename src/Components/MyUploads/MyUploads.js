@@ -3,11 +3,11 @@ import Modal from "react-modal";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import Action from '../Action/Action';
-import Avatar from "react-avatar";
 import './MyUploads.scss';
 import Search from "../SearchBar/SearchBar";
 import axios from 'axios';
-// import { getToken } from '../../Utils/Common';
+import ProfilePic from "../Avtar/Avtar";
+
 function MyUploads(){
   const[FileState,setFileState]=useState([]);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
@@ -16,8 +16,6 @@ useEffect(()=>{
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/207c3132-0cfd-483e-9cca-36bafea26725/children?skipCount=0&maxItems=100', 
    {headers:{Authorization: "Basic " + btoa("TICKET_f704a0c65478261285b9c1d3d5b3758cef9f4919")
   }
-   
-  
   }
   ).then((response) => {
   console.log(response.data)
@@ -26,22 +24,6 @@ useEffect(()=>{
 
 });
 },[]);
-// let FileState=[
-// {id:1 ,Item_Name:"Sample1.pdf",Uploaded_On:"2 Days Ago"},
-// {id:2 ,Item_Name:"Sample2.pdf",Uploaded_On:"12 Days Ago"},
-// {id:3 ,Item_Name:"Sample3.pdf",Uploaded_On:"20 Days Ago"}
-// ];
-
-// setFileState(
-//   FileState.map(d=>{
-//     return{
-//     select:false,
-//     id:d.id,
-//     Item_Name:d.Item_Name,
-//     Uploaded_On:d.Uploaded_On
-//         };
-//       }));
-    // },[]);
 
     return( 
       <Fragment>
@@ -50,10 +32,7 @@ useEffect(()=>{
             <h2>My Uploads</h2>
             <Search />
 
-            <Avatar className='avtarStyle'
-                color='#E07050' size='3rem'
-                round 
-                name="Shayane Basu" /> 
+            <ProfilePic />
                 
               <div className="filesUpload">
                 <table id="doc_list">
