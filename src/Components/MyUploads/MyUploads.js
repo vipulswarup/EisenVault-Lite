@@ -8,6 +8,7 @@ import './MyUploads.scss';
 import Search from "../SearchBar/SearchBar";
 import axios from 'axios';
  import { getToken } from '../../Utils/Common';
+
 function MyUploads(){
   const[FileState,setFileState]=useState([]);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
@@ -16,35 +17,11 @@ useEffect(()=>{
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/207c3132-0cfd-483e-9cca-36bafea26725/children?skipCount=0&maxItems=100', 
    {headers:{
      Authorization: `Basic ${btoa(getToken())}`
-     
-  }
-   
-  
-  }
+      }}
   ).then((response) => {
   console.log(response.data)
-  
-  setFileState(response.data.list.entries)
-
-});
+  setFileState(response.data.list.entries)});
 },[]);
-// let FileState=[
-// {id:1 ,Item_Name:"Sample1.pdf",Uploaded_On:"2 Days Ago"},
-// {id:2 ,Item_Name:"Sample2.pdf",Uploaded_On:"12 Days Ago"},
-// {id:3 ,Item_Name:"Sample3.pdf",Uploaded_On:"20 Days Ago"}
-// ];
-
-// setFileState(
-//   FileState.map(d=>{
-//     return{
-//     select:false,
-//     id:d.id,
-//     Item_Name:d.Item_Name,
-//     Uploaded_On:d.Uploaded_On
-//         };
-//       }));
-    // },[]);
-
     return( 
       <Fragment>
 

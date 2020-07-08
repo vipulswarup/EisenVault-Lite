@@ -16,41 +16,18 @@ function TrashDisplayFiles(props){
   const[TrashFileState,setTrashFileState]=useState([]);
   const {isShowing: isShowing1,toggle: toggle4} = useModal();
   const {isShowing:isShowing2,toggle:toggle5}=useModal();
-  console.log(getToken());
 
 useEffect(() => {
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes',
   {headers:{
-    // Authorization : "Basic" + btoa(getToken())
     Authorization: `Basic ${btoa(getToken())}`
-    
- }}
-
-  ).then((response) => {
+     }}).then((response) => {
     console.log(response.data)
     setTrashFileState(response.data.list.entries)
-  
   }).catch((error) => {
     console.error(error)
   });
   },[]);
-// let TrashFileState=[
-// {id:1 ,Item_Name:"Sample1.pdf",created_On:"2 Month Ago",deleted_on:"1 Day ago"},
-// {id:2 ,Item_Name:"Sample2.pdf",created_On:"2 Weeks Ago",deleted_on:"1 Hour ago"},
-// {id:3 ,Item_Name:"Sample3.pdf",created_On:"20 Days Ago",deleted_on:"2 Day ago"}
-// ];
-// setTrashFileState(
-//   TrashFileState.map(d=>{
-//     return{
-// select:false,
-// id:d.id,
-// Item_Name:d.Item_Name,
-// created_On:d.created_On,
-// deleted_on:d.deleted_on
-//     };
-//   }));
-// },[]);
-
 return(
     <Fragment>
          <DeleteModal isShowing = {isShowing1} hide={toggle4}/>

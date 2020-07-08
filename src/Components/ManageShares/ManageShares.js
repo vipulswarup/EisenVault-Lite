@@ -13,33 +13,15 @@ function ManageShares(){
   const[FileState,setFileState]=useState([]);
   const {isShowing: isShowing1,toggle: toggle4} = useModal();
  
-useEffect(()=>{
+ useEffect(()=>{
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/207c3132-0cfd-483e-9cca-36bafea26725/children?skipCount=0&maxItems=100', 
-  {headers:{Authorization: "Basic" + btoa("TICKET_e270818cb6ddf8b334124e2e57277d0abb48a1cd")
-}
-}
-  ).then((response) => {
+  {headers:{
+    Authorization: `Basic ${btoa(getToken())}`
+    }
+}).then((response) => {
   console.log(response.data)
-  setFileState(response.data.list.entries)
-
-});
+  setFileState(response.data.list.entries)});
 },[]);
-// let FileState=[
-// {id:1 ,Item_Name:"Sample1.pdf",Shared_by:"Daniel Ross",Shared_On:"2 Days Ago"},
-// {id:2 ,Item_Name:"Sample2.pdf",Shared_by:"Gabriel Santiago",Shared_On:"12 Days Ago"},
-// {id:3 ,Item_Name:"Sample3.pdf",Shared_by:"Arun Sharma",Shared_On:"20 Days Ago"}
-// ];
-
-// setFileState(
-//   FileState.map(d=>{
-//     return{
-//     id:d.index.entry.id,
-//     Item_Name:d.Item_Name,
-//     Shared_by:d.Shared_by,
-//     Shared_On:d.Shared_On,
-//         };
-//       }));
-
     return( 
       <Fragment>
         <DeleteModal isShowing = {isShowing1} hide={toggle4}/>
