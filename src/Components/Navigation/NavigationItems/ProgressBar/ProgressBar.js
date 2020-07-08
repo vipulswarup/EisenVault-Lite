@@ -14,6 +14,7 @@ function bytesToSize(bytes, seperator = "") {
 const ProgressBar = () => {
   let [data, getData] = useState([]);
   console.log(getToken())
+  
   useEffect(() => {
     axios.get('https://systest.eisenvault.net/alfresco/s/aws-reposize',
     {headers:{
