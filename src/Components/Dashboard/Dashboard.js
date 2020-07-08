@@ -3,9 +3,8 @@ import './styleDashboard.scss';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf, faTimesCircle, faEye } from "@fortawesome/free-solid-svg-icons";
 
-import Avatar from "react-avatar";
-import { getUser } from "../../Utils/Common";
 import Search from "../SearchBar/SearchBar";
+import ProfilePic from "../Avtar/Avtar";
 
 const files = [
     {
@@ -55,11 +54,6 @@ const files = [
     },
 ];
 
-console.log(getUser())
-// console.log(getToken())
-
-const profileInitials= getUser().charAt(0);
-
 const Dashboard = () => (
   <Fragment>
 
@@ -67,13 +61,7 @@ const Dashboard = () => (
       <h2>Dashboard</h2>
         
         <Search />
-        
-        <Avatar className='avtarStyle'
-            color='#E07050' size='3rem'
-            round 
-            maxInitials= {2}
-            name= {profileInitials}
-            title= {getUser()}/>             
+        <ProfilePic />
       
       <div className="filesDetail">
         <h3>My Recent Activities</h3>

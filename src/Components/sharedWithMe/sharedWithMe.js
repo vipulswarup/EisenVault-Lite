@@ -1,13 +1,14 @@
 import React, {useEffect,useState,Fragment} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
-import Avatar from "react-avatar";
 import '../ManageShares/ManageShares.scss'
 import "./sharedWithMe.scss";
 import Search from "../SearchBar/SearchBar";
 import useModal from '../UI/Modal/useModal';
 import DeleteModal from '../UI/Modal/DeleteModal';
 import axios from 'axios';
+import ProfilePic from "../Avtar/Avtar";
+
 function SharedWithMe(){
   const[FileState,setFileState]=useState([]);
   const {isShowing: isShowing1,toggle: toggle4} = useModal();
@@ -19,23 +20,7 @@ useEffect(()=>{
   ).then((response) => {
     console.log(response.data)
     setFileState(response.data.list.entries)
-  
   });
-// let FileState=[
-// {id:1 ,Item_Name:"Sample1.pdf",Shared_by:"Daniel Ross",Shared_On:"2 Days Ago"},
-// {id:2 ,Item_Name:"Sample2.pdf",Shared_by:"Gabriel Santiago",Shared_On:"12 Days Ago"},
-// {id:3 ,Item_Name:"Sample3.pdf",Shared_by:"Arun Sharma",Shared_On:"20 Days Ago"}
-// ];
-
-// setFileState(
-//   FileState.map(d=>{
-//     return{
-//     id:d.id,
-//     Item_Name:d.Item_Name,
-//     Shared_by:d.Shared_by,
-//     Shared_On:d.Shared_On,
-//         };
-//       }));
     },[]);
 
     return( 
@@ -46,10 +31,7 @@ useEffect(()=>{
             <h2>My Shares</h2>
             <Search />
 
-            <Avatar className='avtarStyle'
-                color='#E07050' size='3rem'
-                round 
-                name="Shayane Basu" /> 
+            <ProfilePic />
           
           <div className="filesUpload">
         <table id="doc_list">

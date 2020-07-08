@@ -1,9 +1,9 @@
-import React, { Fragment} from 'react';
+import React, { Fragment } from 'react';
 import './ChangePassword.scss';
-import '../../Containers/styles.scss';
-import Avatar from "react-avatar";
-import Search from '../SearchBar/SearchBar';;
+import ProfilePic from "../Avtar/Avtar";
 
+import '../../Containers/styles.scss';
+import Search from '../SearchBar/SearchBar';;
 
 function ChangePassword(props){
   
@@ -14,10 +14,7 @@ return(
               <div>
                 <Search />
 
-                <Avatar className='avtarStyle'
-                    color='#E07050' size='3rem'
-                    round 
-                    name="Shayane Basu" /> 
+                <ProfilePic />
                 
                 <div id="share-details-n">
                 <div id="column-1">
@@ -36,10 +33,7 @@ return(
             </div>
             <button className="btn01" type="button">Change</button>
             <button className="btn02" type="button">Cancel</button>
-         </div>
-         
-         
-                
+         </div>               
     </Fragment>
 )
     }

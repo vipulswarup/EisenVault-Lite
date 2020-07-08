@@ -96,7 +96,6 @@ const MobileMenu = () => (
                   </li></Link>
 
             <ProgressBar />
-            <h5>1.8GB out of 5GB used.</h5>
             </ul>
         </div>
       </nav>
