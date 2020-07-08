@@ -56,7 +56,9 @@ const files = [
 ];
 
 console.log(getUser())
-const profileInitials= getUser().charAt(1);
+// console.log(getToken())
+
+const profileInitials= getUser().charAt(0);
 
 const Dashboard = () => (
   <Fragment>
@@ -69,9 +71,9 @@ const Dashboard = () => (
         <Avatar className='avtarStyle'
             color='#E07050' size='3rem'
             round 
-            maxInitials= '2'
+            maxInitials= {2}
             name= {profileInitials}
-            title= {getUser().slice(1, 6)}/>             
+            title= {getUser()}/>             
       
       <div className="filesDetail">
         <h3>My Recent Activities</h3>
