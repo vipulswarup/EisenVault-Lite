@@ -7,14 +7,16 @@ import Avatar from "react-avatar";
 import './MyUploads.scss';
 import Search from "../SearchBar/SearchBar";
 import axios from 'axios';
-// import { getToken } from '../../Utils/Common';
+ import { getToken } from '../../Utils/Common';
 function MyUploads(){
   const[FileState,setFileState]=useState([]);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
 
 useEffect(()=>{
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/207c3132-0cfd-483e-9cca-36bafea26725/children?skipCount=0&maxItems=100', 
-   {headers:{Authorization: "Basic " + btoa("TICKET_f704a0c65478261285b9c1d3d5b3758cef9f4919")
+   {headers:{
+     Authorization: `Basic ${btoa(getToken())}`
+     
   }
    
   

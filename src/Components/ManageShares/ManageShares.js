@@ -7,7 +7,7 @@ import './ManageShares.scss'
 import Search from "../SearchBar/SearchBar";
 import useModal from '../UI/Modal/useModal';
 import DeleteModal from '../UI/Modal/DeleteModal';
-// import { getToken } from '../../Utils/Common';
+import { getToken } from '../../Utils/Common';
 
 function ManageShares(){
   const[FileState,setFileState]=useState([]);
@@ -15,7 +15,7 @@ function ManageShares(){
  
 useEffect(()=>{
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/207c3132-0cfd-483e-9cca-36bafea26725/children?skipCount=0&maxItems=100', 
-  {headers:{Authorization: "Basic " + btoa("TICKET_f704a0c65478261285b9c1d3d5b3758cef9f4919")
+  {headers:{Authorization: "Basic" + btoa("TICKET_e270818cb6ddf8b334124e2e57277d0abb48a1cd")
 }
 }
   ).then((response) => {
