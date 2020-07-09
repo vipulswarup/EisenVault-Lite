@@ -10,20 +10,22 @@ import useModal from '../UI/Modal/useModal';
 import RestoreFile from '../UI/Modal/RestoreFile';
 import DeleteModal from '../UI/Modal/DeleteModal';
 import ProfilePic from "../Avtar/Avtar";
+import { getToken } from '../../Utils/Common';
 
 function TrashDisplayFiles(props){
   const[TrashFileState,setTrashFileState]=useState([]);
   const {isShowing: isShowing1,toggle: toggle4} = useModal();
   const {isShowing:isShowing2,toggle:toggle5}=useModal();
-useEffect(()=>{
-  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes',
-  {headers:{Authorization: "Basic " + btoa("TICKET_f704a0c65478261285b9c1d3d5b3758cef9f4919")
-  }}
 
-  ).then((response) => {
+useEffect(() => {
+  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes',
+  {headers:{
+    Authorization: `Basic ${btoa(getToken())}`
+     }}).then((response) => {
     console.log(response.data)
     setTrashFileState(response.data.list.entries)
-  
+  }).catch((error) => {
+    console.error(error)
   });
   },[]);
 

@@ -8,23 +8,28 @@ import './ManageShares.scss'
 import Search from "../SearchBar/SearchBar";
 import useModal from '../UI/Modal/useModal';
 import DeleteModal from '../UI/Modal/DeleteModal';
+import { getToken } from '../../Utils/Common';
 
 function ManageShares(){
   const[FileState,setFileState]=useState([]);
   const {isShowing: isShowing1,toggle: toggle4} = useModal();
  
-useEffect(()=>{
+ useEffect(()=>{
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/207c3132-0cfd-483e-9cca-36bafea26725/children?skipCount=0&maxItems=100', 
-  {headers:{Authorization: "Basic " + btoa("TICKET_f704a0c65478261285b9c1d3d5b3758cef9f4919")
-}
-}
-  ).then((response) => {
+  {headers:{
+    Authorization: `Basic ${btoa(getToken())}`
+    }
+}).then((response) => {
   console.log(response.data)
-  setFileState(response.data.list.entries)
 
-});
-},[]);   
+//   setFileState(response.data.list.entries)
 
+// });
+// },[]);   
+
+
+  setFileState(response.data.list.entries)});
+},[]);
     return( 
       <Fragment>
         <DeleteModal isShowing = {isShowing1} hide={toggle4}/>

@@ -6,18 +6,20 @@ import "./sharedWithMe.scss";
 import Search from "../SearchBar/SearchBar";
 import useModal from '../UI/Modal/useModal';
 import DeleteModal from '../UI/Modal/DeleteModal';
+import { getToken } from '../../Utils/Common';
 import axios from 'axios';
 import ProfilePic from "../Avtar/Avtar";
+
 
 function SharedWithMe(){
   const[FileState,setFileState]=useState([]);
   const {isShowing: isShowing1,toggle: toggle4} = useModal();
+
 useEffect(()=>{
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links',
-  {headers:{Authorization: "Basic " + btoa("TICKET_f704a0c65478261285b9c1d3d5b3758cef9f4919")
-  }}
-
-  ).then((response) => {
+  {headers:{
+    Authorization: `Basic ${btoa(getToken())}`
+    }}).then((response) => {
     console.log(response.data)
     setFileState(response.data.list.entries)
   });
