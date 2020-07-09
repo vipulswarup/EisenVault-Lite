@@ -13,6 +13,7 @@ import TrashDisplayFiles from "../Components/Trash/TrashDisplay"
 import ManageShares from "../Components/ManageShares/ManageShares";
 import SharedWithMe from "../Components/sharedWithMe/sharedWithMe";
 import ChangePassword from "../Components/ChangePassword/ChangePassword";
+import Document from "../Components/Documents/Document/Document";
 
 import './styles.scss';
 
@@ -35,6 +36,7 @@ const Routings = withRouter (({ location }) => {
         <Route path="/manageShares" component={ManageShares} />
         <Route path="/sharedWithMe" component={SharedWithMe} />
         <Route path="/changePassword" component={ChangePassword} />
+        <Route path="/document/:nodeId" component={Document} />
         
         {location.pathname !== '/' &&  <Footer />}
       </div>
