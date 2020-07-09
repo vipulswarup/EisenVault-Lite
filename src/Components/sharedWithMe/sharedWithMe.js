@@ -1,7 +1,6 @@
 import React, {useEffect,useState,Fragment} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
-import Avatar from "react-avatar";
 import '../ManageShares/ManageShares.scss'
 import "./sharedWithMe.scss";
 import Search from "../SearchBar/SearchBar";
@@ -9,6 +8,8 @@ import useModal from '../UI/Modal/useModal';
 import DeleteModal from '../UI/Modal/DeleteModal';
 import { getToken } from '../../Utils/Common';
 import axios from 'axios';
+import ProfilePic from "../Avtar/Avtar";
+
 
 function SharedWithMe(){
   const[FileState,setFileState]=useState([]);
@@ -32,10 +33,7 @@ useEffect(()=>{
             <h2>My Shares</h2>
             <Search />
 
-            <Avatar className='avtarStyle'
-                color='#E07050' size='3rem'
-                round 
-                name="Shayane Basu" /> 
+            <ProfilePic />
           
           <div className="filesUpload">
         <table id="doc_list">

@@ -1,13 +1,14 @@
 import React, {useEffect,useState,Fragment} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
-import Avatar from "react-avatar";
+import ProfilePic from "../Avtar/Avtar";
 import axios from 'axios';
 import './ManageShares.scss'
 import Search from "../SearchBar/SearchBar";
 import useModal from '../UI/Modal/useModal';
 import DeleteModal from '../UI/Modal/DeleteModal';
 import { getToken } from '../../Utils/Common';
+
 
 function ManageShares(){
   const[FileState,setFileState]=useState([]);
@@ -18,23 +19,19 @@ function ManageShares(){
   {headers:{
     Authorization: `Basic ${btoa(getToken())}`
     }
-}).then((response) => {
+  }).then((response) => {
   console.log(response.data)
   setFileState(response.data.list.entries)});
-},[]);
+},[]); 
+
     return( 
       <Fragment>
         <DeleteModal isShowing = {isShowing1} hide={toggle4}/>
          <div id="second_section">
             <h2>Manage Shares</h2>
             <Search />
-
-            <Avatar className='avtarStyle'
-                color='#E07050' size='3rem'
-                round 
-                name="Shayane Basu" /> 
-          
-                
+            <ProfilePic />
+            
               <div className="filesShared">
                 <table id="doc_list">
                   <thead>
@@ -49,7 +46,6 @@ function ManageShares(){
                   { FileState.map((d,i) => (
                     <tr  key={d.entry.id} id="first_details">
                     <td className="file_name-u">
-                    
                     <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> {d.entry.name}</td>
                     <td className="details-u-s">{d.entry.createdByUser.displayName}</td>
                     <td className="details-u-s">{d.entry.createdAt}</td>

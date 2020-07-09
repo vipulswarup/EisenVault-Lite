@@ -1,92 +1,53 @@
-import React,{Fragment} from 'react';
+import React,{Fragment, useEffect, useState} from 'react';
 import './styleDashboard.scss';
+import axios from 'axios';
+import { getToken } from "../../Utils/Common";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf, faTimesCircle, faEye } from "@fortawesome/free-solid-svg-icons";
 
-import Avatar from "react-avatar";
-import { getUser } from "../../Utils/Common";
 import Search from "../SearchBar/SearchBar";
+import ProfilePic from "../Avtar/Avtar";
 
-const files = [
-    {
-        id: 1,
-        name: 'Sample1.pdf',
-        details: 'Downloaded 2 days ago',
-    },
-    {
-        id: 2,
-        name: 'Sample2.pdf',
-        details: 'Downloaded 2 days ago',
-    },
-    
-    {
-      id: 3,
-      name: 'Sample3.pdf',
-      details: 'Downloaded 2 days ago',
-    },
-  
-    {
-      id: 4,
-      name: 'Sample4.pdf',
-      details: 'Downloaded 2 days ago',
-    },
-    {
-      id: 5,
-      name: 'Sample5.pdf',
-      details: 'Downloaded 2 days ago',
-    },
-    
-    {
-      id: 6,
-      name: 'Sample6.docx',
-      details: 'Downloaded 2 days ago',
-    },
+const Dashboard = () => {
+  const [ documents , setDocuments ] = useState([]);
 
-    {
-      id: 7,
-      name: 'Sample7.pdf',
-      details: 'Downloaded 2 days ago',
-    },
+  useEffect(() => {
+    axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/people/admin/activities?skipCount=0&maxItems=100',
+    {headers:{
+      Authorization: `Basic ${btoa(getToken())}`
+    }
+    }).then((response) => {
+      console.log(response.data)
+      setDocuments(response.data.list.entries)
+    });
+  },[]);
 
-    {
-      id: 8,
-      name: 'Sample8.pdf',
-      details: 'Downloaded 2 days ago',    
-    },
-];
-
-console.log(getUser())
-// console.log(getToken())
-
-const profileInitials= getUser().charAt(0);
-
-const Dashboard = () => (
+  return (
   <Fragment>
 
       <div id="second_section">
       <h2>Dashboard</h2>
         
         <Search />
-        
-        <Avatar className='avtarStyle'
-            color='#E07050' size='3rem'
-            round 
-            maxInitials= {2}
-            name= {profileInitials}
-            title= {getUser()}/>             
+        <ProfilePic />
       
       <div className="filesDetail">
         <h3>My Recent Activities</h3>
         <table className='documentsList'>
-            {files.map(file => ( <tbody key={file.id} >
+            {documents.map(document => ( 
+            <tbody key={document.entry.id} >
                     <tr className='files'>
 
                       <td className='fileName'>
                         <FontAwesomeIcon icon={faFilePdf} />
-                      {file.name}</td>
+                      {document.entry.activitySummary.title}</td>
                       
                       <td className='fileDetails'> 
-                      {file.details} </td>
+                      {document.entry.postedAt} </td>
+
+                      <td className='fileActivity'> 
+                      {document.entry.activityType} </td>
 
                           <td className='view'>
                             <FontAwesomeIcon icon={faEye} />
@@ -104,7 +65,7 @@ const Dashboard = () => (
   </div>
 
   </Fragment>
-
-);
+  )
+};
 
 export default Dashboard;

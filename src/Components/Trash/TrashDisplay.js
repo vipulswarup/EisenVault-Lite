@@ -2,7 +2,6 @@ import React, { Fragment,useEffect,useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash,faUndo} from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
-import Avatar from "react-avatar";
 import Search from '../SearchBar/SearchBar';
 import '../MyUploads/MyUploads.scss';
 import './TrashDisplay.scss';
@@ -11,6 +10,8 @@ import useModal from '../UI/Modal/useModal';
 import RestoreFile from '../UI/Modal/RestoreFile';
 import DeleteModal from '../UI/Modal/DeleteModal';
 import { getToken } from '../../Utils/Common';
+import ProfilePic from "../Avtar/Avtar";
+
 
 function TrashDisplayFiles(props){
   const[TrashFileState,setTrashFileState]=useState([]);
@@ -28,6 +29,7 @@ useEffect(() => {
     console.error(error)
   });
   },[]);
+
 return(
     <Fragment>
          <DeleteModal isShowing = {isShowing1} hide={toggle4}/>
@@ -36,11 +38,7 @@ return(
             <h2>Trash</h2>
             <Search />
 
-            <Avatar className='avtarStyle'
-                color='#E07050' size='3rem'
-                round 
-                name="Shayane Basu" /> 
-             
+            <ProfilePic />
       
         <div className="filesUpload">
         <table id="doc_list">

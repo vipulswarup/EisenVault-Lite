@@ -3,11 +3,11 @@ import Modal from "react-modal";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import Action from '../Action/Action';
-import Avatar from "react-avatar";
 import './MyUploads.scss';
 import Search from "../SearchBar/SearchBar";
 import axios from 'axios';
- import { getToken } from '../../Utils/Common';
+import { getToken } from '../../Utils/Common';
+import ProfilePic from "../Avtar/Avtar";
 
 function MyUploads(){
   const[FileState,setFileState]=useState([]);
@@ -15,24 +15,22 @@ function MyUploads(){
 
 useEffect(()=>{
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/207c3132-0cfd-483e-9cca-36bafea26725/children?skipCount=0&maxItems=100', 
+
    {headers:{
      Authorization: `Basic ${btoa(getToken())}`
-      }}
-  ).then((response) => {
-  console.log(response.data)
-  setFileState(response.data.list.entries)});
-},[]);
+      }
+    }).then((response) => {
+      console.log(response.data)
+      setFileState(response.data.list.entries)});
+   },[]);
+
     return( 
       <Fragment>
 
           <div id="second_section">
             <h2>My Uploads</h2>
             <Search />
-
-            <Avatar className='avtarStyle'
-                color='#E07050' size='3rem'
-                round 
-                name="Shayane Basu" /> 
+              <ProfilePic />
                 
               <div className="filesUpload">
                 <table id="doc_list">
