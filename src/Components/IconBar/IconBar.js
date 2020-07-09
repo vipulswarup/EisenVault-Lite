@@ -11,15 +11,15 @@ const iconBar = (props) => {
   return(
   <div className="icons">
     <div>
-      <FontAwesomeIcon icon={faPen} onClick={props.toggle1} className="icon-item"/>
+      <FontAwesomeIcon icon={faPen} onClick={props.togglecreate} className="icon-item"/>
     </div>
 
     <div >
-      <FontAwesomeIcon icon={faPlus} onClick={props.toggle2} className="icon-item"/>
+      <FontAwesomeIcon icon={faPlus} onClick={props.toggleadd} className="icon-item"/>
     </div>
 
     <div>
-      <FontAwesomeIcon icon={faTrashAlt} onClick={props.toggle3} className="icon-item"/>
+      <FontAwesomeIcon icon={faTrashAlt} onClick={props.toggletrash} className="icon-item"/>
     </div>
     
   </div>

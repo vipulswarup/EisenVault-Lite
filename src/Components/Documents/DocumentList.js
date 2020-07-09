@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobeAsia, faFile, faHdd, faFolder } from "@fortawesome/free-solid-svg-icons";
 import './DocumentList.scss';
-import Avatar from "react-avatar";
+
 import {getToken} from  "../../Utils/Common";
 import ProfilePic from "../Avtar/Avtar";
 
@@ -31,16 +31,16 @@ const DocumentsList = () => {
       setDepartments(response.data.list.entries)
     });
   },[]);
-const {isShowing: isShowing1,toggle: toggle1} = useModal();
-const {isShowing: isShowing2,toggle: toggle2} = useModal();
-const {isShowing: isShowing3,toggle: toggle3} = useModal();
+const {isShowing: isShowing1,toggle: togglecreate} = useModal();
+const {isShowing: isShowing2,toggle: toggleadd} = useModal();
+const {isShowing: isShowing3,toggle: toggletrash} = useModal();
 
 return (
   <Fragment>
   
-      <Modal isShowing = {isShowing1} hide={toggle1}/>
-      <ModalAdd isShowing1 = {isShowing2} hide={toggle2}/>
-      <ModalTrash isShowing = {isShowing3} hide={toggle3}/>
+      <Modal isShowing = {isShowing1} hide={togglecreate}/>
+      <ModalAdd isShowing1 = {isShowing2} hide={toggleadd}/>
+      <ModalTrash isShowing = {isShowing3} hide={toggletrash}/>
 
       <div id="second_section">
       <h2>Document List</h2>
@@ -48,9 +48,9 @@ return (
         <ProfilePic />
         
             <div>
-              <IconBar toggle1= {toggle1} 
-                      toggle2 = {toggle2}
-                      toggle3 = {toggle3}
+              <IconBar togglecreate= {togglecreate} 
+                      toggleadd = {toggleadd}
+                      toggletrash = {toggletrash}
               />
             </div>
 
@@ -61,10 +61,10 @@ return (
           {departments.map(department => (
               <tbody key={department.entry.id}>
                   <tr className='details'>
-                  <Link to={{pathname:`/document/${department.entry.guid}`,state:{data : department.entry}}}>
-                    <td className='fileicon'>
+                  <td className='fileicon'>
+                  <Link to={{pathname:`/department/${department.entry.title}/${department.entry.guid}`,state:{data : department.entry}}}>
                     <FontAwesomeIcon icon={faGlobeAsia} className="fas"/>
-                    {department.entry.title}</td></Link>
+                    {department.entry.title}</Link></td>
 
                      <td className='fileDetails'>
                     <FontAwesomeIcon icon={faFolder} className="fas"/> 

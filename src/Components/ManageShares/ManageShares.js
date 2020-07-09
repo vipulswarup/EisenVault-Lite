@@ -21,13 +21,6 @@ function ManageShares(){
     }
 }).then((response) => {
   console.log(response.data)
-
-//   setFileState(response.data.list.entries)
-
-// });
-// },[]);   
-
-
   setFileState(response.data.list.entries)});
 },[]);
     return( 
