@@ -6,6 +6,7 @@ import { faGlobeAsia, faFile, faHdd, faFolder } from "@fortawesome/free-solid-sv
 import './DocumentList.scss';
 import Avatar from "react-avatar";
 import {getToken} from  "../../Utils/Common";
+import ProfilePic from "../Avtar/Avtar";
 
 import Search from "../SearchBar/SearchBar";
 import IconBar from "../IconBar/IconBar";
@@ -15,54 +16,8 @@ import ModalAdd from '../UI/Modal/ModalAdd';
 import ModalTrash from '../UI/Modal/ModalTrash';
 import useModal from '../UI/Modal/useModal';
 
-// const documents = [
-//     {
-//         id: 1,
-//         name: 'HR',
-//         folders: '1000 Folders',
-//         files: '200 Files',
-//         size: '20 MB'
-//     },
-//     {
-//         id: 2,
-//         name: 'IT',
-//         folders: '1000 Folders',
-//         files: '200 Files',
-//         size: '20 MB'
-//     },
-    
-//     {
-//       id: 3,
-//       name: 'Finance',
-//       folders: '1000 Folders',
-//       files: '200 Files',
-//       size: '20 MB'    
-//     },
-  
-//     {
-//       id: 4,
-//       name: 'Warehouse',
-//       folders: '1000 Folders',
-//       files: '200 Files',
-//       size: '20 MB'    
-//     },
-
-//     {
-//       id: 5,
-//       name: 'Customer Support',
-//       folders: '1000 Folders',
-//       files: '200 Files',
-//       size: '20 MB'    
-//     },
-  
-// ];
-
 const DocumentsList = () => {
   const [ departments , setDepartments ] = useState([]);
-  // const Username = 'admin';
-  // const Password = 'Systest@987';
-  // let credentials = btao(Username + ':' + Password);
-
 
   useEffect(() => {
     axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?skipCount=0&maxItems=100',
@@ -90,11 +45,7 @@ return (
       <div id="second_section">
       <h2>Document List</h2>
         <Search />
-
-        <Avatar className='avtarStyle'
-            color='#E07050' size='3rem'
-            round 
-            name="Shayane Basu" /> 
+        <ProfilePic />
         
             <div>
               <IconBar toggle1= {toggle1} 

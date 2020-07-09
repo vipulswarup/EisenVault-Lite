@@ -1,7 +1,7 @@
 import React, { Fragment,useEffect,useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash,faUndo} from "@fortawesome/free-solid-svg-icons";
-import Avatar from "react-avatar";
+import axios from 'axios';
 import Search from '../SearchBar/SearchBar';
 import '../MyUploads/MyUploads.scss';
 import './TrashDisplay.scss';
@@ -9,28 +9,25 @@ import '../../Containers/styles.scss';
 import useModal from '../UI/Modal/useModal';
 import RestoreFile from '../UI/Modal/RestoreFile';
 import DeleteModal from '../UI/Modal/DeleteModal';
+import ProfilePic from "../Avtar/Avtar";
+import { getToken } from '../../Utils/Common';
 
 function TrashDisplayFiles(props){
   const[TrashFileState,setTrashFileState]=useState([]);
   const {isShowing: isShowing1,toggle: toggle4} = useModal();
   const {isShowing:isShowing2,toggle:toggle5}=useModal();
-useEffect(()=>{
-let TrashFileState=[
-{id:1 ,Item_Name:"Sample1.pdf",created_On:"2 Month Ago",deleted_on:"1 Day ago"},
-{id:2 ,Item_Name:"Sample2.pdf",created_On:"2 Weeks Ago",deleted_on:"1 Hour ago"},
-{id:3 ,Item_Name:"Sample3.pdf",created_On:"20 Days Ago",deleted_on:"2 Day ago"}
-];
-setTrashFileState(
-  TrashFileState.map(d=>{
-    return{
-select:false,
-id:d.id,
-Item_Name:d.Item_Name,
-created_On:d.created_On,
-deleted_on:d.deleted_on
-    };
-  }));
-},[]);
+
+useEffect(() => {
+  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes',
+  {headers:{
+    Authorization: `Basic ${btoa(getToken())}`
+     }}).then((response) => {
+    console.log(response.data)
+    setTrashFileState(response.data.list.entries)
+  }).catch((error) => {
+    console.error(error)
+  });
+  },[]);
 
 return(
     <Fragment>
@@ -40,11 +37,7 @@ return(
             <h2>Trash</h2>
             <Search />
 
-            <Avatar className='avtarStyle'
-                color='#E07050' size='3rem'
-                round 
-                name="Shayane Basu" /> 
-             
+            <ProfilePic />
       
         <div className="filesUpload">
         <table id="doc_list">
@@ -74,20 +67,20 @@ return(
                 </tr>
                 
                 {TrashFileState.map((d,i) => (
-                 <tr  key={d.id} id="first_details">
+                 <tr  key={d.entry.id} id="first_details">
                  <td className="file_icon1">
                    <input onChange={(event)=>{
                       let checked=event.target.checked;
                     setTrashFileState(TrashFileState.map((data)=>{
-                      if(d.id===data.id){
+                      if(d.entry.id===data.entry.id){
                         data.select=checked;
                       }return data;
                     }));
                    }} type="checkbox" checked={d.select}
                     /> </td> 
-                <td className="file_name_t">{d.Item_Name}</td>
-                <td className="created_t">{d.created_On}</td>                     
-                <td className="deleted_t">{d.deleted_on}</td> 
+                <td className="file_name_t">{d.entry.name}</td>
+                <td className="created_t">{d.entry.createdAt}</td>                     
+                <td className="deleted_t">{d.entry.archivedAt}</td> 
                 <td className="delete-icon">
                 <FontAwesomeIcon icon={faTrash} className="TrashIcon" onClick={toggle4}/>
                 <FontAwesomeIcon icon={faUndo} className="UndoIcon" onClick={toggle5}/></td>           
