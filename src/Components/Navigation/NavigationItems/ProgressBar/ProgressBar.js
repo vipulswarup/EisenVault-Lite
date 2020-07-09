@@ -13,7 +13,7 @@ function bytesToSize(bytes, seperator = "") {
 
 const ProgressBar = () => {
   let [data, getData] = useState([]);
-  console.log(getToken())
+  // console.log(getToken())
   
   //API call
   useEffect(() => {

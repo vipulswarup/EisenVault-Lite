@@ -89,8 +89,14 @@ function NavigationItems(props) {
 
             </div>
 
-
             <div id="trash">
+            <Link to="/trashDisplay">
+                <li> <FontAwesomeIcon 
+                className="Icon" 
+                  icon={faTrash}/>
+                  <p>TRASH</p>
+                  </li></Link>
+
               <Link to="/changePassword">
                 <li> <FontAwesomeIcon 
                 className="Icon" 
@@ -98,27 +104,20 @@ function NavigationItems(props) {
                 <p>CHANGE PASSWORD</p>
                 </li></Link>
 
-                <Link to="/myUploads">
+                <Link to="/">
                 <li> 
                 <FontAwesomeIcon 
                 className="Icon" 
                 icon={faSignOutAlt}/>
                 <p>SIGN OUT</p>
-                </li>
-                </Link>
+                </li></Link>
+
+                <ProgressBar />
 
                 {/* <input type="button" onClick={handleLogout} value="Logout" /> */}
 
-                <Link to="/trashDisplay">
-                <li> <FontAwesomeIcon 
-                className="Icon" 
-                  icon={faTrash}/>
-                  <p>TRASH</p>
-                  </li></Link>
-
             </div>
 
-            <ProgressBar />
           
         </ul>
       

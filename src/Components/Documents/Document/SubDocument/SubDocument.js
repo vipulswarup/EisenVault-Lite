@@ -3,9 +3,9 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
-import Avatar from "react-avatar"
 import Search from "../../../SearchBar/SearchBar";
 import {getToken} from  "../../../../Utils/Common";
+import ProfilePic from "../../../Avtar/Avtar";
 
 function SubDocument(){
   const[documents,setDocuments]=useState([]);
@@ -35,13 +35,8 @@ useEffect(()=>{
             <h2>{title}</h2>
           {/* <h2>{data.location.state.data.title}</h2> */}
             <Search />
+            <ProfilePic /> 
 
-            <Avatar className='avtarStyle'
-                color='#E07050' size='3rem'
-                round 
-                name="Shayane Basu" /> 
-          
-                
               <div className="filesShared">
                 <table id="doc_list">
                   <thead>
