@@ -1,21 +1,20 @@
 import React, {useEffect,useState,Fragment} from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import Avatar from "react-avatar"
-import Search from "../../SearchBar/SearchBar";
-import {getToken} from  "../../../Utils/Common";
+import Search from "../../../SearchBar/SearchBar";
+import {getToken} from  "../../../../Utils/Common";
 
-function Document(){
+function SubDocument(){
   const[documents,setDocuments]=useState([]);
    let params = useParams();
-   const nodeId = params.nodeId;
-   const title = params.title;
+   const id = params.id;
+   const title = params.name;
  
 useEffect(()=>{
-        axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${nodeId}/children?skipCount=0&maxItems=100`,
+        axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/children?skipCount=0&maxItems=100`,
         {
           headers:
           {
@@ -28,12 +27,12 @@ useEffect(()=>{
         console.log(error);
       }
       );
-    },[nodeId]);
+    },[id]);
 
     return( 
       <Fragment>
          <div id="second_section">
-          <h2>{title}</h2>
+            <h2>{title}</h2>
           {/* <h2>{data.location.state.data.title}</h2> */}
             <Search />
 
@@ -58,8 +57,8 @@ useEffect(()=>{
                   { documents.map((d,i) => (
                     <tr  key={d.id} id="first_details">
                     <td className="file_name-u">
-                    <Link to={{pathname:`/document/${d.entry.name}/${d.entry.id}`}}>
-                    <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> {d.entry.name}</Link></td>
+                    
+                    <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> {d.entry.name}</td>
                     <td className="details-u-s">{d.entry.createdByUser.displayName}</td>
                     <td className="details-u-s">{d.entry.createdAt.split('T')[0]}</td>
                     <td className="details-u-s">{d.entry.modifiedAt.split('T')[0]}</td>
@@ -78,4 +77,4 @@ useEffect(()=>{
           )
           }
 
-export default Document;
+export default SubDocument;
