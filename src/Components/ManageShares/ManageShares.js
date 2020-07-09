@@ -2,7 +2,6 @@ import React, {useEffect,useState,Fragment} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import ProfilePic from "../Avtar/Avtar";
-
 import axios from 'axios';
 import './ManageShares.scss'
 import Search from "../SearchBar/SearchBar";
@@ -19,11 +18,11 @@ function ManageShares(){
   {headers:{
     Authorization: `Basic ${btoa(getToken())}`
     }
-}).then((response) => {
+  }).then((response) => {
   console.log(response.data)
   setFileState(response.data.list.entries)});
-},[]);
-    return( 
+},[]); 
+return( 
       <Fragment>
         <DeleteModal isShowing = {isShowing1} hide={toggle4}/>
          <div id="second_section">
@@ -45,7 +44,6 @@ function ManageShares(){
                   { FileState.map((d,i) => (
                     <tr  key={d.entry.id} id="first_details">
                     <td className="file_name-u">
-                    
                     <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> {d.entry.name}</td>
                     <td className="details-u-s">{d.entry.createdByUser.displayName}</td>
                     <td className="details-u-s">{d.entry.createdAt}</td>
