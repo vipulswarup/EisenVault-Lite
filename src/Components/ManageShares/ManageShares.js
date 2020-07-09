@@ -9,7 +9,6 @@ import useModal from '../UI/Modal/useModal';
 import DeleteModal from '../UI/Modal/DeleteModal';
 import { getToken } from '../../Utils/Common';
 
-
 function ManageShares(){
   const[FileState,setFileState]=useState([]);
   const {isShowing: isShowing1,toggle: toggle4} = useModal();
@@ -23,8 +22,7 @@ function ManageShares(){
   console.log(response.data)
   setFileState(response.data.list.entries)});
 },[]); 
-
-    return( 
+return( 
       <Fragment>
         <DeleteModal isShowing = {isShowing1} hide={toggle4}/>
          <div id="second_section">

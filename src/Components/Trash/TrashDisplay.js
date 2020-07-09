@@ -11,6 +11,7 @@ import RestoreFile from '../UI/Modal/RestoreFile';
 import DeleteModal from '../UI/Modal/DeleteModal';
 import { getToken } from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
+import { getToken } from '../../Utils/Common';
 
 
 function TrashDisplayFiles(props){
