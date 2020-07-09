@@ -10,11 +10,10 @@ import { getToken } from '../../Utils/Common';
 import axios from 'axios';
 import ProfilePic from "../Avtar/Avtar";
 
-
 function SharedWithMe(){
   const[FileState,setFileState]=useState([]);
-  const {isShowing: isShowing1,toggle: toggle4} = useModal();
-
+  const {isShowing: isShowing1,toggle: deleteT} = useModal();
+//API CALL
 useEffect(()=>{
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links',
   {headers:{
@@ -27,7 +26,7 @@ useEffect(()=>{
 
     return( 
       <Fragment>
-        <DeleteModal isShowing = {isShowing1} hide={toggle4}/>
+        <DeleteModal isShowing = {isShowing1} hide={deleteT}/>
 
          <div id="second_section">
             <h2>My Shares</h2>
@@ -53,7 +52,7 @@ useEffect(()=>{
                     <td className="details-u-s">{d.entry.modifiedAt}</td>
                     <td className="delete-u-s">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
-                      onClick={toggle4}
+                      onClick={deleteT}
                        />
                   </td>
                   </tr>

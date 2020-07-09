@@ -11,10 +11,10 @@ import { getToken } from '../../Utils/Common';
 
 function ManageShares(){
   const[FileState,setFileState]=useState([]);
-  const {isShowing: isShowing1,toggle: toggle4} = useModal();
- 
+  const {isShowing: isShowing1,toggle: deleteT} = useModal();
+ //API CALL
  useEffect(()=>{
-  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/207c3132-0cfd-483e-9cca-36bafea26725/children?skipCount=0&maxItems=100', 
+  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/5ccc676b-0a0c-4f9f-b176-87a786b3b5d8/children?skipCount=0&maxItems=100', 
   {headers:{
     Authorization: `Basic ${btoa(getToken())}`
     }
@@ -24,7 +24,7 @@ function ManageShares(){
 },[]); 
 return( 
       <Fragment>
-        <DeleteModal isShowing = {isShowing1} hide={toggle4}/>
+        <DeleteModal isShowing = {isShowing1} hide={deleteT}/>
          <div id="second_section">
             <h2>Manage Shares</h2>
             <Search />
@@ -46,10 +46,10 @@ return(
                     <td className="file_name-u">
                     <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> {d.entry.name}</td>
                     <td className="details-u-s">{d.entry.createdByUser.displayName}</td>
-                    <td className="details-u-s">{d.entry.createdAt}</td>
+                    <td className="details-u-s">{d.entry.createdAt.split('T')[0]}</td>
                     <td className="delete-u-s">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
-                      onClick={toggle4}
+                      onClick={deleteT}
                        />
                   </td>
                   </tr>

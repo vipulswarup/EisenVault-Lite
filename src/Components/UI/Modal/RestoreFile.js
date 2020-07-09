@@ -24,8 +24,8 @@ const RestoreFile = ({ isShowing, hide }) => isShowing ? ReactDOM.createPortal(
           </div>
         </div>
         <div id="btns">
-          <button id="btn03">Restore</button>
-          <button id="btn04" onClick={hide}>Cancel</button>
+          <button >Restore</button>
+          <button onClick={hide}>Cancel</button>
         </div>
       </div>
     </div>
