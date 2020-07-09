@@ -1,9 +1,11 @@
 import React,{Fragment , useEffect , useState} from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobeAsia, faFile, faHdd, faFolder } from "@fortawesome/free-solid-svg-icons";
 import './DocumentList.scss';
 import Avatar from "react-avatar";
+import {getToken} from  "../../Utils/Common";
 
 import Search from "../SearchBar/SearchBar";
 import IconBar from "../IconBar/IconBar";
@@ -63,15 +65,13 @@ const DocumentsList = () => {
 
 
   useEffect(() => {
-    axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?skipCount=0&maxItems=100',{
-      withCredentials: true
-    },
-    { 
-      auth: {
-        username : 'admin',
-        password: 'Systest@987'
-      }
-    }).then((response) => {
+    axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?skipCount=0&maxItems=100',
+      {
+        headers:
+        {
+          Authorization: `Basic ${btoa(getToken())}`
+        }
+        }).then((response) => {
       console.log(response.data)
       setDepartments(response.data.list.entries)
     });
@@ -110,9 +110,10 @@ return (
           {departments.map(department => (
               <tbody key={department.entry.id}>
                   <tr className='details'>
+                  <Link to={{pathname:`/document/${department.entry.guid}`,state:{data : department.entry}}}>
                     <td className='fileicon'>
                     <FontAwesomeIcon icon={faGlobeAsia} className="fas"/>
-                    {department.entry.title}</td>
+                    {department.entry.title}</td></Link>
 
                      <td className='fileDetails'>
                     <FontAwesomeIcon icon={faFolder} className="fas"/> 
