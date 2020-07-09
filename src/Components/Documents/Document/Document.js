@@ -4,9 +4,9 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
-import Avatar from "react-avatar"
 import Search from "../../SearchBar/SearchBar";
 import {getToken} from  "../../../Utils/Common";
+import ProfilePic from "../../Avtar/Avtar";
 
 function Document(){
   const[documents,setDocuments]=useState([]);
@@ -37,11 +37,7 @@ useEffect(()=>{
           {/* <h2>{data.location.state.data.title}</h2> */}
             <Search />
 
-            <Avatar className='avtarStyle'
-                color='#E07050' size='3rem'
-                round 
-                name="Shayane Basu" /> 
-          
+            <ProfilePic /> 
                 
               <div className="filesShared">
                 <table id="doc_list">

@@ -24,13 +24,6 @@ const Dashboard = () => {
     });
   },[]);
 
-  // const date = Date{document.entry.postedAt};
-  // const formattedDate = Intl.DateTimeFormat('en-Us', {
-  //   year: 'numeric',
-  //   month: 'short',
-  //   day: '2-digit'
-  // }).format(date);
-
   return (
   <Fragment>
 
@@ -52,11 +45,6 @@ const Dashboard = () => {
                         {document.entry.activitySummary.title}</td>
                       
                       <td className='fileDetails'> 
-                      {/* {new Intl.DateTimeFormat("en-GB", {
-                          year: "numeric",
-                          month: "long",
-                          day: "2-digit"
-                        }).format(document.entry.postedAt)}  */}
                         {document.entry.postedAt.split('T')[0]} 
                         </td>
 
