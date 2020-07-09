@@ -14,6 +14,7 @@ import ManageShares from "../Components/ManageShares/ManageShares";
 import SharedWithMe from "../Components/sharedWithMe/sharedWithMe";
 import ChangePassword from "../Components/ChangePassword/ChangePassword";
 import Document from "../Components/Documents/Document/Document";
+import SubDocument from "../Components/Documents/Document/SubDocument/SubDocument";
 
 import './styles.scss';
 
@@ -36,8 +37,8 @@ const Routings = withRouter (({ location }) => {
         <Route path="/manageShares" component={ManageShares} />
         <Route path="/sharedWithMe" component={SharedWithMe} />
         <Route path="/changePassword" component={ChangePassword} />
-        <Route path="/document/:nodeId" component={Document} />
-        
+        <Route path="/department/:title/:nodeId" component={Document} />
+        <Route path="/document/:name/:id" component={SubDocument} />
         {location.pathname !== '/' &&  <Footer />}
       </div>
       </div>
