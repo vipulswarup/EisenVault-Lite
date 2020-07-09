@@ -12,6 +12,7 @@ import ProfilePic from "../Avtar/Avtar";
 const Dashboard = () => {
   const [ documents , setDocuments ] = useState([]);
 
+  //API call.
   useEffect(() => {
     axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/people/admin/activities?skipCount=0&maxItems=100',
     {headers:{
@@ -22,6 +23,13 @@ const Dashboard = () => {
       setDocuments(response.data.list.entries)
     });
   },[]);
+
+  // const date = Date{document.entry.postedAt};
+  // const formattedDate = Intl.DateTimeFormat('en-Us', {
+  //   year: 'numeric',
+  //   month: 'short',
+  //   day: '2-digit'
+  // }).format(date);
 
   return (
   <Fragment>
@@ -41,13 +49,19 @@ const Dashboard = () => {
 
                       <td className='fileName'>
                         <FontAwesomeIcon icon={faFilePdf} />
-                      {document.entry.activitySummary.title}</td>
+                        {document.entry.activitySummary.title}</td>
                       
                       <td className='fileDetails'> 
-                      {document.entry.postedAt} </td>
+                      {/* {new Intl.DateTimeFormat("en-GB", {
+                          year: "numeric",
+                          month: "long",
+                          day: "2-digit"
+                        }).format(document.entry.postedAt)}  */}
+                        {document.entry.postedAt.split('T')[0]} 
+                        </td>
 
                       <td className='fileActivity'> 
-                      {document.entry.activityType} </td>
+                        {document.entry.activityType.split('.')[3]} </td>
 
                           <td className='view'>
                             <FontAwesomeIcon icon={faEye} />

@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobeAsia, faFile, faHdd, faFolder } from "@fortawesome/free-solid-svg-icons";
 import './DocumentList.scss';
-import Avatar from "react-avatar";
 import {getToken} from  "../../Utils/Common";
 import ProfilePic from "../Avtar/Avtar";
 

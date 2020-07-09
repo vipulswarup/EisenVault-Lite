@@ -35,7 +35,6 @@ return(
                 
           </Fragment>
 );
-
-    }
+}
 
   export default ChangePassword;
