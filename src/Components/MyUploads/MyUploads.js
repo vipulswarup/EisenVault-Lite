@@ -8,7 +8,7 @@ import Search from "../SearchBar/SearchBar";
 import axios from 'axios';
 import { getToken } from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
-import { getToken } from '../../Utils/Common';
+
 
 function MyUploads(){
   const[FileState,setFileState]=useState([]);
