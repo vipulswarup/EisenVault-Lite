@@ -119,7 +119,6 @@ function NavigationItems(props) {
             </div>
 
             <ProgressBar />
-            {/* <h5>1.8GB out of 5GB used.</h5> */}
           
         </ul>
       
