@@ -9,8 +9,10 @@ import '../../Containers/styles.scss';
 import useModal from '../UI/Modal/useModal';
 import RestoreFile from '../UI/Modal/RestoreFile';
 import DeleteModal from '../UI/Modal/DeleteModal';
-import ProfilePic from "../Avtar/Avtar";
 import { getToken } from '../../Utils/Common';
+import ProfilePic from "../Avtar/Avtar";
+
+
 
 function TrashDisplayFiles(props){
   const[TrashFileState,setTrashFileState]=useState([]);
