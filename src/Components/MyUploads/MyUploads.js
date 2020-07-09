@@ -6,6 +6,7 @@ import Action from '../Action/Action';
 import './MyUploads.scss';
 import Search from "../SearchBar/SearchBar";
 import axios from 'axios';
+import { getToken } from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 import { getToken } from '../../Utils/Common';
 
@@ -15,16 +16,14 @@ function MyUploads(){
 
 useEffect(()=>{
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/207c3132-0cfd-483e-9cca-36bafea26725/children?skipCount=0&maxItems=100', 
-  //  {headers:{Authorization: "Basic " + btoa("TICKET_f704a0c65478261285b9c1d3d5b3758cef9f4919")
-  // }
-  // }
+
    {headers:{
      Authorization: `Basic ${btoa(getToken())}`
-      }}
-  ).then((response) => {
-  console.log(response.data)
-  setFileState(response.data.list.entries)});
-},[]);
+      }
+    }).then((response) => {
+      console.log(response.data)
+      setFileState(response.data.list.entries)});
+   },[]);
 
     return( 
       <Fragment>
@@ -32,8 +31,7 @@ useEffect(()=>{
           <div id="second_section">
             <h2>My Uploads</h2>
             <Search />
-
-            <ProfilePic />
+              <ProfilePic />
                 
               <div className="filesUpload">
                 <table id="doc_list">
