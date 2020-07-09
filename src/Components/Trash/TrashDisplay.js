@@ -12,13 +12,11 @@ import DeleteModal from '../UI/Modal/DeleteModal';
 import { getToken } from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 
-
-
 function TrashDisplayFiles(props){
   const[TrashFileState,setTrashFileState]=useState([]);
-  const {isShowing: isShowing1,toggle: toggle4} = useModal();
-  const {isShowing:isShowing2,toggle:toggle5}=useModal();
-
+  const {isShowing: isShowing1,toggle: deleteT} = useModal();
+  const {isShowing:isShowing2,toggle:RestoreT}=useModal();
+//API CALL
 useEffect(() => {
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes',
   {headers:{
@@ -33,8 +31,8 @@ useEffect(() => {
 
 return(
     <Fragment>
-         <DeleteModal isShowing = {isShowing1} hide={toggle4}/>
-         <RestoreFile isShowing={isShowing2} hide={toggle5}/>
+         <DeleteModal isShowing = {isShowing1} hide={deleteT}/>
+         <RestoreFile isShowing={isShowing2} hide={RestoreT}/>
          <div id="second_section">
             <h2>Trash</h2>
             <Search />
@@ -59,7 +57,7 @@ return(
                 <th id="deleted">Deleted</th>
                 <th id="action-trash">
                     <label>Action </label>
-                      <select id="action-t" onChange={toggle4}>
+                      <select id="action-t" onChange={deleteT}>
                         <option value="delete-a">Delete All</option>
                         <option value="delete-s">Delete Selected</option>
                         <option value="delete-a">Restore All</option>
@@ -81,11 +79,11 @@ return(
                    }} type="checkbox" checked={d.select}
                     /> </td> 
                 <td className="file_name_t">{d.entry.name}</td>
-                <td className="created_t">{d.entry.createdAt}</td>                     
-                <td className="deleted_t">{d.entry.archivedAt}</td> 
+                <td className="created_t">{d.entry.createdAt.split('T')[0]}</td>                     
+                <td className="deleted_t">{d.entry.archivedAt.split('T')[0]}</td> 
                 <td className="delete-icon">
-                <FontAwesomeIcon icon={faTrash} className="TrashIcon" onClick={toggle4}/>
-                <FontAwesomeIcon icon={faUndo} className="UndoIcon" onClick={toggle5}/></td>           
+                <FontAwesomeIcon icon={faTrash} className="TrashIcon" onClick={deleteT}/>
+                <FontAwesomeIcon icon={faUndo} className="UndoIcon" onClick={RestoreT}/></td>           
             </tr>
                 ))}
         </tbody>
