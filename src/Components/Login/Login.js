@@ -51,12 +51,12 @@ const LoginPage = (props) => {
                 
                 {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}
                 <br />
-                <button id="btn01" type="button" value={loading ? 'Loading...' : 'Login'} 
+                <button id="btn_login" type="button" value={loading ? 'Loading...' : 'Login'} 
                 onClick={handleLogin} disabled={loading}>
                 Login</button>
                 <br />
                                 
-                  <button id="btn02" type="button" onClick={toggle1}>
+                  <button id="btn_forgotPassword" type="button" onClick={toggle1}>
                     Forgot Password?</button>
                     
             </div> 

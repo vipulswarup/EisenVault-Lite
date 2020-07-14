@@ -15,6 +15,7 @@ const ProgressBar = () => {
   let [data, getData] = useState([]);
   console.log(getToken())
   
+  //API call
   useEffect(() => {
     axios.get('https://systest.eisenvault.net/alfresco/s/aws-reposize',
     {headers:{
@@ -29,6 +30,7 @@ const ProgressBar = () => {
   });
   }, []);
 
+  //Displaying the storage data.
   return (
     <div>
 
