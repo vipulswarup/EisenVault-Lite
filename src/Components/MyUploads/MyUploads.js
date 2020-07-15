@@ -10,20 +10,45 @@ import { getToken } from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 
 function MyUploads(){
-  const[FileState,setFileState]=useState([]);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
-//API CALL
-useEffect(()=>{
-  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/1252bca5-a90d-4c20-aa0c-23b8f4d4325b/children?skipCount=0&maxItems=100', 
-
-   {headers:{
-     Authorization: `Basic ${btoa(getToken())}`
+  const[FileState,setFileState]=useState([]);
+  useEffect(()=>{
+    getData();
+  },[]);
+  //api call
+    const getData=()=>{
+    axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/1252bca5-a90d-4c20-aa0c-23b8f4d4325b/children?skipCount=0&maxItems=100', 
+        {headers:{
+          Authorization: `Basic ${btoa(getToken())}`
+           }}).then((response)=>{
+             let FileData=response.data;
+            setFileState(response.data.list.entries.map(d=>{
+              return {
+                select:false,
+                id:d.entry.id,
+                name:d.entry.name,
+                uploadedOn:d.entry.createdAt.split('T')[0]
+              }
+            })) 
+            }).catch(err=>alert(err));
+  };
+  //arrow function for getting file nodeid and putting it dynamically in api
+  const deleteFileByIds=()=>{
+    let FileIds=[];//array storing id's
+    FileState.forEach(d=>{
+      if(d.select){
+        FileIds.push(d.id);
       }
-    }).then((response) => {
-      console.log(response.data)
-      setFileState(response.data.list.entries)});
-   },[]);
-
+    });
+    axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${FileIds}`, 
+     {headers:{
+       Authorization: `Basic ${btoa(getToken())}`
+        }
+      }).then((data)=>{
+        console.log(data);
+        getData();
+      }).catch(err=>alert(err));
+  };
     return( 
       <Fragment>
 
@@ -48,7 +73,7 @@ useEffect(()=>{
                     <th id="item-name">Item Name</th>
                     <th id="shared">Uploaded On</th>
                   
-        <th id="action"><Action/></th>
+        <th id="action"><Action deleted={()=>{deleteFileByIds()}}/></th>
         <Modal
             className="Modal"
             isOpen={modalIsOpen}
@@ -59,6 +84,7 @@ useEffect(()=>{
                 backgroundColor:"rgba(0, 0, 0, 0.6)"
               }
             }}
+            ariaHideApp={false}
           >
             <h2 className="Dh2">Delete Documents</h2>
             <p className="content Dh3">
@@ -73,39 +99,44 @@ useEffect(()=>{
             >
               CANCEL
             </button>
-            <button className="btn-continue btn-d">DELETE</button>
+            <button className="btn-continue btn-d" onClick={()=>{deleteFileByIds()}}>DELETE</button>
           </Modal>
+          
                 </tr>
                   
                   { FileState.map((d,i) => (
-                    <tr  key={d.entry.id} id="first_details">
+                     <tr  key={d.id}  id="first_details">
                     <td className="file_icon1">
                       <input onChange={(event)=>{
                           let checked=event.target.checked;
+           
                         setFileState(FileState.map((data)=>{
-                          if(d.entry.id===data.entry.id){
+                          if(d.id===data.id){
                             data.select=checked;
                           }return data;
-                        }));
+                         }));
                       }} type="checkbox" checked={d.select} />
                       </td>
-                    <td className="file_name-u">
+                      
+                    <td className="file_name-u" >
                     
-                    <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> {d.entry.name}</td>
-                    <td className="details-u">{d.entry.createdAt.split('T')[0]}</td>
+                    <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> {d.name}</td>
+                    <td className="details-u">{d.uploadedOn}</td>
                     <td className="delete-u">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
                       onClick={() => setmodalIsOpen(true)} />
+ 
                   </td>
                   </tr>
-                  ) )}
+                  
+                  ))}
                 </tbody>
               </table>
+              
               </div>
               </div>
     </Fragment>
 
           )
           }
-
 export default MyUploads;
