@@ -8,6 +8,12 @@ import ProfilePic from "../../Avtar/Avtar";
 
 import Avatar from "react-avatar"
 import Search from "../../SearchBar/SearchBar";
+import Avatar from "react-avatar"
+import Search from "../../SearchBar/SearchBar";
+import {getToken} from  "../../../Utils/Common";
+import Search from "../../../SearchBar/SearchBar";
+import {getToken} from  "../../../../Utils/Common";
+import ProfilePic from "../../../Avtar/Avtar";
 
 function SubDocument(){
   let history = useHistory();
