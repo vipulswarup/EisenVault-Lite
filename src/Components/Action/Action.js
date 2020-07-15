@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import "./Action.scss";
 // import "../../css/styles.css";
-
-function Action() {
+import MyUploads from "../MyUploads/MyUploads"
+function Action(props) {
   const [modalIsOpen, setmodalIsOpen] = useState(false);
 
   return (
@@ -41,7 +41,7 @@ function Action() {
           onClick={() => setmodalIsOpen(false)}>
           CANCEL
         </button>
-        <button className="btn-continue btn-d">DELETE</button>
+        <button className="btn-continue btn-d" onClick={props.deleted}>DELETE</button>
       </Modal>
     </div>
   );
