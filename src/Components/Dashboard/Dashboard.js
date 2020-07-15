@@ -8,21 +8,34 @@ import { faFilePdf, faTimesCircle, faEye } from "@fortawesome/free-solid-svg-ico
 
 import Search from "../SearchBar/SearchBar";
 import ProfilePic from "../Avtar/Avtar";
+import Pagination from '../Pagination/Pagination';
 
 const Dashboard = () => {
   const [ documents , setDocuments ] = useState([]);
-
+  const [ currentPage, setCurrentPage ] = useState(1);
+  const [postsPerPage] = useState(10);
+  const [ paginationDefualt, setPaginationDefault ] = useState([]);
+  
   //API call.
   useEffect(() => {
-    axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/people/admin/activities?skipCount=0&maxItems=100',
+    axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/people/admin/activities?skipCount=0&maxItems=1000',
     {headers:{
       Authorization: `Basic ${btoa(getToken())}`
     }
     }).then((response) => {
       console.log(response.data)
       setDocuments(response.data.list.entries)
+      setPaginationDefault(response.data.list.pagination)
     });
-  },[]);
+  }, []);
+
+  // Get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = documents.slice(indexOfFirstPost, indexOfLastPost);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
   <Fragment>
@@ -36,7 +49,7 @@ const Dashboard = () => {
       <div className="filesDetail">
         <h3>My Recent Activities</h3>
         <table className='documentsList'>
-            {documents.map(document => ( 
+            {currentPosts.map(document => ( 
             <tbody key={document.entry.id} >
                     <tr className='files'>
 
@@ -65,6 +78,14 @@ const Dashboard = () => {
         </table>
       </div>
   </div>
+  
+    <div className="col-md-6">
+      <Pagination
+       postsPerPage={postsPerPage}
+       totalPosts={paginationDefualt.count}
+       paginate={paginate}
+        />
+        </div>
 
   </Fragment>
   )
