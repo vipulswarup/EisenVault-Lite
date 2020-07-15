@@ -29,12 +29,13 @@ const LoginPage = (props) => {
     });
   }
 
-  const {isShowing: isShowing1,toggle: toggle1} = useModal();
+  const {isShowing: isShowing1,toggle: toggleForgotPassword} = useModal();
 
     return(
 
       <Fragment>
-              <ModalForgetPswd isShowing = {isShowing1} hide={toggle1}/>
+              <ModalForgetPswd isShowing = {isShowing1} 
+              hide={toggleForgotPassword}/>
 
         <div id="bg-bar">
 
@@ -51,12 +52,14 @@ const LoginPage = (props) => {
                 
                 {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}
                 <br />
-                <button id="btn_login" type="button" value={loading ? 'Loading...' : 'Login'} 
+                <button id="btn_login" type="button" 
+                value={loading ? 'Loading...' : 'Login'} 
                 onClick={handleLogin} disabled={loading}>
                 Login</button>
                 <br />
                                 
-                  <button id="btn_forgotPassword" type="button" onClick={toggle1}>
+                  <button id="btn_forgotPassword" type="button" 
+                  onClick={toggleForgotPassword}>
                     Forgot Password?</button>
                     
             </div> 

@@ -37,4 +37,4 @@ return(
 );
 }
 
-  export default ChangePassword;
+export default ChangePassword;

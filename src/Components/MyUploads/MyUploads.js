@@ -9,13 +9,12 @@ import axios from 'axios';
 import { getToken } from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 
-
 function MyUploads(){
   const[FileState,setFileState]=useState([]);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
-
+//API CALL
 useEffect(()=>{
-  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/207c3132-0cfd-483e-9cca-36bafea26725/children?skipCount=0&maxItems=100', 
+  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/1252bca5-a90d-4c20-aa0c-23b8f4d4325b/children?skipCount=0&maxItems=100', 
 
    {headers:{
      Authorization: `Basic ${btoa(getToken())}`
@@ -93,7 +92,7 @@ useEffect(()=>{
                     <td className="file_name-u">
                     
                     <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> {d.entry.name}</td>
-                    <td className="details-u">{d.entry.createdAt}</td>
+                    <td className="details-u">{d.entry.createdAt.split('T')[0]}</td>
                     <td className="delete-u">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
                       onClick={() => setmodalIsOpen(true)} />
