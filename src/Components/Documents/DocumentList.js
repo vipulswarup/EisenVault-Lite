@@ -1,8 +1,8 @@
 import React,{Fragment , useEffect , useState} from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { useHistory} from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobeAsia, faFile, faHdd, faFolder } from "@fortawesome/free-solid-svg-icons";
+import { faGlobeAsia, faFile, faHdd } from "@fortawesome/free-solid-svg-icons";
 import './DocumentList.scss';
 
 import {getToken} from  "../../Utils/Common";
@@ -17,8 +17,10 @@ import ModalTrash from '../UI/Modal/ModalTrash';
 import useModal from '../UI/Modal/useModal';
 
 const DocumentsList = () => {
+  let history = useHistory();
   const [ departments , setDepartments ] = useState([]);
-
+  const [ documents , setDocuments ] = useState([]);
+  
   useEffect(() => {
     axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?skipCount=0&maxItems=100',
       {
@@ -34,6 +36,31 @@ const DocumentsList = () => {
 const {isShowing: isShowing1,toggle: togglecreate} = useModal();
 const {isShowing: isShowing2,toggle: toggleadd} = useModal();
 const {isShowing: isShowing3,toggle: toggletrash} = useModal();
+
+
+
+function handleDocumentLibrary(key){
+  axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${key}/children?skipCount=0&maxItems=100`,
+        {
+          headers:
+          {
+            Authorization: `Basic ${btoa(getToken())}`
+          }
+          }).then((response) => {
+        console.log(response.data)
+        setDocuments(response.data.list.entries)
+        documents.map(d => (
+          d.entry.name === 'documentLibrary' ?  history.push(`/document/${d.entry.id}`)
+          : null
+        ) 
+          )
+      }).catch((error) => {
+        console.log(error);
+      }
+      );
+      
+      
+}
 
 return (
   <Fragment>
@@ -62,12 +89,13 @@ return (
               <tbody key={department.entry.id}>
                   <tr className='details'>
                   <td className='fileicon'>
-                  <Link to={{pathname:`/department/${department.entry.title}/${department.entry.guid}`,state:{data : department.entry}}}>
+                  
                     <FontAwesomeIcon icon={faGlobeAsia} className="fas"/>
-                    {department.entry.title}</Link></td>
+                    {department.entry.title}</td>
 
-                     <td className='fileDetails'>
-                    <FontAwesomeIcon icon={faFolder} className="fas"/> 
+                    
+                     <td className='fileDetails' onClick={() => handleDocumentLibrary(department.entry.guid)}>
+                    Document Library
                     {document.folders} </td>
 
                     <td className='fileDetails'> 
