@@ -1,9 +1,9 @@
 import React,{useEffect,useState} from 'react';
 import ReactDOM from 'react-dom';
 import './Modal.scss';
-import { getToken } from "../../../Utils/Common";
-import MyUploads from "../../MyUploads/MyUploads"
-import axios from 'axios';
+// import { getToken } from "../../../Utils/Common";
+// import MyUploads from "../../MyUploads/MyUploads"
+// import axios from 'axios';
 // const Checking=(props)=>{
 // useEffect(()=>{
 //   axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${props.FileIds}`, 
