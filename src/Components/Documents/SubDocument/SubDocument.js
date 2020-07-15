@@ -3,15 +3,17 @@ import { useParams , useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
-<<<<<<< HEAD:src/Components/Documents/SubDocument/SubDocument.js
+import {getToken} from  "../../../../Utils/Common";
+import ProfilePic from "../../Avtar/Avtar";
+
+import Avatar from "react-avatar"
+import Search from "../../SearchBar/SearchBar";
 import Avatar from "react-avatar"
 import Search from "../../SearchBar/SearchBar";
 import {getToken} from  "../../../Utils/Common";
-=======
 import Search from "../../../SearchBar/SearchBar";
 import {getToken} from  "../../../../Utils/Common";
 import ProfilePic from "../../../Avtar/Avtar";
->>>>>>> dda4e41487bcb9ed4a7eb432fb9650395f2c921f:src/Components/Documents/Document/SubDocument/SubDocument.js
 
 function SubDocument(){
   let history = useHistory();
