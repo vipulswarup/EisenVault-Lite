@@ -1,25 +1,22 @@
-import React,{useEffect} from 'react';
+import React,{useEffect,useState} from 'react';
 import ReactDOM from 'react-dom';
 import './Modal.scss';
+import { getToken } from "../../../Utils/Common";
+import MyUploads from "../../MyUploads/MyUploads"
 import axios from 'axios';
-import {getToken} from "../../../Utils/Common"
+// const Checking=(props)=>{
+// useEffect(()=>{
+//   axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${props.FileIds}`, 
+//   {headers:{
+//     Authorization: `Basic ${btoa(getToken())}`
+//      }
+//    }).then((data)=>{
+//      console.log(data);
+//    }).catch(err=>alert(err))});}
+ const DeleteModal = ({ isShowing, hide,fileId }) => isShowing ? ReactDOM.createPortal(
+  
 
-//for calling delete Api
-export function DeleteApiRequest(){
-   useEffect(()=>{
-    axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/f2cb61a1-9b66-4b1c-89a8-5b9a55d63c8a`, 
-     {headers:{
-       Authorization: `Basic ${btoa(getToken())}`
-        }
-      }).then((response) => {
-        console.log(response.data)}
-        ).catch(error=>console.error(error));
-     },[]);
-    
-}
-
-const DeleteModal = ({ isShowing, hide }) => isShowing ? ReactDOM.createPortal(
-  <React.Fragment>
+     <React.Fragment>
     <div className="modal-overlay"/>
     <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
       <div className="modal">
@@ -40,12 +37,12 @@ const DeleteModal = ({ isShowing, hide }) => isShowing ? ReactDOM.createPortal(
           </div>
         </div>
          <div id="btns">
-          <button onClick={DeleteApiRequest()}>Delete</button>
+          <button >Delete</button>
           <button onClick={hide}>Cancel</button>
         </div>
       </div>
     </div>
   </React.Fragment>, document.body
 ) : null;
-
+ 
 export default DeleteModal;
