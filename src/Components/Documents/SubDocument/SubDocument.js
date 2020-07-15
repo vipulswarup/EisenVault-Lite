@@ -4,9 +4,8 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 
-import Avatar from "react-avatar";
 import Search from "../../SearchBar/SearchBar";
-import {getToken} from  "../../../../Utils/Common";
+import {getToken} from  "../../../Utils/Common";
 import ProfilePic from "../../Avtar/Avtar";
 
 function SubDocument(){
@@ -59,7 +58,8 @@ useEffect(()=>{
                     <tr  key={d.id} id="first_details">
                     <td className="file_name-u">
                     
-                    <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf} onClick={() => handleDocument(d.entry.isFile,d.entry.id,d.entry.name)}/> {d.entry.name}</td>
+                    <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf} 
+                    onClick={() => handleDocument(d.entry.isFile,d.entry.id,d.entry.name)}/> {d.entry.name}</td>
                     <td className="details-u-s">{d.entry.createdByUser.displayName}</td>
                     <td className="details-u-s">{d.entry.createdAt.split('T')[0]}</td>
                     <td className="details-u-s">{d.entry.modifiedAt.split('T')[0]}</td>
