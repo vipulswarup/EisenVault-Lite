@@ -33,6 +33,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
            {pageNumbers.map(number => (
             <li key={number} 
             onClick={() => {
+              setCurrentPage(number)
               paginate(number)
               setActive( number );
             }}
