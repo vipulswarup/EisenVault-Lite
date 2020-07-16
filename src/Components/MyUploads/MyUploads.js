@@ -32,32 +32,27 @@ function MyUploads(){
             })) 
             }).catch(err=>alert(err));
   };
-  //arrow function for getting file nodeid and putting it dynamically in api
+  //arrow function to delete single/multiple files
   const deleteFileByIds=()=>{
-    let FileIds=[];//array storing id's
     FileState.forEach(d=>{
       if(d.select){
-        FileIds.push(d.id);
-      }
-    });
-    axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${FileIds}`, 
-     {headers:{
-       Authorization: `Basic ${btoa(getToken())}`
-        }
-      }).then((data)=>{
-        console.log(data);
-        getData();
-      }).catch(err=>alert(err));
-  };
+      axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
+      {headers:{
+      Authorization: `Basic ${btoa(getToken())}`
+       }
+     }).then((data)=>{
+          console.log(data);
+             getData();
+           }).catch(err=>alert(err));
+       };
+      })}
     return( 
       <Fragment>
-
-          <div id="second_section">
+         <div id="second_section">
             <h2>My Uploads</h2>
             <Search />
               <ProfilePic />
-                
-              <div className="filesUpload">
+               <div className="filesUpload">
                 <table id="doc_list">
                   <tbody>
                   <tr id="icons">
