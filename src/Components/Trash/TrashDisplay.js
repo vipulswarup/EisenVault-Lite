@@ -12,17 +12,13 @@ import DeleteModal from '../UI/Modal/DeleteModal';
 import { getToken } from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 import NestedToolTip from "../UI/popup";
-import Pagination from '../Pagination/Pagination';
 
 function TrashDisplayFiles(props){
   const[TrashFileState,setTrashFileState]=useState([]);
   const {isShowing: isShowing1,toggle: deleteT} = useModal();
   const {isShowing:isShowing2,toggle:RestoreT}=useModal();
 
-  const [ currentPage, setCurrentPage ] = useState(1);
-  const [postsPerPage] = useState(10);
-
-//API CALL
+  //API CALL
 useEffect(()=>{
   getDeletedData();
 },[]);
@@ -44,6 +40,7 @@ const getDeletedData=()=>{
       })) 
       }).catch(err=>alert(err));
 };
+
 //function to collect noeid of deleted files
 const deletedFileNodeIds=()=>{
   let DeletedFileIds=[];//array storing id's
@@ -53,22 +50,6 @@ const deletedFileNodeIds=()=>{
       }
     });
 }
-    console.log(response.data)
-    setTrashFileState(response.data.list.entries)
-  }).catch((error) => {
-    console.error(error)
-  });
-  },[]);
-
-// Get current posts
-const indexOfLastPost = currentPage * postsPerPage;
-const indexOfFirstPost = indexOfLastPost - postsPerPage;
-const currentPosts = TrashFileState.slice(indexOfFirstPost, indexOfLastPost);
-
-// Change page
-const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-
 return(
     <Fragment>
          <DeleteModal isShowing = {isShowing1} hide={deleteT}/>
@@ -76,9 +57,7 @@ return(
          <div id="second_section">
             <h2>Trash</h2>
             <Search />
-
             <ProfilePic />
-      
         <div className="filesUpload">
         <table id="doc_list">
           <tbody>
@@ -87,7 +66,7 @@ return(
                   <input type="checkbox"
                   onChange={(e)=>{
                     let checked=e.target.checked;
-                    setTrashFileState(currentPosts.map((d)=>{
+                    setTrashFileState(TrashFileState.map((d)=>{
                       d.select=checked;
                       return d;
                     }));
@@ -106,11 +85,8 @@ return(
                       </select> */}
                   </th>            
                 </tr>
-                
                 {TrashFileState.map((d,i) => (
                  <tr  key={d.id} id="first_details">
-                {currentPosts.map((d,i) => (
-                 <tr  key={d.entry.id} id="first_details">
                  <td className="file_icon1">
                    <input onChange={(event)=>{
                       let checked=event.target.checked;
@@ -133,17 +109,7 @@ return(
       </table>
     </div>
   </div>
-
-  <div className="col-md-6">
-      <Pagination
-       postsPerPage={postsPerPage}
-       totalPosts={TrashFileState.length}
-       paginate={paginate}
-        />
-      </div>
-
 </Fragment>
 )
 }
-
   export default TrashDisplayFiles;
