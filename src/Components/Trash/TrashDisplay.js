@@ -11,11 +11,16 @@ import RestoreFile from '../UI/Modal/RestoreFile';
 import DeleteModal from '../UI/Modal/DeleteModal';
 import { getToken } from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
+import Pagination from '../Pagination/Pagination';
 
 function TrashDisplayFiles(props){
   const[TrashFileState,setTrashFileState]=useState([]);
   const {isShowing: isShowing1,toggle: deleteT} = useModal();
   const {isShowing:isShowing2,toggle:RestoreT}=useModal();
+
+  const [ currentPage, setCurrentPage ] = useState(1);
+  const [postsPerPage] = useState(10);
+
 //API CALL
 useEffect(() => {
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes',
@@ -28,6 +33,15 @@ useEffect(() => {
     console.error(error)
   });
   },[]);
+
+// Get current posts
+const indexOfLastPost = currentPage * postsPerPage;
+const indexOfFirstPost = indexOfLastPost - postsPerPage;
+const currentPosts = TrashFileState.slice(indexOfFirstPost, indexOfLastPost);
+
+// Change page
+const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
 
 return(
     <Fragment>
@@ -47,7 +61,7 @@ return(
                   <input type="checkbox"
                   onChange={(e)=>{
                     let checked=e.target.checked;
-                    setTrashFileState(TrashFileState.map((d)=>{
+                    setTrashFileState(currentPosts.map((d)=>{
                       d.select=checked;
                       return d;
                     }));
@@ -66,7 +80,7 @@ return(
                   </th>           
                 </tr>
                 
-                {TrashFileState.map((d,i) => (
+                {currentPosts.map((d,i) => (
                  <tr  key={d.entry.id} id="first_details">
                  <td className="file_icon1">
                    <input onChange={(event)=>{
@@ -90,6 +104,15 @@ return(
       </table>
     </div>
   </div>
+
+  <div className="col-md-6">
+      <Pagination
+       postsPerPage={postsPerPage}
+       totalPosts={TrashFileState.length}
+       paginate={paginate}
+        />
+      </div>
+
 </Fragment>
 )
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import  './NavigationItems.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProgressBar from '../NavigationItems/ProgressBar/ProgressBar';
@@ -12,17 +12,18 @@ import { faHome,
       faKey, 
       faSignOutAlt, 
       faTrash } from "@fortawesome/free-solid-svg-icons";
-// import { removeUserLocal } from '../../../Utils/Common';
+import { removeUserLocal } from '../../../Utils/Common';
 
-function NavigationItems(props) {
+function NavigationItems() {
 
   // const user = getUser();
+ const history = useHistory();
  
   // handle click event of logout button
-  // const handleLogout = () => {
-  //   removeUserLocal();
-  //   props.history.push('/');
-  // }
+  const handleLogout = () => {
+    // removeUserLocal();
+    history.push('/Login');
+   }
   
   return (
     <div>
@@ -106,6 +107,9 @@ function NavigationItems(props) {
                 <p>CHANGE PASSWORD</p>
                 </li></Link>
 
+                <input type="button" 
+                onClick={handleLogout} value="Logout" />
+
                 <Link to="/">
                 <li> 
                 <FontAwesomeIcon 
@@ -116,7 +120,7 @@ function NavigationItems(props) {
 
                 <ProgressBar />
 
-                {/* <input type="button" onClick={handleLogout} value="Logout" /> */}
+                
 
             </div>
 

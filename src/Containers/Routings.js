@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import { Route, withRouter } from "react-router-dom";
 
-// import LoginRoutings from './LoginRoutings';
 import LoginPage from "../Components/Login/Login"
 import NavigationItems from "../Components/Navigation/NavigationItems/NavigationItems";
 import MobileMenu from "../Components/MobileMenu/MobileMenu";
@@ -21,13 +20,13 @@ import './styles.scss';
 const Routings = withRouter (({ location }) => {
   return(
     <Fragment>
-        <Route exact path="/" component={LoginPage} />
+        <Route exact path="/Login" component={LoginPage} />
       <div>
-        {location.pathname !== '/' && <MobileMenu />} 
+        {location.pathname !== '/Login' && <MobileMenu />} 
       </div>
 
       <div className="main_body">
-        {location.pathname !== '/' && <NavigationItems />}
+        {location.pathname !== '/Login' && <NavigationItems />}
       <div>
 
         <Route path="/dashboard" component ={Dashboard} />
@@ -39,7 +38,7 @@ const Routings = withRouter (({ location }) => {
         <Route path="/changePassword" component={ChangePassword} />
         <Route path="/document/:id" component={SubDocument} />
         <Route path="/doc/:id/:name" component={PdfViewer} />
-        {location.pathname !== '/' &&  <Footer />}
+        {location.pathname !== '/Login' &&  <Footer />}
       </div>
       </div>
 

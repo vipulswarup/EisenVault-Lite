@@ -8,10 +8,15 @@ import Search from "../SearchBar/SearchBar";
 import useModal from '../UI/Modal/useModal';
 import DeleteModal from '../UI/Modal/DeleteModal';
 import { getToken } from '../../Utils/Common';
+import Pagination from '../Pagination/Pagination';
 
 function ManageShares(){
   const[FileState,setFileState]=useState([]);
   const {isShowing: isShowing1,toggle: deleteT} = useModal();
+
+  const [ currentPage, setCurrentPage ] = useState(1);
+  const [postsPerPage] = useState(10);
+
  //API CALL
  useEffect(()=>{
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/5ccc676b-0a0c-4f9f-b176-87a786b3b5d8/children?skipCount=0&maxItems=100', 
@@ -22,6 +27,15 @@ function ManageShares(){
   console.log(response.data)
   setFileState(response.data.list.entries)});
 },[]); 
+
+// Get current posts
+const indexOfLastPost = currentPage * postsPerPage;
+const indexOfFirstPost = indexOfLastPost - postsPerPage;
+const currentPosts = FileState.slice(indexOfFirstPost, indexOfLastPost);
+
+// Change page
+const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
 return( 
       <Fragment>
         <DeleteModal isShowing = {isShowing1} hide={deleteT}/>
@@ -41,7 +55,7 @@ return(
                   </tr>
                   </thead>
                   <tbody>
-                  { FileState.map((d,i) => (
+                  { currentPosts.map((d,i) => (
                     <tr  key={d.entry.id} id="first_details">
                     <td className="file_name-u">
                     <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> {d.entry.name}</td>
@@ -58,6 +72,14 @@ return(
               </table>
             </div>
             </div>
+
+      <div className="col-md-6">
+      <Pagination
+       postsPerPage={postsPerPage}
+       totalPosts={FileState.length}
+       paginate={paginate}
+        />
+      </div>
     </Fragment>
 
           )
