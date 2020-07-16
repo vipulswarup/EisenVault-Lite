@@ -26,13 +26,13 @@ text-align: center;
   border-radius: 4px;
 }
 
+.activeState{
+  color: $font-color;
+  background-color: white;
+}
+
 li.pageItem{
   cursor: pointer;
-
-  &:active{
-    color: $font-color;
-    background-color: white;
-  }
 }
 
 /* Paginate style-1 */

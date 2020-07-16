@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import "./stylePagination.scss";
 
 const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
-  const [currentPage, setCurrentPage] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [isActive, setActive] = useState(false)
 
     const pageNumbers = [];
+
+    const prevPage = (currentPage-1)
+    const nextPage = (currentPage+1)
   
     for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
       pageNumbers.push(i);
@@ -13,33 +17,42 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
     return (
       <nav>
         <ul className='pagination'>
-        {pageNumbers.includes(currentPage - 1) && 
+        {pageNumbers.includes(prevPage) && 
         <a onClick={() => {
-                    setCurrentPage(currentPage - 1);
-                    paginate(currentPage - 1);
+                    setCurrentPage(prevPage);
+                    paginate(prevPage);
+                    setActive( prevPage );
+
                 }}
-                className='prevButton'>
+            className={isActive === prevPage ? 'pageItem activeState' : 
+              !isActive === prevPage ? 'pageItem inActiveState' : "pageItem"}>               
                     Prev
                 </a>
             }
 
-          {pageNumbers.map(number => (
+           {pageNumbers.map(number => (
             <li key={number} 
-            className='pageItem'
-            onClick={() => paginate(number)}>                
+            onClick={() => {
+              paginate(number)
+              setActive( number );
+            }}
+            className={isActive === number ? 'pageItem activeState' : 
+            !isActive === number ? 'pageItem inActiveState' : "pageItem"}>               
             {number}
             </li>
-          ))}
+          ))} 
 
-      {pageNumbers.includes(currentPage + 1) && 
+      {pageNumbers.includes(nextPage) && 
         <a onClick={() => {
-                    setCurrentPage(currentPage + 1);
-                    paginate(currentPage + 1);
+                    setCurrentPage(nextPage);
+                    paginate(nextPage);
+                    setActive( nextPage );
                 }}
-                className='nextButton'>
-                    Next
+              className={isActive === nextPage ? 'pageItem activeState' : 
+              !isActive === nextPage ? 'pageItem inActiveState' : "pageItem"}>               
+                     Next
                 </a>
-            }
+            } 
         </ul>
       </nav>
     );
