@@ -86,7 +86,7 @@ const Dashboard = () => {
        totalPosts={paginationDefualt.count}
        paginate={paginate}
         />
-        </div>
+    </div>
 
   </Fragment>
   )
