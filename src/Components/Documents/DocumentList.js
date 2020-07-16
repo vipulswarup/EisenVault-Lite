@@ -15,12 +15,16 @@ import Modal from '../UI/Modal/Modal';
 import ModalAdd from '../UI/Modal/ModalAdd';
 import ModalTrash from '../UI/Modal/ModalTrash';
 import useModal from '../UI/Modal/useModal';
+import Pagination from '../Pagination/Pagination';
 
 const DocumentsList = () => {
   let history = useHistory();
   const [ departments , setDepartments ] = useState([]);
   const [ documents , setDocuments ] = useState([]);
   
+  const [ currentPage, setCurrentPage ] = useState(1);
+  const [postsPerPage] = useState(10);
+
   useEffect(() => {
     axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?skipCount=0&maxItems=100',
       {
@@ -37,7 +41,13 @@ const {isShowing: isShowing1,toggle: togglecreate} = useModal();
 const {isShowing: isShowing2,toggle: toggleadd} = useModal();
 const {isShowing: isShowing3,toggle: toggletrash} = useModal();
 
+// Get current posts
+const indexOfLastPost = currentPage * postsPerPage;
+const indexOfFirstPost = indexOfLastPost - postsPerPage;
+const currentPosts = departments.slice(indexOfFirstPost, indexOfLastPost);
 
+// Change page
+const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 function handleDocumentLibrary(key){
   axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${key}/children?skipCount=0&maxItems=100`,
@@ -85,7 +95,7 @@ return (
       <h2>My Departments</h2>
           
            <table id="doc_list">
-          {departments.map(department => (
+          {currentPosts.map(department => (
               <tbody key={department.entry.id}>
                   <tr className='details'>
                   <td className='fileicon'>
@@ -113,6 +123,14 @@ return (
       </ul>
 
       </div>
+
+      <div className="col-md-6">
+      <Pagination
+       postsPerPage={postsPerPage}
+       totalPosts={departments.length}
+       paginate={paginate}
+        />
+        </div>
 
   </Fragment>
       )

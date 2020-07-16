@@ -2,11 +2,18 @@ import React, {useEffect,useState,Fragment} from 'react';
 import { useParams , useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { faFile,faTimesCircle,faFolder} from "@fortawesome/free-solid-svg-icons";
+=======
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
+import Pagination from '../../Pagination/Pagination';
+
 
 import Search from "../../SearchBar/SearchBar";
 import {getToken} from  "../../../Utils/Common";
 import ProfilePic from "../../Avtar/Avtar";
+
+import './SubDocument.scss';
 
 function SubDocument(){
   let history = useHistory();
@@ -14,7 +21,9 @@ function SubDocument(){
    let params = useParams();
    const id = params.id;
    
- 
+   const [ currentPage, setCurrentPage ] = useState(1);
+   const [postsPerPage] = useState(10);
+
 useEffect(()=>{
         axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/children?skipCount=0&maxItems=100`,
         {
@@ -30,6 +39,14 @@ useEffect(()=>{
       }
       );
     },[id]);
+
+    // Get current posts
+      const indexOfLastPost = currentPage * postsPerPage;
+      const indexOfFirstPost = indexOfLastPost - postsPerPage;
+      const currentPosts = documents.slice(indexOfFirstPost, indexOfLastPost);
+
+    // Change page
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     function handleDocument(file , id , name){
       file ? history.push(`/doc/${id}/${name}`): history.push(`/document/${id}`)
@@ -54,18 +71,25 @@ useEffect(()=>{
                   </tr>
                   </thead>
                   <tbody>
-                  { documents.map((d,i) => (
+                  { currentPosts.map((d,i) => (
                     <tr  key={d.id} id="first_details">
-                    <td className="file_name-u">
+                    <td className="file_name-u" onClick={() => handleDocument(d.entry.isFile,d.entry.id,d.entry.name)}>
                     
+                   
+                        <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={d.entry.isFile ? faFile : faFolder} 
+                          />
+
+                       {d.entry.name}</td>
+
                     <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf} 
-                    onClick={() => handleDocument(d.entry.isFile,d.entry.id,d.entry.name)}/> {d.entry.name}</td>
+                    onClick={() => handleDocument(d.entry.isFile,d.entry.id,d.entry.name)}/> 
+                    {d.entry.name}</td>
+
                     <td className="details-u-s">{d.entry.createdByUser.displayName}</td>
                     <td className="details-u-s">{d.entry.createdAt.split('T')[0]}</td>
                     <td className="details-u-s">{d.entry.modifiedAt.split('T')[0]}</td>
                     <td className="delete-u-s">
-                    <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
-                       />
+                    <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} />
                   </td>
                   </tr>
                   ) )}
@@ -73,6 +97,14 @@ useEffect(()=>{
               </table>
             </div>
             </div>
+
+      <div className="col-md-6">
+      <Pagination
+       postsPerPage={postsPerPage}
+       totalPosts={documents.length}
+       paginate={paginate}
+        />
+        </div>
     </Fragment>
 
           )

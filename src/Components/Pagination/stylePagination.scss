@@ -1,19 +1,38 @@
 $sidebar-color: #E07050;
 $font-color:#073453;
 
-.pageItem{
-  display: inline-block;  
+.pagination{
+text-align: center;
+}
+
+.prevButton,
+.nextButton{
+  cursor: pointer;
   background-color: $sidebar-color;
   color: white;
-  padding: 4px;
   margin-left: 0.4rem;
+  padding: 4px;
   border: 1px solid $sidebar-color;
   border-radius: 4px;
 }
 
-li.pageItem:active{
-  color: $font-color;
-  background-color: white;
+.pageItem{
+  display: inline-block;  
+  background-color: $sidebar-color;
+  color: white;
+  margin-left: 0.4rem;
+  padding: 4px;
+  border: 1px solid $sidebar-color;
+  border-radius: 4px;
+}
+
+li.pageItem{
+  cursor: pointer;
+
+  &:active{
+    color: $font-color;
+    background-color: white;
+  }
 }
 
 /* Paginate style-1 */
