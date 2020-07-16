@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import { Route, withRouter } from "react-router-dom";
 
-// import LoginRoutings from './LoginRoutings';
 import LoginPage from "../Components/Login/Login"
 import NavigationItems from "../Components/Navigation/NavigationItems/NavigationItems";
 import MobileMenu from "../Components/MobileMenu/MobileMenu";

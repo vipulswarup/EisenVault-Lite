@@ -7,12 +7,16 @@ import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import Search from "../../SearchBar/SearchBar";
 import {getToken} from  "../../../Utils/Common";
 import ProfilePic from "../../Avtar/Avtar";
+import Pagination from '../../Pagination/Pagination';
 
 function Document(){
   const[documents,setDocuments]=useState([]);
    let params = useParams();
    const nodeId = params.nodeId;
    const title = params.title;
+
+   const [ currentPage, setCurrentPage ] = useState(1);
+   const [postsPerPage] = useState(10);
  
 useEffect(()=>{
         axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${nodeId}/children?skipCount=0&maxItems=100`,
@@ -29,6 +33,14 @@ useEffect(()=>{
       }
       );
     },[nodeId]);
+
+    // Get current posts
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = documents.slice(indexOfFirstPost, indexOfLastPost);
+
+    // Change page
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return( 
       <Fragment>
@@ -51,7 +63,7 @@ useEffect(()=>{
                   </tr>
                   </thead>
                   <tbody>
-                  { documents.map((d,i) => (
+                  { currentPosts.map((d,i) => (
                     <tr  key={d.id} id="first_details">
                     <td className="file_name-u">
                     <Link to={{pathname:`/document/${d.entry.name}/${d.entry.id}`}}>
