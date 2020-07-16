@@ -20,13 +20,13 @@ import './styles.scss';
 const Routings = withRouter (({ location }) => {
   return(
     <Fragment>
-        <Route exact path="/Login" component={LoginPage} />
+        <Route exact path="/" component={LoginPage} />
       <div>
-        {location.pathname !== '/Login' && <MobileMenu />} 
+        {location.pathname !== '/' && <MobileMenu />} 
       </div>
 
       <div className="main_body">
-        {location.pathname !== '/Login' && <NavigationItems />}
+        {location.pathname !== '/' && <NavigationItems />}
       <div>
 
         <Route path="/dashboard" component ={Dashboard} />
@@ -38,7 +38,7 @@ const Routings = withRouter (({ location }) => {
         <Route path="/changePassword" component={ChangePassword} />
         <Route path="/document/:id" component={SubDocument} />
         <Route path="/doc/:id/:name" component={PdfViewer} />
-        {location.pathname !== '/Login' &&  <Footer />}
+        {location.pathname !== '/' &&  <Footer />}
       </div>
       </div>
 
