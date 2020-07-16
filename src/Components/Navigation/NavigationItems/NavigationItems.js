@@ -18,11 +18,11 @@ function NavigationItems() {
 
   // const user = getUser();
  const history = useHistory();
- 
+
   // handle click event of logout button
   const handleLogout = () => {
     // removeUserLocal();
-    history.push('/Login');
+    history.push('/');
    }
   
   return (
@@ -110,13 +110,13 @@ function NavigationItems() {
                 <input type="button" 
                 onClick={handleLogout} value="Logout" />
 
-                <Link to="/">
+                {/* <Link to="/">
                 <li> 
                 <FontAwesomeIcon 
                 className="Icon" 
                 icon={faSignOutAlt}/>
                 <p>SIGN OUT</p>
-                </li></Link>
+                </li></Link> */}
 
                 <ProgressBar />
 
