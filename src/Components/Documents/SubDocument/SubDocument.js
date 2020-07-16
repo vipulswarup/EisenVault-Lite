@@ -2,11 +2,13 @@ import React, {useEffect,useState,Fragment} from 'react';
 import { useParams , useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
+import { faFile,faTimesCircle,faFolder} from "@fortawesome/free-solid-svg-icons";
 
 import Search from "../../SearchBar/SearchBar";
 import {getToken} from  "../../../Utils/Common";
 import ProfilePic from "../../Avtar/Avtar";
+
+import './SubDocument.scss';
 
 function SubDocument(){
   let history = useHistory();
@@ -56,10 +58,13 @@ useEffect(()=>{
                   <tbody>
                   { documents.map((d,i) => (
                     <tr  key={d.id} id="first_details">
-                    <td className="file_name-u">
+                    <td className="file_name-u" onClick={() => handleDocument(d.entry.isFile,d.entry.id,d.entry.name)}>
                     
-                    <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf} 
-                    onClick={() => handleDocument(d.entry.isFile,d.entry.id,d.entry.name)}/> {d.entry.name}</td>
+                   
+                        <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={d.entry.isFile ? faFile : faFolder} 
+                          />
+                    
+                       {d.entry.name}</td>
                     <td className="details-u-s">{d.entry.createdByUser.displayName}</td>
                     <td className="details-u-s">{d.entry.createdAt.split('T')[0]}</td>
                     <td className="details-u-s">{d.entry.modifiedAt.split('T')[0]}</td>
