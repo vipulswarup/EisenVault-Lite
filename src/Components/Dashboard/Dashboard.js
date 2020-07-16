@@ -12,6 +12,7 @@ import Pagination from '../Pagination/Pagination';
 
 const Dashboard = () => {
   const [ documents , setDocuments ] = useState([]);
+  
   const [ currentPage, setCurrentPage ] = useState(1);
   const [postsPerPage] = useState(10);
   const [ paginationDefualt, setPaginationDefault ] = useState([]);

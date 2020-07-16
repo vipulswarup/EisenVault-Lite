@@ -8,6 +8,8 @@ import Search from "../SearchBar/SearchBar";
 import axios from 'axios';
 import { getToken } from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
+import Pagination from '../Pagination/Pagination';
+
 
 function MyUploads(){
   const [modalIsOpen, setmodalIsOpen] = useState(false);
@@ -15,6 +17,10 @@ function MyUploads(){
   useEffect(()=>{
     getData();
   },[]);
+
+  const [ currentPage, setCurrentPage ] = useState(1);
+  const [postsPerPage] = useState(10);
+
   //api call
     const getData=()=>{
     axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/1252bca5-a90d-4c20-aa0c-23b8f4d4325b/children?skipCount=0&maxItems=100', 
@@ -32,6 +38,15 @@ function MyUploads(){
             })) 
             }).catch(err=>alert(err));
   };
+
+  // Get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = FileState.slice(indexOfFirstPost, indexOfLastPost);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   //arrow function for getting file nodeid and putting it dynamically in api
   const deleteFileByIds=()=>{
     let FileIds=[];//array storing id's
@@ -64,7 +79,7 @@ function MyUploads(){
                     <th id="icon01">
                       <input type="checkbox" onChange={(e)=>{
                         let checked=e.target.checked;
-                        setFileState(FileState.map((d)=>{
+                        setFileState(currentPosts.map((d)=>{
                           d.select=checked;
                           return d;
                         }));
@@ -135,6 +150,14 @@ function MyUploads(){
               
               </div>
               </div>
+
+      <div className="col-md-6">
+      <Pagination
+       postsPerPage={postsPerPage}
+       totalPosts={FileState.length}
+       paginate={paginate}
+        />
+        </div>
     </Fragment>
 
           )
