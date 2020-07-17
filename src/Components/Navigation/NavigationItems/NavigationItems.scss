@@ -12,6 +12,15 @@ $white-color: white;
     height: 100%;
 }
 
+.signOut{
+  background-color: $sidebar-color;
+  border: none;
+  color: $white-color;
+  font-size: 15px;
+  margin-left: 0.8rem;
+  cursor: pointer;
+}
+
 .Icon{
   margin: 0 0.5rem;
   color: $white-color;

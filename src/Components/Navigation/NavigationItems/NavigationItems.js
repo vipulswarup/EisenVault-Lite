@@ -12,11 +12,11 @@ import { faHome,
       faKey, 
       faSignOutAlt, 
       faTrash } from "@fortawesome/free-solid-svg-icons";
-import { removeUserLocal } from '../../../Utils/Common';
+import { getUser } from '../../../Utils/Common';
 
 function NavigationItems() {
 
-  // const user = getUser();
+  const user = getUser();
  const history = useHistory();
 
   // handle click event of logout button
@@ -107,21 +107,15 @@ function NavigationItems() {
                 <p>CHANGE PASSWORD</p>
                 </li></Link>
 
-                <input type="button" 
-                onClick={handleLogout} value="Logout" />
-
-                {/* <Link to="/">
-                <li> 
+                <li>
                 <FontAwesomeIcon 
                 className="Icon" 
                 icon={faSignOutAlt}/>
-                <p>SIGN OUT</p>
-                </li></Link> */}
+                <input type="button" className="signOut" onClick={handleLogout} value="Logout" />
+                </li>
 
-                <ProgressBar />
-
-                
-
+                {user==='admin' && <ProgressBar />}
+ 
             </div>
 
           
