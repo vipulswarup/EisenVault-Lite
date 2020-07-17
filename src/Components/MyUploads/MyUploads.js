@@ -62,6 +62,7 @@ function MyUploads(){
            }).catch(err=>alert(err));
        };
       })}
+      
     return( 
       <Fragment>
          <div id="second_section">

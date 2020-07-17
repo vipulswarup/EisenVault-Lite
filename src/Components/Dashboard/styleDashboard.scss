@@ -1,4 +1,5 @@
 $font-color:#073453;
+$icon-color: #ee9796;
 
 .filesDetail{
     margin-left: 1rem;
@@ -22,9 +23,10 @@ $font-color:#073453;
     margin-left: 1rem;
 }
 
-.fa-file-pdf{
+.fa-file{
     font-size: 1.4rem;
     margin: 0 1rem 0 1rem;
+    color: $icon-color;
 }
 
 .fileName{
