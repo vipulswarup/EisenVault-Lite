@@ -1,7 +1,7 @@
 import React , { Fragment } from 'react';
 import { useParams } from 'react-router-dom';
 import Search from "../../SearchBar/SearchBar";
-import Avatar from "react-avatar";
+import ProfilePic from "../../Avtar/Avtar";
 import FileViewer from 'react-file-viewer';
 
 const PdfViewer = () =>{
@@ -22,10 +22,8 @@ const PdfViewer = () =>{
             <h2>{name}</h2>
             <Search />
 
-            <Avatar className='avtarStyle'
-                color='#E07050' size='3rem'
-                round 
-                name="Shayane Basu" /> 
+            <ProfilePic />
+
         <h1>This will hold our content</h1>
         <FileViewer 
             fileType = {type}
