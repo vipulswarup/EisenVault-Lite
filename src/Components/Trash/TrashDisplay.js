@@ -2,6 +2,8 @@ import React, { Fragment,useEffect,useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash,faUndo} from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
+import Pagination from '../Pagination/Pagination';
+
 import Search from '../SearchBar/SearchBar';
 import '../MyUploads/MyUploads.scss';
 import './TrashDisplay.scss';
@@ -18,6 +20,10 @@ function TrashDisplayFiles(props){
   const {isShowing: isShowing1,toggle: deleteT} = useModal();
   const {isShowing:isShowing2,toggle:RestoreT}=useModal();
 
+  const [ currentPage, setCurrentPage ] = useState(1);
+  const [postsPerPage] = useState(10);
+  const [ paginationDefualt, setPaginationDefault ] = useState([]);
+  
   //API CALL
 useEffect(()=>{
   getDeletedData();
@@ -40,6 +46,14 @@ const getDeletedData=()=>{
       })) 
       }).catch(err=>alert(err));
 };
+
+// Get current posts
+const indexOfLastPost = currentPage * postsPerPage;
+const indexOfFirstPost = indexOfLastPost - postsPerPage;
+const currentPosts = TrashFileState.slice(indexOfFirstPost, indexOfLastPost);
+
+// Change page
+const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 //function to collect noeid of deleted files
 const deletedFileNodeIds=()=>{
@@ -85,7 +99,7 @@ return(
                       </select> */}
                   </th>            
                 </tr>
-                {TrashFileState.map((d,i) => (
+                {currentPosts.map((d,i) => (
                  <tr  key={d.id} id="first_details">
                  <td className="file_icon1">
                    <input onChange={(event)=>{
@@ -109,6 +123,14 @@ return(
       </table>
     </div>
   </div>
+
+  <div className="col-md-6">
+      <Pagination
+       postsPerPage={postsPerPage}
+       totalPosts={TrashFileState.length}
+       paginate={paginate}
+        />
+    </div>
 </Fragment>
 )
 }
