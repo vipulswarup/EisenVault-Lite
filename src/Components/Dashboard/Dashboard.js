@@ -4,7 +4,7 @@ import axios from 'axios';
 import { getToken } from "../../Utils/Common";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilePdf, faTimesCircle, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faFile, faEye } from "@fortawesome/free-solid-svg-icons";
 
 import Search from "../SearchBar/SearchBar";
 import ProfilePic from "../Avtar/Avtar";
@@ -55,8 +55,8 @@ const Dashboard = () => {
                     <tr className='files'>
 
                       <td className='fileName'>
-                        <FontAwesomeIcon icon={faFilePdf} />
-                        {document.entry.activitySummary.title}</td>
+                        <FontAwesomeIcon icon={faFile} />
+                        {document.entry.activitySummary.title} in {document.entry.siteId}</td>
                       
                       <td className='fileDetails'> 
                         {document.entry.postedAt.split('T')[0]} 
@@ -69,9 +69,9 @@ const Dashboard = () => {
                             <FontAwesomeIcon icon={faEye} />
                           </td>
 
-                          <td className='dismiss'>
+                          {/* <td className='dismiss'>
                             <FontAwesomeIcon icon={faTimesCircle} />
-                          </td>
+                          </td> */}
                         
                       </tr>
                     </tbody>

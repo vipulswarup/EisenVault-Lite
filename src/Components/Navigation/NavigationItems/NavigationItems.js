@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import  './NavigationItems.scss';
+import axios from 'axios';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProgressBar from '../NavigationItems/ProgressBar/ProgressBar';
 import { faHome,
@@ -12,19 +14,32 @@ import { faHome,
       faKey, 
       faSignOutAlt, 
       faTrash } from "@fortawesome/free-solid-svg-icons";
-import { removeUserLocal } from '../../../Utils/Common';
+import { getToken,getUser } from '../../../Utils/Common';
 
 function NavigationItems() {
 
-  // const user = getUser();
- const history = useHistory();
+  const user = getUser();
+  const history = useHistory();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   // handle click event of logout button
-  const handleLogout = () => {
+   const handleLogout = () => {
+
     // removeUserLocal();
-    history.push('/');
+    
+      axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
+      {headers:{
+        Authorization: `Basic ${btoa(getToken())}`}
+      }).then(response => {
+        setLoading(false);
+        history.push('/');
+      }).catch(error => {
+          // removeUserLocal();
+          if (error.response.status === 401) setError(error.response.data.message);
+          else setError("Your authentication details have not been recognized or EisenVault may not be available at this time.");        }, [])
    }
-  
+
   return (
     <div>
     <section className="SideNav">
@@ -107,24 +122,18 @@ function NavigationItems() {
                 <p>CHANGE PASSWORD</p>
                 </li></Link>
 
-                <input type="button" 
-                onClick={handleLogout} value="Logout" />
-
-                {/* <Link to="/">
-                <li> 
+                <li>
                 <FontAwesomeIcon 
                 className="Icon" 
                 icon={faSignOutAlt}/>
-                <p>SIGN OUT</p>
-                </li></Link> */}
+                <input type="button" className="signOut" 
+                onClick={handleLogout} value="LOGOUT" />
+                </li>
 
-                <ProgressBar />
-
-                
-
+                {user==='admin' && <ProgressBar />}
+ 
             </div>
 
-          
         </ul>
       
       </div>

@@ -62,7 +62,6 @@ function MyUploads(props){
        };
       })}
       
-
     return( 
       <Fragment>
          <div id="second_section">

@@ -3,7 +3,7 @@ import { useParams , useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { faFile,faTimesCircle,faFolder, faFilePdf} from "@fortawesome/free-solid-svg-icons";
+import { faFile,faTimesCircle,faFolder} from "@fortawesome/free-solid-svg-icons";
 import Pagination from '../../Pagination/Pagination';
 
 
@@ -78,11 +78,6 @@ useEffect(()=>{
                           />
 
                        {d.entry.name}</td>
-
-                   <td> 
-                    <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf} 
-                    onClick={() => handleDocument(d.entry.isFile,d.entry.id,d.entry.name)}/> 
-                    {d.entry.name}</td>
 
                     <td className="details-u-s">{d.entry.createdByUser.displayName}</td>
                     <td className="details-u-s">{d.entry.createdAt.split('T')[0]}</td>

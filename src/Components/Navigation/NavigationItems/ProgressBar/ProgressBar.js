@@ -1,8 +1,8 @@
 import React, { useState,useEffect } from "react";
-// import './stylesProgress.scss';
 import { getToken } from "../../../../Utils/Common";
 import axios from 'axios';
 
+//To make the calculation from bytes to GB.
 function bytesToSize(bytes, seperator = "") {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
   if (bytes === 0) return 'n/a'
@@ -12,8 +12,8 @@ function bytesToSize(bytes, seperator = "") {
 }
 
 const ProgressBar = () => {
-  let [data, getData] = useState([]);
-  // console.log(getToken())
+  const [data, getData] = useState([]);
+  const [ loading, setLoading] = useState(true);
   
   //API call
   useEffect(() => {
@@ -24,26 +24,28 @@ const ProgressBar = () => {
     })
     .then((response) =>{
     console.log(response.data)
-    getData(response.data) 
+    getData(response.data)
+    setLoading(false) 
   }).catch((error) => {
     console.error(error)
   });
   }, []);
 
+  //Storing the storage in GB.
+  const freeSpace = bytesToSize(data.storeFreeSpace, " ")
+  const usedSpace = bytesToSize(data.storageSpaceConsumed, " ")
+
   //Displaying the storage data.
   return (
     <div>
-
-      <h5> Free Space: {bytesToSize(data.storeFreeSpace, " ")} </h5>
-      <h5> Used Space: {bytesToSize(data.storageSpaceConsumed, " ")} </h5>
+      
+      { loading ? <h5> Free Space: {"Calculating.."} </h5>
+      : <h5> Free Space: { freeSpace }</h5> }
+      
+      { loading ? <h5> Used Space: {"Calculating.."} </h5> : 
+      <h5> Used Space: { usedSpace } </h5> }
 
     </div>
-
-
-    // <div className='containerStyles'>
-      
-      // <div className='fillerStyles'  />
-    // </div>
   );
 };
 
