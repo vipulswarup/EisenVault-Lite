@@ -59,7 +59,7 @@ const LoginPage = (props) => {
                 Login</button>
                 <br />
                                 
-                  <button id="btn_forgotPassword" type="button" 
+                <button id="btn_forgotPassword" type="button" 
                   onClick={toggleForgotPassword}>
                     Forgot Password?</button>
                     

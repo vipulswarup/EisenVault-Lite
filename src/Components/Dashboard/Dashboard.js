@@ -2,7 +2,7 @@ import React,{Fragment, useEffect, useState} from 'react';
 import './styleDashboard.scss';
 import axios from 'axios';
 import { getToken } from "../../Utils/Common";
-
+import Iframe from 'react-iframe';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFile, faEye } from "@fortawesome/free-solid-svg-icons";
 
@@ -16,6 +16,7 @@ const Dashboard = () => {
   const [ currentPage, setCurrentPage ] = useState(1);
   const [postsPerPage] = useState(10);
   const [ paginationDefualt, setPaginationDefault ] = useState([]);
+  const [ preview, setPreview ] = useState([]);
   
   //API call.
   useEffect(() => {
@@ -30,6 +31,17 @@ const Dashboard = () => {
     });
   }, []);
 
+useEffect(() => {
+    axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/c8714e7e-f32f-4e94-86cd-f25b7947c221/content?attachment=true',
+    {headers:{
+      Authorization: `Basic ${btoa(getToken())}`
+    }
+    }).then((response) => {
+      setPreview(response.data)
+      console.log(response.data)
+    });
+  }, []);
+
   // Get current posts
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -37,6 +49,14 @@ const Dashboard = () => {
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // const iframe = <iFrame src= {`${preview}`}
+  //                           width="450px"
+  //                           height="450px"
+  //                           id="myId"
+  //                           className="myClassname"
+  //                           display="initial"
+  //                           position="relative" />
 
   return (
   <Fragment>
@@ -51,13 +71,16 @@ const Dashboard = () => {
         <h3>My Recent Activities</h3>
         <table className='documentsList'>
             {currentPosts.map(document => ( 
+              
             <tbody key={document.entry.id} >
                     <tr className='files'>
 
                       <td className='fileName'>
                         <FontAwesomeIcon icon={faFile} />
-                        {document.entry.activitySummary.title} in {document.entry.siteId}</td>
-                      
+                        <h4>{document.entry.activitySummary.title}</h4> 
+                         &nbsp;in <h4>{document.entry.siteId}</h4>
+                        </td>
+
                       <td className='fileDetails'> 
                         {document.entry.postedAt.split('T')[0]} 
                         </td>
@@ -68,10 +91,6 @@ const Dashboard = () => {
                           <td className='view'>
                             <FontAwesomeIcon icon={faEye} />
                           </td>
-
-                          {/* <td className='dismiss'>
-                            <FontAwesomeIcon icon={faTimesCircle} />
-                          </td> */}
                         
                       </tr>
                     </tbody>

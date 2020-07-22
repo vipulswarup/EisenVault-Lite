@@ -31,6 +31,13 @@ $icon-color: #ee9796;
 
 .fileName{
     padding:0.2rem 0 0.2rem 0;
+
+    & h4{
+        text-decoration: underline;
+        font-weight: 100;
+        display: inline;
+        cursor: pointer;
+    }
 }
 
 .fileDetails{
