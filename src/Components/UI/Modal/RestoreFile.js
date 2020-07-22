@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './Modal.scss';
 
+
 const RestoreFile = ({ isShowing, hide }) => isShowing ? ReactDOM.createPortal(
 <React.Fragment>
     <div className="modal-overlay"/>
@@ -24,8 +25,8 @@ const RestoreFile = ({ isShowing, hide }) => isShowing ? ReactDOM.createPortal(
           </div>
         </div>
         <div id="btns">
-          <button >Restore</button>
-          <button onClick={hide}>Cancel</button>
+          <button>Restore</button>
+          <button onClick={() => hide}>Cancel</button>
         </div>
       </div>
     </div>

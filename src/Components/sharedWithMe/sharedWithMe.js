@@ -1,6 +1,6 @@
 import React, {useEffect,useState,Fragment} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
+import { faFilePdf, faDownload} from "@fortawesome/free-solid-svg-icons";
 import '../ManageShares/ManageShares.scss'
 import "./sharedWithMe.scss";
 import Search from "../SearchBar/SearchBar";
@@ -71,8 +71,8 @@ const paginate = (pageNumber) => setCurrentPage(pageNumber);
                     <td className="details-u-s">{d.sharedBy}</td>
                     <td className="details-u-s">{d.sharedOn}</td>
                     <td className="delete-u-s">
-                    <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
-                      onClick={deleteT}
+                    <FontAwesomeIcon className="fas fa-times-circle" icon={faDownload} 
+                      
                        />
                   </td>
                   </tr>

@@ -10,9 +10,9 @@ import { getToken } from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 import Pagination from '../Pagination/Pagination';
 
-
-function MyUploads(){
+function MyUploads(props){
   const [modalIsOpen, setmodalIsOpen] = useState(false);
+  
   const[FileState,setFileState]=useState([]);
   useEffect(()=>{
     getData();
@@ -38,7 +38,6 @@ function MyUploads(){
             })) 
             }).catch(err=>alert(err));
   };
-  //arrow function to delete single/multiple files
 
   // Get current posts
   const indexOfLastPost = currentPage * postsPerPage;
@@ -48,7 +47,7 @@ function MyUploads(){
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  //arrow function for getting file nodeid and putting it dynamically in api
+  //arrow function for getting file nodeid and putting it dynamically in api to delete single/multiple files
   const deleteFileByIds=()=>{
     FileState.forEach(d=>{
       if(d.select){
@@ -58,10 +57,12 @@ function MyUploads(){
        }
      }).then((data)=>{
           console.log(data);
-             getData();
+          getData();
            }).catch(err=>alert(err));
        };
       })}
+      
+
     return( 
       <Fragment>
          <div id="second_section">
@@ -85,7 +86,8 @@ function MyUploads(){
                     <th id="shared">Uploaded On</th>
                   
         <th id="action"><Action deleted={()=>{deleteFileByIds()}}/></th>
-        <Modal
+
+         <Modal
             className="Modal"
             isOpen={modalIsOpen}
             shouldCloseOnOverlayClick={false}
@@ -113,7 +115,8 @@ function MyUploads(){
             <button className="btn-continue btn-d" onClick={()=>{deleteFileByIds()}}>DELETE</button>
           </Modal>
           
-                </tr>
+
+                </tr> 
                   
                   { FileState.map((d,i) => (
                      <tr  key={d.id}  id="first_details">
@@ -134,9 +137,9 @@ function MyUploads(){
                     <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> {d.name}</td>
                     <td className="details-u">{d.uploadedOn}</td>
                     <td className="delete-u">
-                    <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
-                      onClick={() => setmodalIsOpen(true)} />
- 
+          <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
+                      onClick={() =>{setmodalIsOpen(true)}}
+                      />
                   </td>
                   </tr>
                   
