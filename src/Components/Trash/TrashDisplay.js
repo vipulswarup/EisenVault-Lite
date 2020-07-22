@@ -1,4 +1,5 @@
 import React, { Fragment,useEffect,useState} from 'react';
+import Modal from "react-modal";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash,faUndo} from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
@@ -17,8 +18,8 @@ import NestedToolTip from "../UI/popup";
 
 function TrashDisplayFiles(props){
   const[TrashFileState,setTrashFileState]=useState([]);
+  const [modalIsOpen, setmodalIsOpen] = useState(false);
   const {isShowing: isShowing1,toggle: deleteT} = useModal();
-  const {isShowing:isShowing2,toggle:RestoreT}=useModal();
 
   const [ currentPage, setCurrentPage ] = useState(1);
   const [postsPerPage] = useState(10);
@@ -47,6 +48,17 @@ const getDeletedData=()=>{
       }).catch(err=>alert(err));
 };
 
+
+//function to collect nodeid of deleted files
+// const deletedFileNodeIds=()=>{
+//   let DeletedFileIds=[];//array storing id's
+//   TrashFileState.forEach(d=>{
+//       if(d.select){
+//         DeletedFileIds.push(d.id);
+//       }
+//     });
+// }
+
 // Get current posts
 const indexOfLastPost = currentPage * postsPerPage;
 const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -56,18 +68,40 @@ const currentPosts = TrashFileState.slice(indexOfFirstPost, indexOfLastPost);
 const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 //function to collect noeid of deleted files
-const deletedFileNodeIds=()=>{
-  let DeletedFileIds=[];//array storing id's
+
+const permanentDeleteByIds=()=>{
   TrashFileState.forEach(d=>{
-      if(d.select){
-        DeletedFileIds.push(d.id);
-      }
-    });
-}
+    if(d.select){
+    axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes/${d.id}`, 
+    {headers:{
+    Authorization: `Basic ${btoa(getToken())}`
+     }
+   }).then((response)=>{
+        console.log(response.data);
+        getDeletedData();
+         }).catch(err=>alert(err));
+     };
+    })}
+
+
+const RestoreFileByIds=()=>{
+  TrashFileState.forEach(d=>{
+    if(d.select){
+    axios.post(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes/${d.id}/restore`, 
+    {headers:{
+    Authorization: `Basic ${btoa(getToken())}`
+     }
+   }).then((response)=>{
+        console.log(response.data);
+        getDeletedData();
+         }).catch(err=>alert(err));
+     };
+    })}
+
 return(
     <Fragment>
          <DeleteModal isShowing = {isShowing1} hide={deleteT}/>
-         <RestoreFile isShowing={isShowing2} hide={RestoreT}/>
+
          <div id="second_section">
             <h2>Trash</h2>
             <Search />
@@ -89,7 +123,7 @@ return(
                 <th id="created">Created</th> 
                 <th id="deleted">Deleted</th>
                  <th id="action-trash">
-                   <NestedToolTip/>
+                   <NestedToolTip restored={()=>{RestoreFileByIds()}}/>
                       {/*  <label>Action </label>
                       <select id="action-t">
                         <option value="delete-a">Delete All</option>
@@ -97,7 +131,32 @@ return(
                         <option value="delete-a">Restore All</option>
                         <option value="delete-s">Restore Selected</option> 
                       </select> */}
-                  </th>            
+                  </th>  
+          <Modal
+            className="Modal"
+            isOpen={modalIsOpen}
+            shouldCloseOnOverlayClick={false}
+            onRequestClose={() => setmodalIsOpen(false)}
+            style={{
+              overlay: {
+                backgroundColor:"rgba(0, 0, 0, 0.6)"
+              }
+            }}
+            ariaHideApp={false}
+          >
+            <h2 className="Dh2">Restore Documents</h2>
+            <p className="content Dh3">
+              Are you sure you want to Restore selected files?
+            </p>
+
+            <button
+              className="btn-cancel btn-c"
+              onClick={() => setmodalIsOpen(false)}
+            >
+              CANCEL
+            </button>
+            <button className="btn-continue btn-d" onClick={()=>{RestoreFileByIds()}}>RESTORE</button>
+          </Modal>          
                 </tr>
                 {currentPosts.map((d,i) => (
                  <tr  key={d.id} id="first_details">
@@ -116,7 +175,7 @@ return(
                 <td className="deleted_t">{d.archivedAt}</td> 
                 <td className="delete-icon">
                 <FontAwesomeIcon icon={faTrash} className="TrashIcon" onClick={deleteT}/>
-                <FontAwesomeIcon icon={faUndo} className="UndoIcon" onClick={RestoreT}/></td>           
+                <FontAwesomeIcon icon={faUndo} className="UndoIcon"  onClick={() => setmodalIsOpen(true)}/></td>           
             </tr>
                 ))}
         </tbody>

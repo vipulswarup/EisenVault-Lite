@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import "./Action.scss";
 // import "../../css/styles.css";
-import MyUploads from "../MyUploads/MyUploads"
 function Action(props) {
   const [modalIsOpen, setmodalIsOpen] = useState(false);
+  
   return (
     <div>
       <label>Action </label>
@@ -28,6 +28,7 @@ function Action(props) {
             backgroundColor:"rgba(0, 0, 0, 0.6)"
           }
         }}
+        ariaHideApp={false}
       >
         <h2 className="Dh2">Delete Documents</h2>
         <p className="content Dh3">
