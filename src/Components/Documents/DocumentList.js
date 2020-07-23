@@ -11,19 +11,25 @@ import ProfilePic from "../Avtar/Avtar";
 import Search from "../SearchBar/SearchBar";
 import IconBar from "../IconBar/IconBar";
 
-import Modal from '../UI/Modal/Modal';
-import ModalAdd from '../UI/Modal/ModalAdd';
-import ModalTrash from '../UI/Modal/ModalTrash';
-import useModal from '../UI/Modal/useModal';
+// import Modal from '../UI/Modal/Modal';
+// import ModalAdd from '../UI/Modal/ModalAdd';
+// import ModalTrash from '../UI/Modal/ModalTrash';
+// import useModal from '../UI/Modal/useModal';
 import Pagination from '../Pagination/Pagination';
 
+import Modal from "react-modal";
+
 const DocumentsList = () => {
+  const [modalIsOpen, setmodalIsOpen] = useState(false);
+
   let history = useHistory();
   const [ departments , setDepartments ] = useState([]);
   const [ documents , setDocuments ] = useState([]);
   
   const [ currentPage, setCurrentPage ] = useState(1);
   const [postsPerPage] = useState(10);
+
+  const departmentTitle = useFormInput ('');
 
   useEffect(() => {
     axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?skipCount=0&maxItems=100',
@@ -37,9 +43,9 @@ const DocumentsList = () => {
       setDepartments(response.data.list.entries)
     });
   },[]);
-const {isShowing: isShowing1,toggle: togglecreate} = useModal();
-const {isShowing: isShowing2,toggle: toggleadd} = useModal();
-const {isShowing: isShowing3,toggle: toggletrash} = useModal();
+// const {isShowing: isShowing1,toggle: togglecreate} = useModal();
+// const {isShowing: isShowing2,toggle: toggleadd} = useModal();
+// const {isShowing: isShowing3,toggle: toggletrash} = useModal();
 
 // Get current posts
 const indexOfLastPost = currentPage * postsPerPage;
@@ -72,12 +78,74 @@ function handleDocumentLibrary(key){
       
 }
 
+function handleCreateDepartment(){
+  axios.post('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites',{
+   title: departmentTitle.value , visibility: "PUBLIC"
+  },
+  {
+    headers:
+          {
+            Authorization: `Basic ${btoa(getToken())}`
+          }
+  }).then(response => {
+    alert("Department successfully created");
+    console.log(response)
+  }).catch(error => {
+    if (error.response.status===409){
+      alert("Department with this name already exists");
+    }
+    console.log(error)
+});
+setmodalIsOpen(false)
+}
 return (
   <Fragment>
   
-      <Modal isShowing = {isShowing1} hide={togglecreate}/>
+      {/* <Modal isShowing = {isShowing1} hide={togglecreate} />
       <ModalAdd isShowing1 = {isShowing2} hide={toggleadd}/>
-      <ModalTrash isShowing = {isShowing3} hide={toggletrash}/>
+      <ModalTrash isShowing = {isShowing3} hide={toggletrash}/> */}
+
+      <Modal
+            className="modal"
+            isOpen={modalIsOpen}
+            shouldCloseOnOverlayClick={false}
+            onRequestClose={() => setmodalIsOpen(false)}
+            style={{
+              overlay: {
+                backgroundColor:"rgba(0, 0, 0, 0.6)"
+              }
+            }}
+            ariaHideApp={false}
+          >
+            <div className="modal-header">
+              <h2>Create Department</h2>
+            </div>
+            <div>
+          <div>
+           
+            <div className="label-input">
+              <label>Name:</label>
+              <input type="text" name="name" {...departmentTitle}>
+              </input>
+              </div>
+              <br></br>
+              <div className="label-input">
+              <label>URL:</label>
+              <input type="text" name="url"></input>
+              </div>
+              <br></br>
+              <div className="label-input">
+            <label>Description:</label>
+            <textarea row="8" col="60"></textarea>
+            </div>
+            
+          </div>
+        </div>
+        <div id="btns">
+          <button onClick={handleCreateDepartment}>Create</button>
+          <button onClick={() => setmodalIsOpen(false)}>Cancel</button>
+        </div>
+          </Modal>
 
       <div id="second_section">
       <h2>Document List</h2>
@@ -85,9 +153,9 @@ return (
         <ProfilePic />
         
             <div>
-              <IconBar togglecreate= {togglecreate} 
-                      toggleadd = {toggleadd}
-                      toggletrash = {toggletrash}
+              <IconBar  
+                      toggleadd = {() =>{setmodalIsOpen(true)}}
+                      
               />
             </div>
 
@@ -134,6 +202,18 @@ return (
 
   </Fragment>
       )
-    };
+    }
+
+    const useFormInput = initialValue => {
+      const [value, setValue] = useState(initialValue);
+     
+      const handleChange = e => {
+        setValue(e.target.value);
+      }
+      return {
+        value,
+        onChange: handleChange
+      }
+    }
 
 export default DocumentsList;

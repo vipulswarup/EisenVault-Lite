@@ -1,6 +1,39 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import './Modal.scss';
+import {getToken} from  "../../../Utils/Common";
+import axios from 'axios';
+
+// const OnChangeHandler = (e) =>  {
+//   const [departmentName , setDepartmentName ] = useState('');
+//   setDepartmentName(e.target.value);
+// }
+// const UseFormInput = initialValue => {
+//   const [value, setValue] = useState(initialValue);
+ 
+//   const handleChange = e => {
+//     setValue(e.target.value);
+//   }
+//   return {
+//     value,
+//     onChange: handleChange
+//   }
+// } 
+// const CreateDepartment = () => {
+//   // const departmentName = UseFormInput ('');
+//   axios.post('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites',{
+//     title: "Shrishti" , visibility: "private"
+//   },
+//   {
+//     headers:
+//           {
+//             Authorization: `Basic ${btoa(getToken())}`
+//           }
+//   }).then(response => {
+//     console.log(response)
+//   }).catch(error => 
+//     console.log(error));
+// }
 
 const ModalAdd = ({ isShowing1, hide }) => isShowing1 ? ReactDOM.createPortal(
   <React.Fragment>
@@ -15,10 +48,10 @@ const ModalAdd = ({ isShowing1, hide }) => isShowing1 ? ReactDOM.createPortal(
         </div>
         <div>
           <div>
-            <p>
+           
             <div className="label-input">
               <label>Name:</label>
-              <input type="text" name="name">
+              <input type="text" name="name" >
               </input>
               </div>
               <br></br>
@@ -31,11 +64,11 @@ const ModalAdd = ({ isShowing1, hide }) => isShowing1 ? ReactDOM.createPortal(
             <label>Description:</label>
             <textarea row="8" col="60"></textarea>
             </div>
-            </p>
+            
           </div>
         </div>
         <div id="btns">
-          <button>Rename</button>
+          <button >Create</button>
           <button onClick={hide}>Cancel</button>
         </div>
       </div>

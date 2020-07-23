@@ -33,7 +33,7 @@
 
 .modal-header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-evenly;
 }
 
 .modal-close-button {
@@ -99,7 +99,7 @@ label{
 .label-input{
   display: flex;
   flex-flow: row;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 h3{
   color: #073453;
