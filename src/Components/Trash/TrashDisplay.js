@@ -15,6 +15,7 @@ import DeleteModal from '../UI/Modal/DeleteModal';
 import { getToken } from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 import NestedToolTip from "../UI/popup";
+import { convertCompilerOptionsFromJson } from 'typescript';
 
 function TrashDisplayFiles(props){
   const[TrashFileState,setTrashFileState]=useState([]);
@@ -29,6 +30,7 @@ function TrashDisplayFiles(props){
 useEffect(()=>{
   getDeletedData();
 },[]);
+
 const getDeletedData=()=>{
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes',
   {headers:{
@@ -48,17 +50,6 @@ const getDeletedData=()=>{
       }).catch(err=>alert(err));
 };
 
-
-//function to collect nodeid of deleted files
-// const deletedFileNodeIds=()=>{
-//   let DeletedFileIds=[];//array storing id's
-//   TrashFileState.forEach(d=>{
-//       if(d.select){
-//         DeletedFileIds.push(d.id);
-//       }
-//     });
-// }
-
 // Get current posts
 const indexOfLastPost = currentPage * postsPerPage;
 const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -67,8 +58,7 @@ const currentPosts = TrashFileState.slice(indexOfFirstPost, indexOfLastPost);
 // Change page
 const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-//function to collect noeid of deleted files
-
+//function to collect nodeid of deleted files
 const permanentDeleteByIds=()=>{
   TrashFileState.forEach(d=>{
     if(d.select){
@@ -83,20 +73,22 @@ const permanentDeleteByIds=()=>{
      };
     })}
 
-
+//function to collect nodeid of restored files
 const RestoreFileByIds=()=>{
   TrashFileState.forEach(d=>{
     if(d.select){
-    axios.post(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes/${d.id}/restore`, 
-    {headers:{
-    Authorization: `Basic ${btoa(getToken())}`
-     }
-   }).then((response)=>{
-        console.log(response.data);
-        getDeletedData();
-         }).catch(err=>alert(err));
-     };
-    })}
+      // let Token = (getToken());
+      axios.post(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes/${d.id}/restore`, {},
+      {headers:
+        {
+          Authorization: `Basic ${btoa( getToken() )}`
+        }
+    }).then((response)=>{
+          console.log(response.data);
+          getDeletedData();
+          }).catch(err=>alert(err));
+      };
+      })}
 
 return(
     <Fragment>
