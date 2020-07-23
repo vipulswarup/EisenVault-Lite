@@ -29,6 +29,7 @@ function TrashDisplayFiles(props){
 useEffect(()=>{
   getDeletedData();
 },[]);
+
 const getDeletedData=()=>{
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes',
   {headers:{
@@ -48,16 +49,6 @@ const getDeletedData=()=>{
       }).catch(err=>alert(err));
 };
 
-
-//function to collect nodeid of deleted files
-// const deletedFileNodeIds=()=>{
-//   let DeletedFileIds=[];//array storing id's
-//   TrashFileState.forEach(d=>{
-//       if(d.select){
-//         DeletedFileIds.push(d.id);
-//       }
-//     });
-// }
 
 // Get current posts
 const indexOfLastPost = currentPage * postsPerPage;
@@ -82,7 +73,6 @@ const permanentDeleteByIds=()=>{
          }).catch(err=>alert(err));
      };
     })}
-
 
 const RestoreFileByIds=()=>{
   TrashFileState.forEach(d=>{
@@ -156,7 +146,8 @@ return(
               CANCEL
             </button>
             <button className="btn-continue btn-d" onClick={()=>{RestoreFileByIds()}}>RESTORE</button>
-          </Modal>          
+          </Modal>
+        
                 </tr>
                 {currentPosts.map((d,i) => (
                  <tr  key={d.id} id="first_details">
@@ -174,7 +165,7 @@ return(
                 <td className="created_t">{d.createdOn}</td>                     
                 <td className="deleted_t">{d.archivedAt}</td> 
                 <td className="delete-icon">
-                <FontAwesomeIcon icon={faTrash} className="TrashIcon" onClick={deleteT}/>
+                <FontAwesomeIcon icon={faTrash} className="TrashIcon" onClick={() => setmodalIsOpen(true)}/>
                 <FontAwesomeIcon icon={faUndo} className="UndoIcon"  onClick={() => setmodalIsOpen(true)}/></td>           
             </tr>
                 ))}
