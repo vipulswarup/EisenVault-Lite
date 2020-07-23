@@ -32,3 +32,111 @@ export const RestoreSummary= props =>{
 
   )
 }
+export const CreateDepartment = props =>{
+  return (
+    <Fragment>
+       <div className="modal-header">
+              <h2>Create Department</h2>
+            </div>
+            <div>
+          <div>
+           
+            <div className="label-input">
+              <label>Name:</label>
+              <input type="text" name="name" {...props.departmentTitle}>
+              </input>
+              </div>
+              <br></br>
+              <div className="label-input">
+              <label>URL:</label>
+              <input type="text" name="url"></input>
+              </div>
+              <br></br>
+              <div className="label-input">
+            <label>Description:</label>
+            <textarea row="8" col="60"></textarea>
+            </div>
+            
+          </div>
+        </div>
+        <div id="btns">
+          <button onClick={props.createDept} className="btn-continue">Create</button>
+          <button onClick={props.clicked} className="btn-cancel">Cancel</button>
+        </div>
+    </Fragment>
+
+  )
+}
+
+export  const RenameDepartment = props =>{
+  return(
+    <Fragment>
+      <div className="modal-header">
+          <h2>Rename Department</h2>
+        </div>
+        <div className="popup-n">
+          <div className="content">
+            
+              <div className="label-input">
+              <label>Select Input</label>
+              <input id="name01">
+              </input>
+              </div>
+              <datalist>
+              <option value="Department"></option>
+              </datalist>
+              <br></br>
+              <div className="label-input">
+              <label>New Name:</label>
+              <input type="text" id="name01"></input>
+              </div>
+            
+          </div>
+        </div>
+        <div id="btns">
+          <button className="btn-continue" >Rename</button>
+          <button className="btn-cancel" onClick={props.clicked}>Cancel</button>
+        </div>
+    </Fragment>
+  )
+}
+
+export const DeleteDepartment = (props) => {
+  return(
+    <Fragment>
+      <div className="modal-header">
+        <h2>Delete Department</h2>
+        </div>
+        <div>
+          <div>
+            <h3>Please select the department you want to delete</h3>
+           
+            <div className="label-input">
+              <label>Departments:</label>
+              <input type="text" name="name">
+              </input>
+              </div>
+              <br></br>
+              <div className="label-input">
+              <label>URL:</label>
+              <input type="text" name="url"></input>
+              </div>
+              <br></br>
+              <div className="label-input">
+            <label>Description:</label>
+            <textarea row="8" col="60"></textarea>
+            </div>
+            
+            <div className="label-input">
+            <input type="checkbox"></input>
+            <label>Please confirm whether you want to delete the department and all its contents.</label>
+            </div>
+          </div>
+        </div>
+        <div id="btns">
+          <button className="btn-continue">Rename</button>
+          <button onClick={props.clicked} className="btn-cancel">Cancel</button>
+        </div>
+    </Fragment>
+  )
+}

@@ -5,14 +5,12 @@ import ProfilePic from "../Avtar/Avtar";
 import axios from 'axios';
 import './ManageShares.scss'
 import Search from "../SearchBar/SearchBar";
-import useModal from '../UI/Modal/useModal';
-import DeleteModal from '../UI/Modal/DeleteModal';
 import { getToken } from '../../Utils/Common';
 import Pagination from '../Pagination/Pagination';
 
 function ManageShares(){
   const[FileState,setFileState]=useState([]);
-  const {isShowing: isShowing1,toggle: deleteT} = useModal();
+  
 
   const [ currentPage, setCurrentPage ] = useState(1);
   const [postsPerPage] = useState(10);
@@ -38,7 +36,7 @@ const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 return( 
       <Fragment>
-        <DeleteModal isShowing = {isShowing1} hide={deleteT}/>
+       
          <div id="second_section">
             <h2>Manage Shares</h2>
             <Search />
@@ -63,7 +61,6 @@ return(
                     <td className="details-u-s">{d.entry.createdAt.split('T')[0]}</td>
                     <td className="delete-u-s">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
-                      onClick={deleteT}
                        />
                   </td>
                   </tr>

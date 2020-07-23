@@ -11,16 +11,15 @@ import ProfilePic from "../Avtar/Avtar";
 import Search from "../SearchBar/SearchBar";
 import IconBar from "../IconBar/IconBar";
 
-// import Modal from '../UI/Modal/Modal';
-// import ModalAdd from '../UI/Modal/ModalAdd';
-// import ModalTrash from '../UI/Modal/ModalTrash';
-// import useModal from '../UI/Modal/useModal';
+import Modal from "../Modal/Modal";
+import { CreateDepartment ,RenameDepartment , DeleteDepartment} from "../Modal/DeleteModalSumm/DeleteSumm";
 import Pagination from '../Pagination/Pagination';
 
-import Modal from "react-modal";
 
 const DocumentsList = () => {
-  const [modalIsOpen, setmodalIsOpen] = useState(false);
+  const [createmodalIsOpen, createsetmodalIsOpen] = useState(false);
+  const [editmodalIsOpen, editsetmodalIsOpen] = useState(false);
+  const [deletemodalIsOpen, deletesetmodalIsOpen] = useState(false);
 
   let history = useHistory();
   const [ departments , setDepartments ] = useState([]);
@@ -43,9 +42,6 @@ const DocumentsList = () => {
       setDepartments(response.data.list.entries)
     });
   },[]);
-// const {isShowing: isShowing1,toggle: togglecreate} = useModal();
-// const {isShowing: isShowing2,toggle: toggleadd} = useModal();
-// const {isShowing: isShowing3,toggle: toggletrash} = useModal();
 
 // Get current posts
 const indexOfLastPost = currentPage * postsPerPage;
@@ -96,56 +92,21 @@ function handleCreateDepartment(){
     }
     console.log(error)
 });
-setmodalIsOpen(false)
+createsetmodalIsOpen(false)
 }
 return (
   <Fragment>
-  
-      {/* <Modal isShowing = {isShowing1} hide={togglecreate} />
-      <ModalAdd isShowing1 = {isShowing2} hide={toggleadd}/>
-      <ModalTrash isShowing = {isShowing3} hide={toggletrash}/> */}
-
-      <Modal
-            className="modal"
-            isOpen={modalIsOpen}
-            shouldCloseOnOverlayClick={false}
-            onRequestClose={() => setmodalIsOpen(false)}
-            style={{
-              overlay: {
-                backgroundColor:"rgba(0, 0, 0, 0.6)"
-              }
-            }}
-            ariaHideApp={false}
-          >
-            <div className="modal-header">
-              <h2>Create Department</h2>
-            </div>
-            <div>
-          <div>
-           
-            <div className="label-input">
-              <label>Name:</label>
-              <input type="text" name="name" {...departmentTitle}>
-              </input>
-              </div>
-              <br></br>
-              <div className="label-input">
-              <label>URL:</label>
-              <input type="text" name="url"></input>
-              </div>
-              <br></br>
-              <div className="label-input">
-            <label>Description:</label>
-            <textarea row="8" col="60"></textarea>
-            </div>
-            
-          </div>
-        </div>
-        <div id="btns">
-          <button onClick={handleCreateDepartment}>Create</button>
-          <button onClick={() => setmodalIsOpen(false)}>Cancel</button>
-        </div>
+          <Modal show={createmodalIsOpen}>
+           <CreateDepartment createDept={handleCreateDepartment} clicked={() => createsetmodalIsOpen(false)} departmentTitle={departmentTitle}/>
           </Modal>
+          <Modal show={deletemodalIsOpen}>
+            <DeleteDepartment clicked={() => deletesetmodalIsOpen(false)}></DeleteDepartment>
+          </Modal>
+          <Modal show={editmodalIsOpen}>
+            <RenameDepartment clicked={() => editsetmodalIsOpen(false)}></RenameDepartment>
+          </Modal>
+
+
 
       <div id="second_section">
       <h2>Document List</h2>
@@ -153,9 +114,9 @@ return (
         <ProfilePic />
         
             <div>
-              <IconBar  
-                      toggleadd = {() =>{setmodalIsOpen(true)}}
-                      
+              <IconBar toggleedit = {() =>{editsetmodalIsOpen(true)}}
+                      toggleadd = {() =>{createsetmodalIsOpen(true)}}
+                      toggledelete = {() =>{deletesetmodalIsOpen(true)}}
               />
             </div>
 

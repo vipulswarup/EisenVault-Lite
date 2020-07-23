@@ -11,7 +11,7 @@ const iconBar = (props) => {
   return(
   <div className="icons">
     <div>
-      <FontAwesomeIcon icon={faPen} onClick={props.togglecreate} className="icon-item"/>
+      <FontAwesomeIcon icon={faPen} onClick={props.toggleedit} className="icon-item"/>
     </div>
 
     <div >
@@ -19,7 +19,7 @@ const iconBar = (props) => {
     </div>
 
     <div>
-      <FontAwesomeIcon icon={faTrashAlt} onClick={props.toggletrash} className="icon-item"/>
+      <FontAwesomeIcon icon={faTrashAlt} onClick={props.toggledelete} className="icon-item"/>
     </div>
     
   </div>
