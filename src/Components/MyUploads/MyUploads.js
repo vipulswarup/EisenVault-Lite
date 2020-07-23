@@ -1,5 +1,6 @@
 import React, {useEffect,useState,Fragment} from 'react'
-import Modal from "react-modal";
+import Modal from "../Modal/Modal";
+import { DeleteSummmary } from "../Modal/DeleteModalSumm/DeleteSumm";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import Action from '../Action/Action';
@@ -85,37 +86,10 @@ function MyUploads(props){
                     <th id="shared">Uploaded On</th>
                   
         <th id="action"><Action deleted={()=>{deleteFileByIds()}}/></th>
-
-         <Modal
-            className="Modal"
-            isOpen={modalIsOpen}
-            shouldCloseOnOverlayClick={false}
-            onRequestClose={() => setmodalIsOpen(false)}
-            style={{
-              overlay: {
-                backgroundColor:"rgba(0, 0, 0, 0.6)"
-              }
-            }}
-            ariaHideApp={false}
-          >
-            <h2 className="Dh2">Delete Documents</h2>
-            <p className="content Dh3">
-              Are you sure you want to delete selected files?
-              <br />
-              <br /> NOTE:The deleted file will be stored in trash for 30 days.
-            </p>
-
-            <button
-              className="btn-cancel btn-c"
-              onClick={() => setmodalIsOpen(false)}
-            >
-              CANCEL
-            </button>
-            <button className="btn-continue btn-d" onClick={()=>{deleteFileByIds()}}>DELETE</button>
+          <Modal show={modalIsOpen}>
+           <DeleteSummmary deleted={()=>{deleteFileByIds()}} clicked={() => setmodalIsOpen(false)}/>
           </Modal>
-          
-
-                </tr> 
+          </tr> 
                   
                   { FileState.map((d,i) => (
                      <tr  key={d.id}  id="first_details">

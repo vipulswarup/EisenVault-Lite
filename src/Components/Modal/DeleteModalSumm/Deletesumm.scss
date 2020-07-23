@@ -1,0 +1,53 @@
+.Modal {
+    position: fixed;
+    z-index: 500;
+    background-color: white;
+    width: 50%;
+    height:45%;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 1px black;
+    padding: 16px;
+    left: 35%;
+    top: 30%;
+    box-sizing: border-box;
+    transition: all 0.3s ease-out;
+  }
+  
+  .btn-continue {
+    font-weight: 600;
+    font-family: 'Open Sans', sans-serif;
+    margin: 5rem 0 0 1rem;
+    padding: 1rem;
+    width: 12rem;
+    background-color: #E07050;
+    color: white;
+    font-size: 16px;
+    border-radius: 1rem; }
+  .btn-cancel {
+    font-weight: 600;
+    font-family: 'Open Sans', sans-serif;
+    margin: 5rem 0 0 1rem;
+    padding: 1rem;
+    width: 12rem;
+    background-color: #E07050;
+    color: white;
+    font-size: 16px;
+    border-radius: 1rem; }
+  .Dh2 {
+      font-family: 'Open Sans', sans-serif;
+      text-align: center;
+      padding-top: 0.3rem;
+      color: #073453; }
+  .Dh3 {
+      font-family: 'Open Sans', sans-serif;
+      text-align: center;
+      padding-top: 2rem;
+      color: #073453; }
+  .content{
+        font-size: 18px !important;
+        text-align: center; }
+  .btn-c {
+      margin: 3rem 0 2rem 6.8rem; }
+  .btn-d {
+       margin: 3rem 0 2rem 2.8rem;
+         }

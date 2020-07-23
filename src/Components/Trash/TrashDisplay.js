@@ -1,17 +1,14 @@
 import React, { Fragment,useEffect,useState} from 'react';
-import Modal from "react-modal";
+import Modal from "../Modal/Modal";
+import { DeleteSummmary,RestoreSummary } from "../Modal/DeleteModalSumm/DeleteSumm";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash,faUndo} from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
 import Pagination from '../Pagination/Pagination';
-
 import Search from '../SearchBar/SearchBar';
 import '../MyUploads/MyUploads.scss';
 import './TrashDisplay.scss';
 import '../../Containers/styles.scss';
-import useModal from '../UI/Modal/useModal';
-import RestoreFile from '../UI/Modal/RestoreFile';
-import DeleteModal from '../UI/Modal/DeleteModal';
 import { getToken } from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 import NestedToolTip from "../UI/popup";
@@ -20,20 +17,19 @@ import { convertCompilerOptionsFromJson } from 'typescript';
 function TrashDisplayFiles(props){
   const[TrashFileState,setTrashFileState]=useState([]);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
-  const {isShowing: isShowing1,toggle: deleteT} = useModal();
-
+  const[deleting,deleteHandler]=useState(false);
   const [ currentPage, setCurrentPage ] = useState(1);
   const [postsPerPage] = useState(10);
   const [ paginationDefualt, setPaginationDefault ] = useState([]);
   
   //API CALL
-useEffect(()=>{
-  getDeletedData();
-},[]);
+  useEffect(()=>{
+    getDeletedData();
+  },[]);
 
 const getDeletedData=()=>{
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes',
-  {headers:{
+    {headers:{
     Authorization: `Basic ${btoa(getToken())}`
      }}).then((response) => {
       let FileData=response.data;
@@ -45,11 +41,9 @@ const getDeletedData=()=>{
           name:d.entry.name,
           createdOn:d.entry.createdAt.split('T')[0],
           archivedAt:d.entry.archivedAt.split('T')[0]
-        }
-      })) 
+        }})) 
       }).catch(err=>alert(err));
 };
-
 // Get current posts
 const indexOfLastPost = currentPage * postsPerPage;
 const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -77,9 +71,8 @@ const permanentDeleteByIds=()=>{
 const RestoreFileByIds=()=>{
   TrashFileState.forEach(d=>{
     if(d.select){
-      // let Token = (getToken());
       axios.post(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes/${d.id}/restore`, {},
-      {headers:
+        {headers:
         {
           Authorization: `Basic ${btoa( getToken() )}`
         }
@@ -92,8 +85,6 @@ const RestoreFileByIds=()=>{
 
 return(
     <Fragment>
-         <DeleteModal isShowing = {isShowing1} hide={deleteT}/>
-
          <div id="second_section">
             <h2>Trash</h2>
             <Search />
@@ -124,33 +115,13 @@ return(
                         <option value="delete-s">Restore Selected</option> 
                       </select> */}
                   </th>  
-          <Modal
-            className="Modal"
-            isOpen={modalIsOpen}
-            shouldCloseOnOverlayClick={false}
-            onRequestClose={() => setmodalIsOpen(false)}
-            style={{
-              overlay: {
-                backgroundColor:"rgba(0, 0, 0, 0.6)"
-              }
-            }}
-            ariaHideApp={false}
-          >
-            <h2 className="Dh2">Restore Documents</h2>
-            <p className="content Dh3">
-              Are you sure you want to Restore selected files?
-            </p>
-
-            <button
-              className="btn-cancel btn-c"
-              onClick={() => setmodalIsOpen(false)}
-            >
-              CANCEL
-            </button>
-            <button className="btn-continue btn-d" onClick={()=>{RestoreFileByIds()}}>RESTORE</button>
+          <Modal show={deleting}>
+           <DeleteSummmary deleted={()=>{permanentDeleteByIds()}} clicked={()=>{deleteHandler(false)}}/>
           </Modal>
-        
-                </tr>
+          <Modal show={modalIsOpen}>
+           <RestoreSummary deleted={()=>{RestoreFileByIds()}} clicked={() => setmodalIsOpen(false)}/>
+          </Modal>
+        </tr>
                 {currentPosts.map((d,i) => (
                  <tr  key={d.id} id="first_details">
                  <td className="file_icon1">
@@ -167,7 +138,7 @@ return(
                 <td className="created_t">{d.createdOn}</td>                     
                 <td className="deleted_t">{d.archivedAt}</td> 
                 <td className="delete-icon">
-                <FontAwesomeIcon icon={faTrash} className="TrashIcon" onClick={() => setmodalIsOpen(true)}/>
+                <FontAwesomeIcon icon={faTrash} className="TrashIcon" onClick={()=>{deleteHandler(true)}}/>
                 <FontAwesomeIcon icon={faUndo} className="UndoIcon"  onClick={() => setmodalIsOpen(true)}/></td>           
             </tr>
                 ))}
