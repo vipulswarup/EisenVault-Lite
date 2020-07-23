@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import axios from 'axios';
-import ModalForgetPswd from '../UI/Modal/ModalForgetPswd';
-import useModal from '../UI/Modal/useModal';
+// import ModalForgetPswd from '../UI/Modal/ModalForgetPswd';
+//import useModal from '../UI/Modal/useModal';
 import { setUserLocal } from '../../Utils/Common';
 import './LoginPage.scss';
 
@@ -30,13 +30,13 @@ const LoginPage = (props) => {
     });
   }
 
-  const {isShowing: isShowing1,toggle: toggleForgotPassword} = useModal();
+  //const {isShowing: isShowing1,toggle: toggleForgotPassword} = useModal();
 
     return(
 
       <Fragment>
-              <ModalForgetPswd isShowing = {isShowing1} 
-              hide={toggleForgotPassword}/>
+              {/* <ModalForgetPswd isShowing = {isShowing1} 
+              hide={toggleForgotPassword}/> */}
 
         <div id="bg-bar">
 
@@ -60,7 +60,8 @@ const LoginPage = (props) => {
                 <br />
                                 
                 <button id="btn_forgotPassword" type="button" 
-                  onClick={toggleForgotPassword}>
+                  // onClick={toggleForgotPassword}
+                  >
                     Forgot Password?</button>
                     
             </div> 

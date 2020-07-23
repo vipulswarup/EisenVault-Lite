@@ -4,8 +4,7 @@ import { faFilePdf, faDownload} from "@fortawesome/free-solid-svg-icons";
 import '../ManageShares/ManageShares.scss'
 import "./sharedWithMe.scss";
 import Search from "../SearchBar/SearchBar";
-import useModal from '../UI/Modal/useModal';
-import DeleteModal from '../UI/Modal/DeleteModal';
+
 import { getToken } from '../../Utils/Common';
 import axios from 'axios';
 import ProfilePic from "../Avtar/Avtar";
@@ -13,8 +12,7 @@ import Pagination from '../Pagination/Pagination';
 
 function SharedWithMe(){
   const[FileState,setFileState]=useState([]);
-  const {isShowing: isShowing1,toggle: deleteT} = useModal();
- 
+  
   const [ currentPage, setCurrentPage ] = useState(1);
   const [postsPerPage] = useState(10);
 
@@ -46,7 +44,6 @@ const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return( 
       <Fragment>
-        <DeleteModal isShowing = {isShowing1} hide={deleteT} />
 
          <div id="second_section">
             <h2>My Shares</h2>
