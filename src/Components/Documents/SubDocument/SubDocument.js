@@ -69,9 +69,9 @@ useEffect(()=>{
                     <th id="action">Actions</th>
                   </tr>
                   </thead>
-                  <tbody>
                   { currentPosts.map((d,i) => (
-                    <tr  key={d.id} id="first_details">
+                  <tbody key={d.id}>
+                    <tr id="first_details">
                     <td className="file_name-u" onClick={() => handleDocument(d.entry.isFile,d.entry.id,d.entry.name)}>
                     
                         <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={d.entry.isFile ? faFile : faFolder} 
@@ -86,8 +86,8 @@ useEffect(()=>{
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} />
                   </td>
                   </tr>
-                  ) )}
                 </tbody>
+                ) )}
               </table>
             </div>
             </div>

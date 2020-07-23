@@ -16,7 +16,7 @@ const ModalTrash = ({ isShowing, hide }) => isShowing ? ReactDOM.createPortal(
         <div>
           <div>
             <h3>Please select the department you want to delete</h3>
-            <p>
+           
             <div className="label-input">
               <label>Departments:</label>
               <input type="text" name="name">
@@ -32,7 +32,7 @@ const ModalTrash = ({ isShowing, hide }) => isShowing ? ReactDOM.createPortal(
             <label>Description:</label>
             <textarea row="8" col="60"></textarea>
             </div>
-            </p>
+            
             <div className="label-input">
             <input type="checkbox"></input>
             <label>Please confirm whether you want to delete the department and all its contents.</label>
