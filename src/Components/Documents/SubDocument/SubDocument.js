@@ -49,6 +49,7 @@ useEffect(()=>{
     function handleDocument(file , id , name){
       file ? history.push(`/doc/${id}/${name}`): history.push(`/document/${id}`)
     }
+    
     return( 
       <Fragment>
          <div id="second_section">
@@ -73,7 +74,6 @@ useEffect(()=>{
                     <tr  key={d.id} id="first_details">
                     <td className="file_name-u" onClick={() => handleDocument(d.entry.isFile,d.entry.id,d.entry.name)}>
                     
-                   
                         <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={d.entry.isFile ? faFile : faFolder} 
                           />
 
