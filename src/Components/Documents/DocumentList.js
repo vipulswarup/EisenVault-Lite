@@ -9,11 +9,11 @@ import {getToken} from  "../../Utils/Common";
 import ProfilePic from "../Avtar/Avtar";
 
 import Search from "../SearchBar/SearchBar";
-import IconBar from "../IconBar/IconBar";
 
 import Modal from "../Modal/Modal";
 import { CreateDepartment ,RenameDepartment , DeleteDepartment} from "../Modal/DeleteModalSumm/DeleteSumm";
 import Pagination from '../Pagination/Pagination';
+import IconBar, {IconBarDelete} from '../IconBar/IconBar';
 
 
 const DocumentsList = () => {
@@ -114,7 +114,7 @@ return (
               <IconBar 
               // toggleedit = {() =>{editsetmodalIsOpen(true)}}
                 toggleadd = {() =>{createsetmodalIsOpen(true)}}
-                toggledelete = {() =>{deletesetmodalIsOpen(true)}}
+                // toggledelete = {() =>{deletesetmodalIsOpen(true)}}
               />
             </div>
 
@@ -142,6 +142,11 @@ return (
                     <FontAwesomeIcon icon={faHdd} className="fas"/>
                     {document.size} </td> */}
 
+                    <td>
+                      <IconBarDelete                 
+                      toggledelete = {() =>{deletesetmodalIsOpen(true)}}
+                      />
+                    </td>
                    </tr>
                 </tbody>
           ))}
