@@ -35,9 +35,9 @@ function NavigationItems() {
         setLoading(false);
         history.push('/');
       }).catch(error => {
-          // removeUserLocal();
           if (error.response.status === 401) setError(error.response.data.message);
-          else setError("Your authentication details have not been recognized or EisenVault may not be available at this time.");        }, [])
+          else setError("Your authentication details have not been recognized or EisenVault may not be available at this time.");        
+      }, [])
    }
 
   return (

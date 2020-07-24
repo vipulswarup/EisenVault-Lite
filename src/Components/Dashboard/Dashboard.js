@@ -1,7 +1,7 @@
 import React,{Fragment, useEffect, useState} from 'react';
 import './styleDashboard.scss';
 import axios from 'axios';
-import { getToken } from "../../Utils/Common";
+import { getToken, getUser } from "../../Utils/Common";
 import Iframe from 'react-iframe';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFile, faEye } from "@fortawesome/free-solid-svg-icons";
@@ -12,26 +12,29 @@ import Pagination from '../Pagination/Pagination';
 
 const Dashboard = () => {
   const [ documents , setDocuments ] = useState([]);
-  
+  const user = getUser();
+
   const [ currentPage, setCurrentPage ] = useState(1);
   const [postsPerPage] = useState(10);
   const [ paginationDefualt, setPaginationDefault ] = useState([]);
   const [ preview, setPreview ] = useState([]);
-  
-  //API call.
+
+  //API call to get the activities list.
   useEffect(() => {
-    axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/people/admin/activities?skipCount=0&maxItems=1000',
+    let personId = getUser();
+    axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=0&maxItems=1000`,
     {headers:{
       Authorization: `Basic ${btoa(getToken())}`
     }
     }).then((response) => {
       console.log(response.data)
       setDocuments(response.data.list.entries)
-      setPaginationDefault(response.data.list.pagination)
+      setPaginationDefault(response.data.list.pagination) 
     });
   }, []);
 
-useEffect(() => {
+
+  useEffect(() => {
     axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/c8714e7e-f32f-4e94-86cd-f25b7947c221/content?attachment=true',
     {headers:{
       Authorization: `Basic ${btoa(getToken())}`
@@ -77,7 +80,9 @@ useEffect(() => {
 
                       <td className='fileName'>
                         <FontAwesomeIcon icon={faFile} />
-                        <h4>{document.entry.activitySummary.title}</h4> 
+                        <h4>{document.entry.activitySummary.title}</h4>
+                         {/* <h4> { getUser()  === (document.entry.activitySummary.firstName).toString().toLowerCase() ? 
+                         (document.entry.activitySummary.title) : null } </h4> */}
                          &nbsp;in <h4>{document.entry.siteId}</h4>
                         </td>
 
