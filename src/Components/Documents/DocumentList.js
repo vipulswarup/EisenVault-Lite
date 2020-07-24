@@ -69,9 +69,7 @@ function handleDocumentLibrary(key){
       }).catch((error) => {
         console.log(error);
       }
-      );
-      
-      
+      );     
 }
 
 function handleCreateDepartment(){
@@ -106,22 +104,21 @@ return (
             <RenameDepartment clicked={() => editsetmodalIsOpen(false)}></RenameDepartment>
           </Modal>
 
-
-
       <div id="second_section">
       <h2>Document List</h2>
         <Search />
         <ProfilePic />
-        
+
             <div>
-              <IconBar toggleedit = {() =>{editsetmodalIsOpen(true)}}
-                      toggleadd = {() =>{createsetmodalIsOpen(true)}}
-                      toggledelete = {() =>{deletesetmodalIsOpen(true)}}
+
+              <IconBar 
+              // toggleedit = {() =>{editsetmodalIsOpen(true)}}
+                toggleadd = {() =>{createsetmodalIsOpen(true)}}
+                toggledelete = {() =>{deletesetmodalIsOpen(true)}}
               />
             </div>
 
       <ul className='files'>
-      <h2>My Departments</h2>
           
            <table id="doc_list">
           {currentPosts.map(department => (
@@ -137,13 +134,13 @@ return (
                     Document Library
                     {document.folders} </td>
 
-                    <td className='fileDetails'> 
+                    {/* <td className='fileDetails'> 
                     <FontAwesomeIcon icon={faFile} className="fas"/>
                     {document.files} </td>
 
                     <td className='fileDetails'> 
                     <FontAwesomeIcon icon={faHdd} className="fas"/>
-                    {document.size} </td>
+                    {document.size} </td> */}
 
                    </tr>
                 </tbody>
