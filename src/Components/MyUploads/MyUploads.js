@@ -29,6 +29,7 @@ function MyUploads(props){
           Authorization: `Basic ${btoa(getToken())}`
            }}).then((response)=>{
              let FileData=response.data;
+             console.log(FileData);
             setFileState(response.data.list.entries.map(d=>{
               return {
                 select:false,
@@ -48,6 +49,9 @@ function MyUploads(props){
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const closeModal=()=>{ //function to close modal after performing it's operations
+    return  setmodalIsOpen(false);
+  }
   //arrow function for getting file nodeid and putting it dynamically in api to delete single/multiple files
   const deleteFileByIds=()=>{
     FileState.forEach(d=>{
@@ -58,6 +62,7 @@ function MyUploads(props){
        }
      }).then((data)=>{
           console.log(data);
+          closeModal();
           getData();
            }).catch(err=>alert(err));
        };
@@ -111,13 +116,14 @@ function MyUploads(props){
                     <td className="details-u">{d.uploadedOn}</td>
                     <td className="delete-u">
           <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
-                      onClick={() =>{setmodalIsOpen(true)}}
+                     onClick={() =>{setmodalIsOpen(true)}}
+                  
                       />
                   </td>
                   </tr>
                   
                   ))}
-                </tbody>
+                </tbody>  
               </table>
               
               </div>
