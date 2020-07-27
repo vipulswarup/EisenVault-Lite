@@ -51,7 +51,9 @@ const currentPosts = TrashFileState.slice(indexOfFirstPost, indexOfLastPost);
 
 // Change page
 const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
+const closeModal=()=>{ //function to close modal after performing it's operations
+  return setmodalIsOpen(false),deleteHandler(false);
+}
 //function to collect nodeid of deleted files
 const permanentDeleteByIds=()=>{
   TrashFileState.forEach(d=>{
@@ -62,6 +64,7 @@ const permanentDeleteByIds=()=>{
      }
    }).then((response)=>{
         console.log(response.data);
+        closeModal();
         getDeletedData();
          }).catch(err=>alert(err));
      };
@@ -78,6 +81,7 @@ const RestoreFileByIds=()=>{
         }
     }).then((response)=>{
           console.log(response.data);
+          closeModal();
           getDeletedData();
           }).catch(err=>alert(err));
       };
