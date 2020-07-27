@@ -134,7 +134,7 @@ export const DeleteDepartment = (props) => {
           </div>
         </div>
         <div id="btns">
-          <button className="btn-continue">Rename</button>
+          <button className="btn-continue" onClick={props.deleteDept}>Delete</button>
           <button onClick={props.clicked} className="btn-cancel">Cancel</button>
         </div>
     </Fragment>
