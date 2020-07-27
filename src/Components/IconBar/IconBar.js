@@ -7,7 +7,10 @@ import { faPen,
 
 import "./IconBar.scss";
 
+import {getUser} from  "../../Utils/Common";
+
 const IconBar = (props) => {
+  const user = getUser();
   return(
   <div className="icons">
     <h3 className="departments">My Departments</h3>
@@ -16,7 +19,8 @@ const IconBar = (props) => {
     </div> */}
 
     <div >
-      <FontAwesomeIcon icon={faPlus} onClick={props.toggleadd} className="icon-item"/>
+    { user === 'admin' &&
+      <FontAwesomeIcon icon={faPlus} onClick={props.toggleadd} className="icon-item"/>}
     </div>
     
   </div>
@@ -27,7 +31,7 @@ export default IconBar;
 export const IconBarDelete = (props) => {
   return (
   <div>
-    <FontAwesomeIcon icon={faTrashAlt} onClick={props.toggledelete} 
+    <FontAwesomeIcon icon={faTrashAlt} onClick={props.delete} 
     className="icon-item delete"/>
   </div>
   )

@@ -1,4 +1,6 @@
-import React, { Fragment } from 'react';
+import React, { Fragment , useState} from 'react';
+import axios from 'axios';
+import {getToken,getUser} from  "../../Utils/Common";
 import './ChangePassword.scss';
 import ProfilePic from "../Avtar/Avtar";
 
@@ -6,7 +8,36 @@ import '../../Containers/styles.scss';
 import Search from '../SearchBar/SearchBar';;
 
 function ChangePassword(props){
-  
+    const user = getUser();
+    const oldPassword = useFormInput ('');
+    const newPassword = useFormInput ('');
+    const confirmPassword = useFormInput('');
+
+function handlechangePassword(){
+    if (newPassword.value === confirmPassword.value){
+        axios.post(`https://systest.eisenvault.net/alfresco/service/api/person/changepassword/${user}`,{
+        newpw : newPassword.value, oldpw : oldPassword.value
+        },
+        {
+            headers:
+                {
+                    Authorization: `Basic ${btoa(getToken())}`
+                }
+        }).then(response => {
+            alert("Password Successfully changed");
+            console.log(response)
+        }).catch(error => {
+            if (error.response.status===401){
+                alert("Unauthenticated!! please enter correct password");
+              }
+            console.log(error)
+        });
+    }
+    else {
+        alert('Password does not match');
+    }
+}
+
 return(
     <Fragment>
         <div id="second_section">
@@ -23,11 +54,11 @@ return(
                     <p>Confirm Password</p>
                 </div>
                 <div id="column-2">
-                    <input type="password"></input>
-                    <input type="password"></input>
-                    <input type="password"></input>
+                    <input type="password" {...oldPassword}></input>
+                    <input type="password" {...newPassword}></input>
+                    <input type="password" {...confirmPassword}></input>
                 </div>
-                <button className="btn01" type="button">Change</button>
+                <button className="btn01" type="button" onClick={handlechangePassword}>Change</button>
                 <button className="btn02" type="button">Cancel</button>
             </div>
             </div>
@@ -36,5 +67,17 @@ return(
           </Fragment>
 );
 }
+
+const useFormInput = initialValue => {
+    const [value, setValue] = useState(initialValue);
+   
+    const handleChange = e => {
+      setValue(e.target.value);
+    }
+    return {
+      value,
+      onChange: handleChange
+    }
+  }
 
 export default ChangePassword;
