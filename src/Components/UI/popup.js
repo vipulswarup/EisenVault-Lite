@@ -1,6 +1,5 @@
 import React from "react";
 import Popup from "reactjs-popup";
-import "../Action/Action.scss";
   //popup test
   const NestedToolTip = (props) => (
     <Popup
@@ -18,7 +17,7 @@ import "../Action/Action.scss";
             <button
               className="btn-cancel btn-c" 
               onClick={()=>{close()}}>CANCEL</button>
-            <button className="btn-continue btn-d">DELETE</button></span>
+            <button className="btn-continue btn-d" onClick={props.deleted}>DELETE</button></span>
             </Popup></div>
         <div>
          <Popup
@@ -31,7 +30,7 @@ import "../Action/Action.scss";
             <button
               className="btn-cancel btn-c" 
               onClick={()=>{close()}}>CANCEL</button>
-            <button className="btn-continue btn-d">DELETE</button> </span>
+            <button className="btn-continue btn-d" onClick={props.deleted}>DELETE</button> </span>
         </Popup></div>
         <div>
         <Popup
@@ -44,7 +43,7 @@ import "../Action/Action.scss";
             <button
               className="btn-cancel btn-c" 
               onClick={()=>{close()}}>CANCEL</button>
-            <button className="btn-continue btn-d">RESTORE</button> </span>
+            <button className="btn-continue btn-d" onClick={props.restored}>RESTORE</button> </span>
            )}</Popup></div>
           <div>
          <Popup
