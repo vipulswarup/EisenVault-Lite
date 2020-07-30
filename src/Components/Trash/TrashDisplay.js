@@ -51,6 +51,7 @@ const currentPosts = TrashFileState.slice(indexOfFirstPost, indexOfLastPost);
 
 // Change page
 const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
 const closeModal=()=>{ //function to close modal after performing it's operations
   return setmodalIsOpen(false),deleteHandler(false);
 }
@@ -110,7 +111,7 @@ return(
                 <th id="created">Created</th> 
                 <th id="deleted">Deleted</th>
                  <th id="action-trash">
-                   <NestedToolTip restored={()=>{RestoreFileByIds()}}/>
+                   <NestedToolTip restored={()=>{RestoreFileByIds()}} deleted={()=>{permanentDeleteByIds()}}/>
                       {/*  <label>Action </label>
                       <select id="action-t">
                         <option value="delete-a">Delete All</option>
