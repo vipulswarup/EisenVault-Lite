@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
 import './DocumentList.scss';
 
-import {getToken} from  "../../Utils/Common";
+import {getToken,getUser} from  "../../Utils/Common";
 import ProfilePic from "../Avtar/Avtar";
 
 import Search from "../SearchBar/SearchBar";
@@ -17,6 +17,7 @@ import IconBar, {IconBarDelete} from '../IconBar/IconBar';
 
 
 const DocumentsList = () => {
+  const user = getUser();
   const [createmodalIsOpen, createsetmodalIsOpen] = useState(false);
   const [editmodalIsOpen, editsetmodalIsOpen] = useState(false);
   const [deletemodalIsOpen, deletesetmodalIsOpen] = useState(false);
@@ -31,8 +32,12 @@ const DocumentsList = () => {
 
   const departmentTitle = useFormInput ('');
 
-  useEffect(() => {
-    axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?skipCount=0',
+  useEffect(()=>{
+    getDepartments();
+  },[]);
+
+  const getDepartments=()=>{
+    axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?skipCount=0&maxItems=100',
       {
         headers:
         {
@@ -43,8 +48,9 @@ const DocumentsList = () => {
       setDepartments(response.data.list.entries)
       setPaginationDefaultDept(response.data.list.pagination) 
       console.log(response.data.list.pagination)
+     
     });
-  },[]);
+  }
 
 // Get current posts
 const indexOfLastPost = currentPage * postsPerPage;
@@ -88,6 +94,7 @@ function handleCreateDepartment(){
           }
   }).then(response => {
     alert("Department successfully created");
+    getDepartments()
     console.log(response)
   }).catch(error => {
     if (error.response.status===409){
@@ -96,6 +103,25 @@ function handleCreateDepartment(){
     console.log(error)
 });
 createsetmodalIsOpen(false)
+}
+
+function handleDeleteDepartment(id){
+  axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites/${id}?permanent=false`,
+  {
+    headers:
+          {
+            Authorization: `Basic ${btoa(getToken())}`
+          }
+  }).then(response => {
+    alert("Department successfully deleted");
+    getDepartments()
+    console.log(response)
+  }).catch(error => {
+    if (error.response.status===404){
+      alert("Department does not exist");
+    }
+    console.log(error)
+});
 }
 
 return (
@@ -110,6 +136,7 @@ return (
             <DeleteDepartment 
               clicked={() => deletesetmodalIsOpen(false)}>
             </DeleteDepartment>
+            <DeleteDepartment  clicked={() => deletesetmodalIsOpen(false)}></DeleteDepartment>
           </Modal>
 
           <Modal show={editmodalIsOpen}>
@@ -124,7 +151,6 @@ return (
         <ProfilePic />
 
             <div>
-
               <IconBar 
                 toggleadd = {() =>{createsetmodalIsOpen(true)}}
               />
@@ -148,9 +174,12 @@ return (
                     {document.folders} </td>
 
                     <td>
-                      <IconBarDelete                 
-                      toggledelete = {() =>{deletesetmodalIsOpen(true)}}
+                      { user === 'admin' &&
+                        <IconBarDelete                 
+                       delete = {()=>{handleDeleteDepartment(department.entry.id)}}
                       />
+                      }
+                      
                     </td>
                    </tr>
                 </tbody>

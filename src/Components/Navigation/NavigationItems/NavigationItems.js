@@ -76,12 +76,12 @@ function NavigationItems() {
               <p>&nbsp;MANAGE SHARES</p>
               </li></Link>
 
-              <Link to="/sharedWithMe">
+              {/* <Link to="/sharedWithMe">
               <li> <FontAwesomeIcon 
               className="Icon" 
               icon={faShareSquare}/>
               <p>SHARED WITH ME</p>
-              </li></Link>
+              </li></Link> */}
           </div>
 
           <div id="lower_bar">

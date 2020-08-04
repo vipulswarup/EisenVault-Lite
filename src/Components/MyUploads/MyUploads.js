@@ -3,11 +3,10 @@ import Modal from "../Modal/Modal";
 import { DeleteSummmary } from "../Modal/DeleteModalSumm/DeleteSumm";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
-import Action from '../Action/Action';
 import './MyUploads.scss';
 import Search from "../SearchBar/SearchBar";
 import axios from 'axios';
-import { getToken } from '../../Utils/Common';
+import { getToken,getUser} from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 import Pagination from '../Pagination/Pagination';
 
@@ -24,17 +23,18 @@ function MyUploads(props){
 
   //api call
     const getData=()=>{
-    axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/1252bca5-a90d-4c20-aa0c-23b8f4d4325b/children?skipCount=0&maxItems=100', 
+    axios.get(`https://systest.eisenvault.net/alfresco/s/slingshot/search?query={"prop_cm_creator":"${getUser()}","datatype":"cm:content"}`, 
         {headers:{
           Authorization: `Basic ${btoa(getToken())}`
            }}).then((response)=>{
              let FileData=response.data;
-            setFileState(response.data.list.entries.map(d=>{
+             console.log(FileData);
+            setFileState(FileData.items.map(d=>{
               return {
                 select:false,
-                id:d.entry.id,
-                name:d.entry.name,
-                uploadedOn:d.entry.createdAt.split('T')[0]
+                id:d.nodeRef.substring(23),
+                name:d.name,
+                uploadedOn:d.node.properties["cm:created"].iso8601.split('T')[0]
               }
             })) 
             }).catch(err=>alert(err));
@@ -48,6 +48,9 @@ function MyUploads(props){
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const closeModal=()=>{ //function to close modal after performing it's operations
+    return  setmodalIsOpen(false);
+  }
   //arrow function for getting file nodeid and putting it dynamically in api to delete single/multiple files
   const deleteFileByIds=()=>{
     FileState.forEach(d=>{
@@ -58,6 +61,7 @@ function MyUploads(props){
        }
      }).then((data)=>{
           console.log(data);
+          closeModal();
           getData();
            }).catch(err=>alert(err));
        };
@@ -84,12 +88,17 @@ function MyUploads(props){
                     </th>
                     <th id="item-name">Item Name</th>
                     <th id="shared">Uploaded On</th>
-                  
-        <th id="action"><Action deleted={()=>{deleteFileByIds()}}/></th>
-          <Modal show={modalIsOpen}>
-           <DeleteSummmary deleted={()=>{deleteFileByIds()}} clicked={() => setmodalIsOpen(false)}/>
-          </Modal>
-          </tr> 
+                    <th id="action">
+                      <label>Action </label>
+                      <select id="action-t" onChange={() => {setmodalIsOpen(true);}}>
+                        <option id="option" value="delete-a">Delete All</option>
+                        <option id="option" value="delete-s">Delete Selected</option>
+                      </select>
+                    </th>
+                  <Modal show={modalIsOpen}>
+                    <DeleteSummmary deleted={()=>{deleteFileByIds()}} clicked={() => setmodalIsOpen(false)}/>
+                  </Modal>
+                </tr> 
                   
                   { FileState.map((d,i) => (
                      <tr  key={d.id}  id="first_details">
@@ -111,13 +120,14 @@ function MyUploads(props){
                     <td className="details-u">{d.uploadedOn}</td>
                     <td className="delete-u">
           <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
-                      onClick={() =>{setmodalIsOpen(true)}}
+                     onClick={() =>{setmodalIsOpen(true)}}
+                  
                       />
                   </td>
                   </tr>
                   
                   ))}
-                </tbody>
+                </tbody>  
               </table>
               
               </div>

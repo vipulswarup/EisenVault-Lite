@@ -51,6 +51,9 @@ const currentPosts = TrashFileState.slice(indexOfFirstPost, indexOfLastPost);
 // Change page
 const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+const closeModal=()=>{ //function to close modal after performing it's operations
+  return setmodalIsOpen(false),deleteHandler(false);
+}
 //function to collect nodeid of deleted files
 const permanentDeleteByIds=()=>{
   TrashFileState.forEach(d=>{
@@ -61,6 +64,7 @@ const permanentDeleteByIds=()=>{
      }
    }).then((response)=>{
         console.log(response.data);
+        closeModal();
         getDeletedData();
          }).catch(err=>alert(err));
      };
@@ -70,14 +74,19 @@ const permanentDeleteByIds=()=>{
 const RestoreFileByIds=()=>{
   TrashFileState.forEach(d=>{
     if(d.select){
+<<<<<<< HEAD
       axios.post(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes/${d.id}/restore`, 
       {},
+=======
+      axios.put(`https://systest.eisenvault.net/alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
+>>>>>>> 78d7a2812b5b354f6c233004b017233d15004a4c
         {headers:
         {
           Authorization: `Basic ${btoa( getToken() )}`
         }
     }).then((response)=>{
           console.log(response.data);
+          closeModal();
           getDeletedData();
           }).catch(err=>alert(err));
       };
@@ -106,7 +115,18 @@ return(
                 <th id="created">Created</th> 
                 <th id="deleted">Deleted</th>
                  <th id="action-trash">
+<<<<<<< HEAD
                    <NestedToolTip restored={()=>{RestoreFileByIds()}}/>
+=======
+                   <NestedToolTip restored={()=>{RestoreFileByIds()}} deleted={()=>{permanentDeleteByIds()}}/>
+                      {/*  <label>Action </label>
+                      <select id="action-t">
+                        <option value="delete-a">Delete All</option>
+                        <option value="delete-s">Delete Selected</option>
+                        <option value="delete-a">Restore All</option>
+                        <option value="delete-s">Restore Selected</option> 
+                      </select> */}
+>>>>>>> 78d7a2812b5b354f6c233004b017233d15004a4c
                   </th>  
 
                   <Modal show={deleting}>
