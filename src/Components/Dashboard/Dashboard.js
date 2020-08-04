@@ -1,6 +1,8 @@
 import React,{Fragment, useEffect, useState} from 'react';
 import './styleDashboard.scss';
 import axios from 'axios';
+import FileViewer from 'react-file-viewer';
+
 import { getToken, getUser } from "../../Utils/Common";
 // import Iframe from 'react-iframe';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
