@@ -24,10 +24,7 @@ function NavigationItems() {
   const [error, setError] = useState(null);
 
   // handle click event of logout button
-   const handleLogout = () => {
-
-    // removeUserLocal();
-    
+   const handleLogout = () => {    
       axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
       {headers:{
         Authorization: `Basic ${btoa(getToken())}`}

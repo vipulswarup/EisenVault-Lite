@@ -12,7 +12,6 @@ import '../../Containers/styles.scss';
 import { getToken } from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 import NestedToolTip from "../UI/popup";
-import { convertCompilerOptionsFromJson } from 'typescript';
 
 function TrashDisplayFiles(props){
   const[TrashFileState,setTrashFileState]=useState([]);
@@ -75,6 +74,8 @@ const permanentDeleteByIds=()=>{
 const RestoreFileByIds=()=>{
   TrashFileState.forEach(d=>{
     if(d.select){
+      axios.post(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes/${d.id}/restore`, 
+      {},
       axios.put(`https://systest.eisenvault.net/alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
         {headers:
         {
@@ -84,7 +85,7 @@ const RestoreFileByIds=()=>{
           console.log(response.data);
           closeModal();
           getDeletedData();
-          }).catch(err=>alert(err));
+          }).catch(err=>alert(err)));
       };
       })}
 
@@ -111,6 +112,8 @@ return(
                 <th id="created">Created</th> 
                 <th id="deleted">Deleted</th>
                  <th id="action-trash">
+
+                   <NestedToolTip restored={()=>{RestoreFileByIds()}}/>
                    <NestedToolTip restored={()=>{RestoreFileByIds()}} deleted={()=>{permanentDeleteByIds()}}/>
                       {/*  <label>Action </label>
                       <select id="action-t">
@@ -120,13 +123,18 @@ return(
                         <option value="delete-s">Restore Selected</option> 
                       </select> */}
                   </th>  
-          <Modal show={deleting}>
-           <DeleteSummmary deleted={()=>{permanentDeleteByIds()}} clicked={()=>{deleteHandler(false)}}/>
-          </Modal>
-          <Modal show={modalIsOpen}>
-           <RestoreSummary deleted={()=>{RestoreFileByIds()}} clicked={() => setmodalIsOpen(false)}/>
-          </Modal>
-        </tr>
+
+                  <Modal show={deleting}>
+                  <DeleteSummmary deleted={()=>{permanentDeleteByIds()}} 
+                  clicked={()=>{deleteHandler(false)}}/>
+                  </Modal>
+                  
+                  <Modal show={modalIsOpen}>
+                  <RestoreSummary deleted={()=>{RestoreFileByIds()}} 
+                  clicked={() => setmodalIsOpen(false)}/>
+                  </Modal>
+                </tr>
+                
                 {currentPosts.map((d,i) => (
                  <tr  key={d.id} id="first_details">
                  <td className="file_icon1">
