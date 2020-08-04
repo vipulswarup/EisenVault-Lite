@@ -112,6 +112,7 @@ return(
                 <th id="created">Created</th> 
                 <th id="deleted">Deleted</th>
                  <th id="action-trash">
+
                    <NestedToolTip restored={()=>{RestoreFileByIds()}}/>
                    <NestedToolTip restored={()=>{RestoreFileByIds()}} deleted={()=>{permanentDeleteByIds()}}/>
                       {/*  <label>Action </label>

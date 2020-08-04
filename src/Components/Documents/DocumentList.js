@@ -47,8 +47,7 @@ const DocumentsList = () => {
       console.log(response.data)
       setDepartments(response.data.list.entries)
       setPaginationDefaultDept(response.data.list.pagination) 
-      console.log(response.data.list.pagination)
-     
+      console.log(response.data.list.pagination)     
     });
   }
 
