@@ -2,7 +2,7 @@ import React,{Fragment , useEffect , useState} from 'react';
 import axios from 'axios';
 import { useHistory} from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobeAsia, faFile, faHdd } from "@fortawesome/free-solid-svg-icons";
+import { faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
 import './DocumentList.scss';
 
 import {getToken} from  "../../Utils/Common";
@@ -20,6 +20,7 @@ const DocumentsList = () => {
   const [createmodalIsOpen, createsetmodalIsOpen] = useState(false);
   const [editmodalIsOpen, editsetmodalIsOpen] = useState(false);
   const [deletemodalIsOpen, deletesetmodalIsOpen] = useState(false);
+  const [ paginationDefualtDept, setPaginationDefaultDept ] = useState([]);
 
   let history = useHistory();
   const [ departments , setDepartments ] = useState([]);
@@ -31,7 +32,7 @@ const DocumentsList = () => {
   const departmentTitle = useFormInput ('');
 
   useEffect(() => {
-    axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?skipCount=0&maxItems=100',
+    axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?skipCount=0',
       {
         headers:
         {
@@ -40,6 +41,8 @@ const DocumentsList = () => {
         }).then((response) => {
       console.log(response.data)
       setDepartments(response.data.list.entries)
+      setPaginationDefaultDept(response.data.list.pagination) 
+      console.log(response.data.list.pagination)
     });
   },[]);
 
@@ -52,7 +55,7 @@ const currentPosts = departments.slice(indexOfFirstPost, indexOfLastPost);
 const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 function handleDocumentLibrary(key){
-  axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${key}/children?skipCount=0&maxItems=100`,
+  axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${key}/children?skipCount=0`,
         {
           headers:
           {
@@ -61,6 +64,7 @@ function handleDocumentLibrary(key){
           }).then((response) => {
         console.log(response.data)
         setDocuments(response.data.list.entries)
+        
         documents.map(d => (
           d.entry.name === 'documentLibrary' ?  history.push(`/document/${d.entry.id}`)
           : null
@@ -73,7 +77,8 @@ function handleDocumentLibrary(key){
 }
 
 function handleCreateDepartment(){
-  axios.post('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites',{
+  axios.post('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites',
+  {
    title: departmentTitle.value , visibility: "PUBLIC"
   },
   {
@@ -92,16 +97,25 @@ function handleCreateDepartment(){
 });
 createsetmodalIsOpen(false)
 }
+
 return (
   <Fragment>
           <Modal show={createmodalIsOpen}>
-           <CreateDepartment createDept={handleCreateDepartment} clicked={() => createsetmodalIsOpen(false)} departmentTitle={departmentTitle}/>
+           <CreateDepartment createDept={handleCreateDepartment} 
+           clicked={() => createsetmodalIsOpen(false)} 
+           departmentTitle={departmentTitle}/>
           </Modal>
+
           <Modal show={deletemodalIsOpen}>
-            <DeleteDepartment clicked={() => deletesetmodalIsOpen(false)}></DeleteDepartment>
+            <DeleteDepartment 
+              clicked={() => deletesetmodalIsOpen(false)}>
+            </DeleteDepartment>
           </Modal>
+
           <Modal show={editmodalIsOpen}>
-            <RenameDepartment clicked={() => editsetmodalIsOpen(false)}></RenameDepartment>
+            <RenameDepartment 
+              clicked={() => editsetmodalIsOpen(false)}>
+            </RenameDepartment>
           </Modal>
 
       <div id="second_section">
@@ -112,9 +126,7 @@ return (
             <div>
 
               <IconBar 
-              // toggleedit = {() =>{editsetmodalIsOpen(true)}}
                 toggleadd = {() =>{createsetmodalIsOpen(true)}}
-                // toggledelete = {() =>{deletesetmodalIsOpen(true)}}
               />
             </div>
 
@@ -129,18 +141,11 @@ return (
                     <FontAwesomeIcon icon={faGlobeAsia} className="fas"/>
                     {department.entry.title}</td>
 
-                    
-                     <td className='fileDetails' onClick={() => handleDocumentLibrary(department.entry.guid)}>
+
+                    <td className='fileDetails' 
+                    onClick={() => handleDocumentLibrary(department.entry.guid)}>
                     Document Library
                     {document.folders} </td>
-
-                    {/* <td className='fileDetails'> 
-                    <FontAwesomeIcon icon={faFile} className="fas"/>
-                    {document.files} </td>
-
-                    <td className='fileDetails'> 
-                    <FontAwesomeIcon icon={faHdd} className="fas"/>
-                    {document.size} </td> */}
 
                     <td>
                       <IconBarDelete                 
@@ -158,7 +163,7 @@ return (
       <div className="col-md-6">
       <Pagination
        postsPerPage={postsPerPage}
-       totalPosts={departments.length}
+       totalPosts={paginationDefualtDept.count}
        paginate={paginate}
         />
         </div>

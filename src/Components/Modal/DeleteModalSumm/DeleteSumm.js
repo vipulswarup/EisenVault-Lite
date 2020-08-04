@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import "./Deletesumm.scss";
+
 export const DeleteSummmary = props => {
   return (
     <Fragment>
@@ -13,10 +14,14 @@ export const DeleteSummmary = props => {
       <button className="btn-cancel btn-c" onClick={props.clicked}>
         CANCEL
       </button>
-      <button className="btn-continue btn-d" onClick={props.deleted}>DELETE</button>
+
+      <button className="btn-continue btn-d" onClick={props.deleted}>
+        DELETE
+      </button>
     </Fragment>
   );
 };
+
 export const RestoreSummary= props =>{
   return (
     <Fragment>
@@ -32,6 +37,7 @@ export const RestoreSummary= props =>{
 
   )
 }
+
 export const CreateDepartment = props =>{
   return (
     <Fragment>
@@ -101,6 +107,35 @@ export  const RenameDepartment = props =>{
   )
 }
 
+export const ForgotPassword = props => {
+  return(
+    <Fragment>
+      <div className="modal-header">
+        <h2>Forgot Password</h2>
+        </div>
+        <div>
+          <div>
+            <h3>You will recieve an email link to reset password.</h3>
+           
+            <div className="label-input">
+              <label>Username:</label>
+              <input type="text" {...props.forgotPswdUserName}>
+              </input>
+            </div>
+
+          </div>
+        </div>
+
+        <div id="btns">
+          <button className="btn-continue-p" 
+          onClick={props.resetPassword}>Email</button>
+          <button onClick={props.clicked} className="btn-cancel-p">
+            Cancel</button>
+        </div>
+    </Fragment>
+  )
+}
+
 export const DeleteDepartment = (props) => {
   return(
     <Fragment>
@@ -134,7 +169,7 @@ export const DeleteDepartment = (props) => {
           </div>
         </div>
         <div id="btns">
-          <button className="btn-continue">Rename</button>
+          <button className="btn-continue">Delete Department</button>
           <button onClick={props.clicked} className="btn-cancel">Cancel</button>
         </div>
     </Fragment>

@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFile,faTimesCircle,faFolder} from "@fortawesome/free-solid-svg-icons";
 import Pagination from '../../Pagination/Pagination';
 
-
 import Search from "../../SearchBar/SearchBar";
 import {getToken} from  "../../../Utils/Common";
 import ProfilePic from "../../Avtar/Avtar";
@@ -16,6 +15,8 @@ import './SubDocument.scss';
 function SubDocument(){
   let history = useHistory();
   const[documents,setDocuments]=useState([]);
+  const [ paginationDefualtDoc, setPaginationDefaultDoc ] = useState([]);
+
    let params = useParams();
    const id = params.id;
    
@@ -23,7 +24,7 @@ function SubDocument(){
    const [postsPerPage] = useState(10);
 
 useEffect(()=>{
-        axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/children?skipCount=0&maxItems=100`,
+        axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/children?skipCount=0`,
         {
           headers:
           {
@@ -32,6 +33,9 @@ useEffect(()=>{
           }).then((response) => {
         console.log(response.data)
         setDocuments(response.data.list.entries)
+
+        setPaginationDefaultDoc(response.data.list.pagination) 
+        console.log(response.data.list.pagination)
       }).catch((error) => {
         console.log(error);
       }
@@ -95,7 +99,7 @@ useEffect(()=>{
       <div className="col-md-6">
       <Pagination
        postsPerPage={postsPerPage}
-       totalPosts={documents.length}
+       totalPosts={paginationDefualtDoc.count}
        paginate={paginate}
         />
         </div>

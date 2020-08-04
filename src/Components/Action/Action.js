@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import "./Action.scss";
-// import "../../css/styles.css";
+
 function Action(props) {
   const [modalIsOpen, setmodalIsOpen] = useState(false);
   

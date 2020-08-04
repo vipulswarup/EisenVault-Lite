@@ -2,7 +2,7 @@ import React,{Fragment, useEffect, useState} from 'react';
 import './styleDashboard.scss';
 import axios from 'axios';
 import { getToken, getUser } from "../../Utils/Common";
-import Iframe from 'react-iframe';
+// import Iframe from 'react-iframe';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFile, faEye } from "@fortawesome/free-solid-svg-icons";
 
@@ -12,36 +12,33 @@ import Pagination from '../Pagination/Pagination';
 
 const Dashboard = () => {
   const [ documents , setDocuments ] = useState([]);
-  const user = getUser();
-
   const [ currentPage, setCurrentPage ] = useState(1);
   const [postsPerPage] = useState(10);
   const [ paginationDefualt, setPaginationDefault ] = useState([]);
-  const [ preview, setPreview ] = useState([]);
+  // const [ preview, setPreview ] = useState([]);
+  let preview;
 
   //API call to get the activities list.
   useEffect(() => {
     let personId = getUser();
-    axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=0&maxItems=1000`,
+    axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=0&who=me`,
     {headers:{
       Authorization: `Basic ${btoa(getToken())}`
     }
     }).then((response) => {
-      console.log(response.data)
       setDocuments(response.data.list.entries)
       setPaginationDefault(response.data.list.pagination) 
+      console.log(response.data.list.pagination)
     });
   }, []);
 
-
   useEffect(() => {
-    axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/c8714e7e-f32f-4e94-86cd-f25b7947c221/content?attachment=true',
+    axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/eddf18c2-4a39-4a7f-a556-679d5926d6f4/content?attachment=false',
     {headers:{
       Authorization: `Basic ${btoa(getToken())}`
     }
     }).then((response) => {
-      setPreview(response.data)
-      console.log(response.data)
+      preview = encodeURIComponent(response.data);
     });
   }, []);
 
@@ -53,13 +50,23 @@ const Dashboard = () => {
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // const iframe = <iFrame src= {`${preview}`}
-  //                           width="450px"
-  //                           height="450px"
-  //                           id="myId"
-  //                           className="myClassname"
-  //                           display="initial"
-  //                           position="relative" />
+  function CheckPosts(){
+    // const maxitems = (paginationDefualt.maxItems);
+    // console.log(maxitems)
+
+    const [maxItem, setMaxItems] = useState({
+      maxitems: paginationDefualt.maxItems
+    });
+    console.log(maxItem)
+
+    const hasMoreItems = (paginationDefualt.hasMoreItems);
+    console.log(hasMoreItems)
+
+    return( currentPage===indexOfLastPost ? 
+      hasMoreItems===true ? setMaxItems(maxItem+10) 
+      : paginationDefualt : paginationDefualt+1 )
+  }
+  // CheckPosts();
 
   return (
   <Fragment>
@@ -73,43 +80,34 @@ const Dashboard = () => {
       <div className="filesDetail">
         <h3>My Recent Activities</h3>
         <table className='documentsList'>
-            {currentPosts.map(document => ( 
-              
+            {currentPosts.map(document => (               
             <tbody key={document.entry.id} >
-                    <tr className='files'>
-
-                      <td className='fileName'>
-                        <FontAwesomeIcon icon={faFile} />
-                        <h4>{document.entry.activitySummary.title}</h4>
-                         {/* <h4> { getUser()  === (document.entry.activitySummary.firstName).toString().toLowerCase() ? 
-                         (document.entry.activitySummary.title) : null } </h4> */}
-                         &nbsp;in <h4>{document.entry.siteId}</h4>
-                        </td>
-
-                      <td className='fileDetails'> 
-                        {document.entry.postedAt.split('T')[0]} 
-                        </td>
-
-                      <td className='fileActivity'> 
-                        {document.entry.activityType.split('.')[3]} </td>
-
-                          <td className='view'>
-                            <FontAwesomeIcon icon={faEye} />
-                          </td>
-                        
+                <tr className='files'>
+                  <td className='fileName'>                             
+                    <FontAwesomeIcon icon={faFile} />
+                      <h4 onClick = {() => (<iframe 
+                        width="150px"
+                        height="150px"/>)}
+                        >
+                        {document.entry.activitySummary.title}</h4> 
+                        <p className="text">{ " " }in { " " }</p> 
+                          <h4>{document.entry.siteId}</h4></td>
+                          <td className='fileDetails'>{document.entry.postedAt.split('T')[0]} </td>
+                          <td className='fileActivity'>{document.entry.activityType.split('.')[3]}</td>
+                          <td className='view'><FontAwesomeIcon icon={faEye} /></td>
                       </tr>
-                    </tbody>
+                  </tbody>
             ))}
         </table>
       </div>
   </div>
   
     <div className="col-md-6">
-      <Pagination
-       postsPerPage={postsPerPage}
-       totalPosts={paginationDefualt.count}
-       paginate={paginate}
-        />
+     <Pagination
+      postsPerPage={postsPerPage}
+      totalPosts={paginationDefualt.count}
+      paginate={paginate}
+        />  
     </div>
 
   </Fragment>
