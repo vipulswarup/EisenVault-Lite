@@ -19,7 +19,7 @@ import PdfViewer from "../Components/Documents/DocumentViewer/DocumentViewer";
 import PrivateRoute from '../Utils/PrivateRoutes';
 
 import './styles.scss';
-import { getToken, removeUserLocal, setUserLocal } from "../Utils/Common";
+import { getToken, removeUserLocal } from "../Utils/Common";
 
 const Routings = withRouter (({ location }) => {
   const [authLoading, setAuthLoading] = useState(true);

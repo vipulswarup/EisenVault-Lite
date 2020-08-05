@@ -31,6 +31,7 @@ const Dashboard = () => {
       setDocuments(response.data.list.entries)
       setPaginationDefault(response.data.list.pagination) 
       console.log(response.data.list.pagination)
+      console.log(response.data.list.entries)
     });
   }, []);
 
@@ -49,24 +50,26 @@ const Dashboard = () => {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = documents.slice(indexOfFirstPost, indexOfLastPost);
 
+  const totalPageNo = Math.ceil(documents.length/postsPerPage)
+
+  console.log(indexOfFirstPost, 
+    indexOfLastPost, 
+    currentPosts, totalPageNo,
+    currentPage)
+    
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   function CheckPosts(){
-    // const maxitems = (paginationDefualt.maxItems);
-    // console.log(maxitems)
+    const maxitems = (paginationDefualt.maxItems);
+    console.log(maxitems)
 
-    const [maxItem, setMaxItems] = useState({
-      maxitems: paginationDefualt.maxItems
-    });
-    console.log(maxItem)
+    const hasMoreItem = (paginationDefualt.hasMoreItems);
+    console.log(hasMoreItem)
 
-    const hasMoreItems = (paginationDefualt.hasMoreItems);
-    console.log(hasMoreItems)
-
-    return( currentPage===indexOfLastPost ? 
-      hasMoreItems===true ? setMaxItems(maxItem+10) 
-      : paginationDefualt : paginationDefualt+1 )
+    return( hasMoreItem===true ? 
+      documents.length+10 && currentPosts.length+100
+      : paginationDefualt )
   }
   // CheckPosts();
 
@@ -107,7 +110,7 @@ const Dashboard = () => {
     <div className="col-md-6">
      <Pagination
       postsPerPage={postsPerPage}
-      totalPosts={paginationDefualt.count}
+      totalPosts={CheckPosts()}
       paginate={paginate}
         />  
     </div>
