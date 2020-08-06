@@ -35,7 +35,7 @@ const DocumentsList = () => {
     getDepartments();
   },[]);
   const getDepartments=()=>{
-    axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?skipCount=0&maxItems=100',
+    axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')`,
       {
         headers:
         {
@@ -57,7 +57,7 @@ const currentPosts = departments.slice(indexOfFirstPost, indexOfLastPost);
 const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 function handleDocumentLibrary(key){
-  axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${key}/children?skipCount=0&maxItems=100`,
+  axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${key}/children`,
         {
           headers:
           {
