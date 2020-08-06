@@ -23,7 +23,11 @@ function getData(){
 
 
  useEffect(()=>{
+
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links?include=properties', 
+
+  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/5ccc676b-0a0c-4f9f-b176-87a786b3b5d8/children?skipCount=0', 
+
   {headers:{
     Authorization: `Basic ${btoa(getToken())}`
     }

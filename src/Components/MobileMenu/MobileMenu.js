@@ -53,12 +53,12 @@ const MobileMenu = () => (
                 <p>&nbsp;MANAGE SHARES</p>
                 </li></Link>
 
-              <Link to="/myUploads">
+              {/* <Link to="/myUploads">
                 <li> <FontAwesomeIcon 
                 className="Icon" 
                 icon={faShareSquare}/>
                 <p>SHARED WITH ME</p>
-                </li></Link>
+                </li></Link> */}
 
               <Link to="/myUploads">
                 <li> <FontAwesomeIcon 
