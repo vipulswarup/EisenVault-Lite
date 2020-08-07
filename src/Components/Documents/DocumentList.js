@@ -66,7 +66,7 @@ function handleDocumentLibrary(key){
           }).then((response) => {
         console.log(response.data)
         setDocuments(response.data.list.entries)
-        documents.map(d => (
+        response.data.list.entries.map(d => (
           d.entry.name === 'documentLibrary' ?  history.push(`/document/${d.entry.id}`)
           : null
         ) 
