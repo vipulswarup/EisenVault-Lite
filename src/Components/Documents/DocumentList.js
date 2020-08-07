@@ -37,6 +37,8 @@ const DocumentsList = () => {
   },[]);
 
   const getDepartments=()=>{
+    axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')`,      
+    {
     axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')`,
       {
         headers:
