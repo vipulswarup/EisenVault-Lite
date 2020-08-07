@@ -33,6 +33,7 @@ const getDeletedData=()=>{
      }}).then((response) => {
       let FileData=response.data;
       console.log(FileData);
+      setPaginationDefault(response.data.list.pagination)
       setTrashFileState(response.data.list.entries.map(d=>{
         return {
           select:false,
@@ -52,7 +53,9 @@ const currentPosts = TrashFileState.slice(indexOfFirstPost, indexOfLastPost);
 const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 const closeModal=()=>{ //function to close modal after performing it's operations
-  return setmodalIsOpen(false),deleteHandler(false);
+  return (setmodalIsOpen(false),
+  deleteHandler(false)
+  )
 }
 //function to collect nodeid of deleted files
 const permanentDeleteByIds=()=>{
@@ -163,7 +166,7 @@ return(
   <div className="col-md-6">
       <Pagination
        postsPerPage={postsPerPage}
-       totalPosts={TrashFileState.length}
+       totalPosts={paginationDefualt.count}
        paginate={paginate}
         />
     </div>

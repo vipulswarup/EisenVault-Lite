@@ -73,14 +73,19 @@ useEffect(()=>{
                     <th id="action">Actions</th>
                   </tr>
                   </thead>
-                  { currentPosts.map((d,i) => (
+                  { currentPosts.map((d) => (
                   <tbody key={d.id}>
                     <tr id="first_details">
-                    <td className="file_name-u" onClick={() => handleDocument(d.entry.isFile,d.entry.id,d.entry.name)}>
+                    <td className="file_name-u" 
+                    onClick={() => handleDocument(
+                      d.entry.isFile,
+                      d.entry.id,
+                      d.entry.name)}>
                     
-                        <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={d.entry.isFile ? faFile : faFolder} 
+                      <FontAwesomeIcon 
+                      className="pdf-file fas fa-file-pdf" 
+                        icon={d.entry.isFile ? faFile : faFolder} 
                           />
-
                        {d.entry.name}</td>
 
                     <td className="details-u-s">{d.entry.createdByUser.displayName}</td>
