@@ -73,7 +73,7 @@ import { getToken } from '../../Utils/Common';
         <input 
             className="searchBox"
             type="text"
-            placeholder="serch here .."
+            placeholder="search here .."
             value={result}
             onChange={onChange}
         />
