@@ -13,22 +13,21 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
     for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
       pageNumbers.push(i);
     }
-
+    
     return (
       <nav>
         <ul className='pagination'>
         {pageNumbers.includes(prevPage) && 
-        <a onClick={() => {
+        <button onClick={() => {
                     setCurrentPage(prevPage);
                     paginate(prevPage);
                     setActive( prevPage );
-
                 }}
             className={isActive === prevPage ? 'pageItem activeState' : 
               !isActive === prevPage ? 'pageItem inActiveState' : "pageItem"}>               
                     Prev
-                </a>
-            }
+          </button>
+        }
 
            {pageNumbers.map(number => (
             <li key={number} 
@@ -44,7 +43,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
           ))} 
 
       {pageNumbers.includes(nextPage) && 
-        <a onClick={() => {
+        <button onClick={() => {
                     setCurrentPage(nextPage);
                     paginate(nextPage);
                     setActive( nextPage );
@@ -52,30 +51,11 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
               className={isActive === nextPage ? 'pageItem activeState' : 
               !isActive === nextPage ? 'pageItem inActiveState' : "pageItem"}>               
                      Next
-                </a>
+          </button>
             } 
         </ul>
       </nav>
     );
   };
-
-// const Pagination = () => (
-// <Fragment>
-//   <div className="content">
-//     <div className="list">
-//       <SimpleReactPaginate
-//         current={1}
-//         total={20}
-//         pageRange={2}
-//         marginRange={1}
-//         previousLabel="Prev"
-//         nextLabel="Next"
-//         containerClass="style-1"
-//       />
-//     </div>
-    
-//   </div>
-// </Fragment>
-// );
 
 export default Pagination;

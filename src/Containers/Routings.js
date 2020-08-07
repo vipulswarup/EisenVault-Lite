@@ -11,7 +11,7 @@ import Dashboard from "../Components/Dashboard/Dashboard";
 import documentsList from "../Components/Documents/DocumentList";
 import TrashDisplayFiles from "../Components/Trash/TrashDisplay"
 import ManageShares from "../Components/ManageShares/ManageShares";
-import SharedWithMe from "../Components/sharedWithMe/sharedWithMe";
+//import SharedWithMe from "../Components/sharedWithMe/sharedWithMe";
 import ChangePassword from "../Components/ChangePassword/ChangePassword";
 import SubDocument from "../Components/Documents/SubDocument/SubDocument";
 import PdfViewer from "../Components/Documents/DocumentViewer/DocumentViewer";
@@ -19,7 +19,7 @@ import PdfViewer from "../Components/Documents/DocumentViewer/DocumentViewer";
 import PrivateRoute from '../Utils/PrivateRoutes';
 
 import './styles.scss';
-import { getToken, removeUserLocal, setUserLocal } from "../Utils/Common";
+import { getToken, removeUserLocal } from "../Utils/Common";
 
 const Routings = withRouter (({ location }) => {
   const [authLoading, setAuthLoading] = useState(true);
@@ -62,7 +62,7 @@ const Routings = withRouter (({ location }) => {
         <PrivateRoute path="/myUploads" component={MyUploads} />
         <PrivateRoute path="/trashDisplay" component={TrashDisplayFiles} />
         <PrivateRoute path="/manageShares" component={ManageShares} />
-        <PrivateRoute path="/sharedWithMe" component={SharedWithMe} />
+        {/* <PrivateRoute path="/sharedWithMe" component={SharedWithMe} /> */}
         <PrivateRoute path="/changePassword" component={ChangePassword} />
         <PrivateRoute path="/document/:id" component={SubDocument} />
         <PrivateRoute path="/doc/:id/:name" component={PdfViewer} />

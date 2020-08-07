@@ -24,10 +24,7 @@ function NavigationItems() {
   const [error, setError] = useState(null);
 
   // handle click event of logout button
-   const handleLogout = () => {
-
-    // removeUserLocal();
-    
+   const handleLogout = () => {    
       axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
       {headers:{
         Authorization: `Basic ${btoa(getToken())}`}
@@ -79,12 +76,12 @@ function NavigationItems() {
               <p>&nbsp;MANAGE SHARES</p>
               </li></Link>
 
-              <Link to="/sharedWithMe">
+              {/* <Link to="/sharedWithMe">
               <li> <FontAwesomeIcon 
               className="Icon" 
               icon={faShareSquare}/>
               <p>SHARED WITH ME</p>
-              </li></Link>
+              </li></Link> */}
           </div>
 
           <div id="lower_bar">

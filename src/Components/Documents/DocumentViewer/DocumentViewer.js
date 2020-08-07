@@ -8,7 +8,8 @@ const PdfViewer = () =>{
     let params = useParams();
     //const id = params.id;
     const name = params.name;
-    let type = name.slice(name.lastIndexOf('.')+1);
+    // let type = name.slice(name.lastIndexOf('.')+1);
+    let type = 'png'
     alert(type);
     const path = window.location.pathname;
 
