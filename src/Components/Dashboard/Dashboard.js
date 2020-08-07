@@ -89,7 +89,8 @@ const Dashboard = () => {
                         <h4 onClick={() => handleDocument(
                       document.entry.activitySummary.objectId,
                       document.entry.activitySummary.title) }>
-                        {document.entry.activitySummary.title}</h4>  
+                        {document.entry.activitySummary.title}</h4> 
+                         
                         <p className="text">{ " " }in { " " }</p> 
                           <h4>{document.entry.siteId}</h4></td>
                           <td className='fileDetails'>{document.entry.postedAt.split('T')[0]} </td>

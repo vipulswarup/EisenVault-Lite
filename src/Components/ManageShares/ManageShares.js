@@ -50,7 +50,7 @@ FileState.forEach(d=>{
   })
   console.log(response.data.list.entries)
    //getDetailsData();
-}); 
+})); 
 }
 
 ,[]); 
