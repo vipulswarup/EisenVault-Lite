@@ -2,7 +2,6 @@ import React , { Fragment } from 'react';
 import { useParams } from 'react-router-dom';
 import Search from "../../SearchBar/SearchBar";
 import ProfilePic from "../../Avtar/Avtar";
-import Iframe from 'react-iframe';
 import axios from 'axios';
 import { getToken } from "../../../Utils/Common";
 
@@ -22,11 +21,18 @@ function DocPreview() {
     headers:{
       Authorization: `Basic ${btoa(getToken())}`
     }}).then((response) => {
-        const file = new Blob([response.data],
-            {type: 'application/pdf'});
-        fileURL = URL.createObjectURL(file);
-        window.open(fileURL, "_blank");
+        const dataTypes = (response.headers["content-type"])
+        console.log(dataTypes)
 
+        const file = new Blob([response.data],
+            {type: dataTypes});
+        
+        fileURL = URL.createObjectURL(file);
+        console.log(fileURL)
+
+        dataTypes === "application/msword;charset=UTF-8" ? 
+        document.getElementById('myFrame').src=`https://view.officeapps.live.com/op/embed.aspx?src=${fileURL}`
+        : document.getElementById('myFrame').src=fileURL
      console.log(response)
     });
 
@@ -37,17 +43,11 @@ function DocPreview() {
             <Search />
 
             <ProfilePic />
-
-            {/* <FileViewer 
-            fileType = {type}
-            filePath = {src}
-            onError = {onError}/> */}
         
         <iframe 
         title='myframe' 
             id='myFrame'
-            src = {fileURL}
-            // src = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+            src = ""
             height = "700px"
             width = "700px"
         /> 
@@ -55,41 +55,5 @@ function DocPreview() {
         </Fragment>
     )
   }
-
-// const PdfViewer = () =>{
-//     let params = useParams();
-//     //const id = params.id;
-//     const name = params.name;
-//     // let type = name.slice(name.lastIndexOf('.')+1);
-//     // console.log(type);
-//     // const path = window.location.href;
-//     // const src = "https://systest.eisenvault.net/share/page/site/eisenvault-lite/document-details"
-//     // +'?'+'nodeRef=workspace://SpacesStore/'+path.slice(28, 64)
-
-//     return(
-//         <Fragment>
-//          <div id="second_section">
-//             <h2>{name}</h2>
-//             <Search />
-
-//             <ProfilePic />
-
-//             {/* <FileViewer 
-//             fileType = {type}
-//             filePath = {src}
-//             onError = {onError}/> */}
-        
-//         <Iframe 
-//         title='myframe' 
-//             id='myFrame'
-//             // src = {doc}
-//             src = {DocPreview()}
-//             height = "700px"
-//             width = "700px"
-//             /> 
-//         </div>
-//         </Fragment>
-//     )
-// }
 
 export default DocPreview;

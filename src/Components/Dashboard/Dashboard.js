@@ -66,7 +66,7 @@ const Dashboard = () => {
   CheckPosts();
 
   function handleDocument(id , name){
-    history.push(`/${id}/${name}`)
+    history.push(`/doc/${id}/${name}`)
   }
   
   return (
