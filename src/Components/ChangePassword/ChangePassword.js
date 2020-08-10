@@ -8,14 +8,15 @@ import '../../Containers/styles.scss';
 import Search from '../SearchBar/SearchBar';;
 
 function ChangePassword(props){
-    const user = getUser();
+    const user = getUser()
+    const userName = user[0].toUpperCase()+user.slice(1);
     const oldPassword = useFormInput ('');
     const newPassword = useFormInput ('');
     const confirmPassword = useFormInput('');
 
 function handlechangePassword(){
     if (newPassword.value === confirmPassword.value){
-        axios.post(`https://systest.eisenvault.net/alfresco/service/api/person/changepassword/${user}`,{
+        axios.post(`https://systest.eisenvault.net/alfresco/service/api/person/changepassword/${userName}`,{
         newpw : newPassword.value, oldpw : oldPassword.value
         },
         {

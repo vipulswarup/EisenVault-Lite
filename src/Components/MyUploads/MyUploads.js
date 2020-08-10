@@ -20,6 +20,7 @@ function MyUploads(props){
 
   const [ currentPage, setCurrentPage ] = useState(1);
   const [postsPerPage] = useState(10);
+  const [ paginationDefualt, setPaginationDefault ] = useState([]);
 
   //api call
     const getData=()=>{
@@ -29,6 +30,7 @@ function MyUploads(props){
            }}).then((response)=>{
              let FileData=response.data;
              console.log(FileData);
+            setPaginationDefault(response.data.totalRecords) 
             setFileState(FileData.items.map(d=>{
               return {
                 select:false,

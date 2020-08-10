@@ -1,15 +1,19 @@
 import React, { Fragment, useState } from 'react';
 import axios from 'axios';
-// import ModalForgetPswd from '../UI/Modal/ModalForgetPswd';
-//import useModal from '../UI/Modal/useModal';
+import Modal from '../Modal/Modal';
+import { ForgotPassword } from '../Modal/DeleteModalSumm/DeleteSumm';
 import { setUserLocal } from '../../Utils/Common';
 import './LoginPage.scss';
 
 const LoginPage = (props) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [modalIsOpen, setmodalIsOpen] = useState(false);
+  const [err, setPswdError] = useState(null);
+
   const userName = useFormInput ('');
   const password = useFormInput ('');
+  const forgotPswdUserName = useFormInput ('');
 
   const handleLogin = () => {
     setError(null);
@@ -28,13 +32,25 @@ const LoginPage = (props) => {
     });
   }
 
-  //const {isShowing: isShowing1,toggle: toggleForgotPassword} = useModal();
+const handleForgotPassword = () => {
+  setPswdError(null);
+
+  axios.post('https://systest.eisenvault.net/share/proxy/alfresco-noauth/com/flex-solution/reset-password',
+  { userName: forgotPswdUserName.value }).then(response => {
+    alert('Email Sent Successfully')
+    console.log("Email Sent");
+    console.log(response);
+  }).catch(err => {
+    if (err.response.status === 401) 
+    setPswdError(err.response.data.message);
+      else 
+      setPswdError("The user name doesn't exist.");
+  });
+}
 
     return(
 
       <Fragment>
-              {/* <ModalForgetPswd isShowing = {isShowing1} 
-              hide={toggleForgotPassword}/> */}
 
         <div id="bg-bar">
 
@@ -56,10 +72,20 @@ const LoginPage = (props) => {
                 onClick={handleLogin} disabled={loading}>
                 Login</button>
                 <br />
-                                
+
+                <Modal show={modalIsOpen}>
+                
+                  <ForgotPassword                   
+                  resetPassword={handleForgotPassword}
+                  clicked={() => setmodalIsOpen(false)}
+                  forgotPswdUserName={forgotPswdUserName}/>
+
+                  {err && <><small style={{ color: 'red' }}>
+                  {err}</small><br /></>}
+                </Modal>     
+
                 <button id="btn_forgotPassword" type="button" 
-                  // onClick={toggleForgotPassword}
-                  >
+                  onClick={() => setmodalIsOpen(true)}>
                     Forgot Password?</button>
                     
             </div> 
@@ -76,6 +102,7 @@ const useFormInput = initialValue => {
   const handleChange = e => {
     setValue(e.target.value);
   }
+
   return {
     value,
     onChange: handleChange

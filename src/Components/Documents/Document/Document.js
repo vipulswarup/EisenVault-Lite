@@ -62,17 +62,30 @@ function Document(){
                     <th id="action">Actions</th>
                   </tr>
                   </thead>
+                  
                   <tbody>
                   { currentPosts.map((d,i) => (
                     <tr  key={d.id} id="first_details">
                     <td className="file_name-u">
-                    <Link to={{pathname:`/document/${d.entry.name}/${d.entry.id}`}}>
-                    <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> {d.entry.name}</Link></td>
-                    <td className="details-u-s">{d.entry.createdByUser.displayName}</td>
-                    <td className="details-u-s">{d.entry.createdAt.split('T')[0]}</td>
-                    <td className="details-u-s">{d.entry.modifiedAt.split('T')[0]}</td>
+                    <Link to={
+                      {pathname:`/document/${d.entry.name}/
+                      ${d.entry.id}`}}>
+                    <FontAwesomeIcon 
+                    className="pdf-file fas fa-file-pdf" 
+                    icon={faFilePdf}/> 
+                    {d.entry.name}</Link></td>
+                    <td className="details-u-s">
+                      {d.entry.createdByUser.displayName}
+                    </td>
+                    <td className="details-u-s">
+                      {d.entry.createdAt.split('T')[0]}
+                    </td>
+                    <td className="details-u-s">
+                      {d.entry.modifiedAt.split('T')[0]}
+                    </td>
                     <td className="delete-u-s">
-                    <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
+                    <FontAwesomeIcon className="fas fa-times-circle" 
+                    icon={faTimesCircle} 
                        />
                   </td>
                   </tr>
@@ -81,6 +94,15 @@ function Document(){
               </table>
             </div>
             </div>
+
+      <div className="col-md-6">
+      <Pagination
+       postsPerPage={postsPerPage}
+       totalPosts={documents.length}
+       paginate={paginate}
+        />
+        </div>
+
     </Fragment>
 
           )

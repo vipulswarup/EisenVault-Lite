@@ -22,6 +22,7 @@ import './styles.scss';
 import { getToken, removeUserLocal, setUserLocal } from "../Utils/Common";
 import Backdrop from "../Components/Backdrop/Backdrop";
 
+
 const Routings = withRouter (({ location },props) => {
   const [authLoading, setAuthLoading] = useState(true);
   const[sideDrawerOpen,setsideDrawerOpen]=useState(false);

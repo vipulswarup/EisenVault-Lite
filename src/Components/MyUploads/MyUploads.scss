@@ -10,6 +10,12 @@ $icon-color: #ee9796;
     margin-left: 6rem;
     float: left;
   }
+
+  & p.text{
+    display: inline;
+    text-decoration: none;
+    font-size: 1rem;
+}
 }
 
 #doc_list {
