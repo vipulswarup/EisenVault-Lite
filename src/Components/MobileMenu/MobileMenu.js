@@ -1,104 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ProgressBar from '../Navigation/NavigationItems/ProgressBar/ProgressBar';
-import './MobileMenu.scss';
-import { faHome,
-  faFileAlt, 
-  faFolderOpen, 
-  faShareAlt, 
-  faShareSquare, 
-  faHeadset, 
-  faKey, 
-  faSignOutAlt, 
-  faTrash } from "@fortawesome/free-solid-svg-icons";
+import './MobileMenu.css'
 
-const MobileMenu = () => (
-    <nav role="navigation">
-        <div id="menuToggle">
-        
-            <input type="checkbox" />
-            
-            <span></span>
-            <span></span>
-            <span></span>
+const DrawerToggleButton = props => (
+  <button className="toggle-button" onClick={props.drawertoggleHandler}>
+    <div className="toggle-button__line" />
+    <div className="toggle-button__line" />
+    <div className="toggle-button__line" />
+  </button>
+)
 
-            <ul id="menu">
-              <Link to="/dashboard">
+export default DrawerToggleButton
 
-                <li><FontAwesomeIcon 
-                className="Icon" 
-                icon={faHome}/>
-                  <p>DASHBOARD</p>
-                </li></Link> 
-
-              <Link to="/documentsList">
-                <li> <FontAwesomeIcon 
-                className="Icon" 
-                icon={faFileAlt}/>
-                <p> &nbsp;DOCUMENTS</p>
-                </li></Link>
-
-              <Link to="/myUploads">
-                <li> <FontAwesomeIcon 
-                className="Icon" 
-                icon={faFolderOpen}/>
-                <p>MY UPLOADS</p>
-                </li></Link>
-
-              <Link to="/manageShares">
-                <li> <FontAwesomeIcon 
-                className="Icon" 
-                icon={faShareAlt}/>
-                <p>&nbsp;MANAGE SHARES</p>
-                </li></Link>
-
-              {/* <Link to="/myUploads">
-                <li> <FontAwesomeIcon 
-                className="Icon" 
-                icon={faShareSquare}/>
-                <p>SHARED WITH ME</p>
-                </li></Link> */}
-
-              <Link to="/myUploads">
-                <li> <FontAwesomeIcon 
-                className="Icon" 
-                icon={faHeadset}/>
-                <p>SUPPORT</p>
-                </li></Link>
-
-              <Link to="/myUploads">
-                <li> <FontAwesomeIcon 
-                className="Icon" 
-                icon={faFileAlt}/>
-                <p>&nbsp;FULL VERSION</p>
-                </li></Link>
-
-              <Link to="/changePassword">
-                <li> <FontAwesomeIcon 
-                className="Icon" 
-                icon={faKey}/>
-                <p>CHANGE PASSWORD</p>
-                </li></Link>
-
-              <Link to="/myUploads">
-                <li> <FontAwesomeIcon 
-                className="Icon" 
-                icon={faSignOutAlt}/>
-                <p>SIGN OUT</p>
-                </li></Link>
-
-              <Link to="/myUploads">
-                <li> <FontAwesomeIcon 
-                className="Icon" 
-                  icon={faTrash}/>
-                  <p>TRASH</p>
-                  </li></Link>
-
-            <ProgressBar />
-            </ul>
-        </div>
-      </nav>
-);
-
-export default MobileMenu;
