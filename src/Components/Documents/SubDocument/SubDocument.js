@@ -58,7 +58,6 @@ useEffect(()=>{
       <Fragment>
          <div id="second_section">
             <h2>Document Library</h2>
-          {/* <h2>{data.location.state.data.title}</h2> */}
             <Search />
             <ProfilePic /> 
 
