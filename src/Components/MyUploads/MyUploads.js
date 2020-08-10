@@ -120,7 +120,7 @@ function MyUploads(props){
                     <td className="details-u">{d.uploadedOn}</td>
                     <td className="delete-u">
           <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
-                     onClick={() =>{setmodalIsOpen(true)}}
+                    onClick={() =>{setmodalIsOpen(true)}}
                   
                       />
                   </td>

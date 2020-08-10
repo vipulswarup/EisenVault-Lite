@@ -5,7 +5,6 @@ import { getToken, getUser } from "../../Utils/Common";
 import Iframe from 'react-iframe';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFile, faEye } from "@fortawesome/free-solid-svg-icons";
-
 import Search from "../SearchBar/SearchBar";
 import ProfilePic from "../Avtar/Avtar";
 import Pagination from '../Pagination/Pagination';
@@ -69,6 +68,7 @@ const Dashboard = () => {
         
         <Search />
         <ProfilePic />
+        
       
       <div className="filesDetail">
         <h3>My Recent Activities</h3>

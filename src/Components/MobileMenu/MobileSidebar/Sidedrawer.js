@@ -10,18 +10,16 @@ import { faHome,
       faKey, 
       faSignOutAlt, 
       faTrash } from "@fortawesome/free-solid-svg-icons";
-
-
-import  './NavigationItems.scss';
-import axios from 'axios';
-import { getToken,getUser } from '../../../Utils/Common';
-
-function NavigationItems() {
+ import axios from 'axios';
+import "../MobileMenu.css"
+import "../MobileSidebar/Sidedrawer.scss"
+import Auxiliary from '../../../hoc/Auxiliary';
+import { getUser ,getToken} from "../../../Utils/Common";
+const SideDrawer=(props)=>{
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const user = getUser();
   // handle click event of logout button
    const handleLogout = () => {
 
@@ -38,15 +36,25 @@ function NavigationItems() {
           else setError("Your authentication details have not been recognized or EisenVault may not be available at this time.");        
       }, [])
    }
-
-  return (
-    <div>
-    <section className="SideNav">
-      
-      <div id="sidebar">
-        <ul className="sidemenu">
-
-          <div id="dashboard"> 
+  let drawerclasses='Side-drawer';
+  if(props.show){
+    drawerclasses='Side-drawer open';
+  }
+  const user = getUser();
+    return(
+        <Auxiliary>
+            
+                    <nav role="navigation">
+                 {/* <div id="menuToggle">
+                
+                     <input type="checkbox" />
+                    
+                     <span></span>
+                     <span></span>
+                     <span></span> */}
+        
+                    <ul className={drawerclasses}>
+                    <div id="dashboard"> 
             <Link to="/dashboard">
               <li> <FontAwesomeIcon 
               className="Icon" 
@@ -126,18 +134,18 @@ function NavigationItems() {
                 className="Icon" 
                 icon={faSignOutAlt}/>
                 <input type="button" className="signOut" 
-                onClick={handleLogout} value="LOGOUT" />
+                 onClick={handleLogout}
+                 value="LOGOUT" />
                 </li>
 
                 {user==='admin' && <ProgressBar />}
  
             </div>
+                    </ul>
+              </nav>
+              </Auxiliary>
 
-        </ul>
-      
-      </div>
-    </section>  </div> 
-  );
+        );
+    
 }
-
-export default NavigationItems;
+export default SideDrawer;
