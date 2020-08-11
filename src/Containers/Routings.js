@@ -15,6 +15,7 @@ import ManageShares from "../Components/ManageShares/ManageShares";
 import ChangePassword from "../Components/ChangePassword/ChangePassword";
 import SubDocument from "../Components/Documents/SubDocument/SubDocument";
 import PdfViewer from "../Components/Documents/DocumentViewer/DocumentViewer";
+import SearchResult from '../Components/SearchBar/SearchResult';
 
 import PrivateRoute from '../Utils/PrivateRoutes';
 
@@ -66,6 +67,7 @@ const Routings = withRouter (({ location }) => {
         <PrivateRoute path="/changePassword" component={ChangePassword} />
         <PrivateRoute path="/document/:id" component={SubDocument} />
         <PrivateRoute path="/doc/:id/:name" component={PdfViewer} />
+        <PrivateRoute path="/search/:result" component={SearchResult} />
         {location.pathname !== '/' &&  <Footer />}
       </div>
       </div>

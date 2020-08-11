@@ -13,7 +13,7 @@ function DocPreview() {
     const name = params.name;
 
     const path = window.location.href;
-    const id =  path.slice(28, 64)   
+    const id =  params.id  
     let fileURL;
 
     axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?attachment=false`,

@@ -44,8 +44,8 @@ $font-color:#073453;
 .menu {
 	background-color: white;
 	position: absolute;
-	z-index: 500;
-	// max-width: 10rem;
-	// max-height: auto;
-	
+	z-index: 500;	
 }
+.search-item{
+	cursor: context-menu;
+  }

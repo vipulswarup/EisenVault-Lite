@@ -51,7 +51,7 @@ useEffect(()=>{
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     function handleDocument(file , id , name){
-      file ? history.push(`/doc/${id}/${name}`): history.push(`/document/${id}`)
+      file ? history.push(`/document-detailsnodeRef=workspace://SpacesStore/${id}/${name}`): history.push(`/document/${id}`)
     }
     
     return( 

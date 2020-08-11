@@ -49,7 +49,20 @@ FileState.forEach(d=>{
     .catch((error)=> console.log(error));
   })
   console.log(response.data.list.entries)
-   //getDetailsData();
+  response.data.list.entries.forEach(d=>{
+      axios.get(`https://systest.eisenvault.net//alfresco/api/-default-/public/alfresco/versions/1/queries/nodes?term=${d.entry.name}&include=effectivity,departmentName,allowableOperations,properties,path`, 
+      {headers:{
+        Authorization: `Basic ${btoa(getToken())}`
+        }
+      }).then((response) => {
+        console.log("received")
+      console.log(response.data)
+      setDetailsState(response.data.list.entries.map(d=>{
+        return {
+          EffectiveFrom:d.entry.properties["cm:from"]    }
+      }))})
+      .catch((error)=> console.log(error));
+    }) 
 })); 
 }
 
@@ -101,7 +114,7 @@ return(
                   </thead>
                   <tbody>
                   { FileState.map((d,i) => (
-                    <tr  key={d.entry.id} id="first_details">
+                    <tr  id="first_details">
                     <td className="file_name-u">
                     <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> {d.entry.name}</td>
                     
