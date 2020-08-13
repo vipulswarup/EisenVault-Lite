@@ -22,6 +22,7 @@
     cursor: pointer;
     padding: 0;
     box-sizing: border-box;
+    
   }
   
   .toggle-button:focus {
@@ -39,3 +40,5 @@
     display:none;
   }
 }
+
+
