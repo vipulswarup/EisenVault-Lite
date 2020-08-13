@@ -61,15 +61,15 @@ const Routings = withRouter (({ location },props) => {
     if(sideDrawerOpen){
       backdrop=<Backdrop click={backdropClickHandler} show/>
     }
-    
 
   return(
     <Fragment>
         <Route exact path="/" component={LoginPage} />
     
       <div>
-      {/* {location.pathname !== '/' && {backdrop}} */}
-      {location.pathname !== '/' && <SideDrawer show={sideDrawerOpen}/>}
+        
+      {location.pathname !== '/' ? backdrop : null } 
+      {location.pathname !== '/' && <SideDrawer show={sideDrawerOpen} click={backdropClickHandler}/>}
       {backdrop}
       {location.pathname !== '/' && <DrawerToggleButton drawertoggleHandler={DrawerToggleQuickHandler} />}
       </div> 

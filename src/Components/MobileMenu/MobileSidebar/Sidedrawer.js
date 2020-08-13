@@ -15,6 +15,7 @@ import "../MobileMenu.css"
 import "../MobileSidebar/Sidedrawer.scss"
 import Auxiliary from '../../../hoc/Auxiliary';
 import { getUser ,getToken} from "../../../Utils/Common";
+
 const SideDrawer=(props)=>{
   const history = useHistory();
   const [loading, setLoading] = useState(false);
@@ -41,10 +42,11 @@ const SideDrawer=(props)=>{
     drawerclasses='Side-drawer open';
   }
   const user = getUser();
+   
     return(
         <Auxiliary>
             
-                    <nav role="navigation">
+                    <nav role="navigation" >
                  {/* <div id="menuToggle">
                 
                      <input type="checkbox" />
@@ -53,13 +55,13 @@ const SideDrawer=(props)=>{
                      <span></span>
                      <span></span> */}
         
-                    <ul className={drawerclasses}>
-                    <div id="dashboard"> 
+           <ul className={drawerclasses} onClick={props.click}>
+             <div id="dashboard" > 
             <Link to="/dashboard">
               <li> <FontAwesomeIcon 
               className="Icon" 
               icon={faHome}/>
-              <p>DASHBOARD</p>
+              <p >DASHBOARD</p>
               </li></Link> 
             
             </div>
