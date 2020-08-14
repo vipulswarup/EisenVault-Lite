@@ -25,29 +25,12 @@ function getData(){
  useEffect(()=>{
 
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links?include=properties', 
-
-  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/5ccc676b-0a0c-4f9f-b176-87a786b3b5d8/children?skipCount=0', 
-
   {headers:{
     Authorization: `Basic ${btoa(getToken())}`
     }
   }).then((response) => {
     
   setFileState(response.data.list.entries)
-FileState.forEach(d=>{
-    axios.get(`https://systest.eisenvault.net//alfresco/api/-default-/public/alfresco/versions/1/queries/nodes?term=${d.entry.name}&include=effectivity,departmentName,allowableOperations,properties,path`, 
-    {headers:{
-      Authorization: `Basic ${btoa(getToken())}`
-      }
-    }).then((response) => {
-      console.log("received")
-    console.log(response.data)
-    setDetailsState(response.data.list.entries.map(d=>{
-      return {
-        EffectiveFrom:d.entry.properties["cm:from"]    }
-    }))})
-    .catch((error)=> console.log(error));
-  })
   console.log(response.data.list.entries)
   response.data.list.entries.forEach(d=>{
       axios.get(`https://systest.eisenvault.net//alfresco/api/-default-/public/alfresco/versions/1/queries/nodes?term=${d.entry.name}&include=effectivity,departmentName,allowableOperations,properties,path`, 
@@ -57,16 +40,19 @@ FileState.forEach(d=>{
       }).then((response) => {
         console.log("received")
       console.log(response.data)
+      
       setDetailsState(response.data.list.entries.map(d=>{
+        console.log(d.entry.properties["cm:from"])
         return {
-          EffectiveFrom:d.entry.properties["cm:from"]    }
+          EffectiveFrom:d.entry.properties["cm:from"],   
+          EffectiveTo:d.entry.properties["cm:to"] }
       }))})
       .catch((error)=> console.log(error));
     }) 
-})); 
-}
+}); 
+},[])
 
-,[]); 
+ 
 
 // function getDetailsData() {
 //   FileState.forEach(d=>{
@@ -118,8 +104,13 @@ return(
                     <td className="file_name-u">
                     <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> {d.entry.name}</td>
                     
-                  <td className="details-u-s">{d.EffectiveFrom}</td>
-                    <td className="details-u-s">{d.entry.modifiedAt.split('T')[0]}</td>
+                    {DetailsState.map(d => (
+                      <tr>
+                      <td className="details-u-s">{d.EffectiveTo}</td>
+                    <td className="details-u-s">{d.EffectiveFrom}</td>
+                    </tr>
+                    ))}
+                  
                     <td className="delete-u-s">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
                        />
