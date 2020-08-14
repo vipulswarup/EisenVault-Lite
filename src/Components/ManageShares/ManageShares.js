@@ -106,8 +106,8 @@ return(
                     
                     {DetailsState.map(d => (
                       <tr>
-                      <td className="details-u-s">{d.EffectiveTo}</td>
-                    <td className="details-u-s">{d.EffectiveFrom}</td>
+                      <td className="details-u-s">{d.EffectiveFrom ? d.EffectiveFrom.split('T')[0]: null }</td>
+                    <td className="details-u-s">{d.EffectiveTo ? d.EffectiveTo.split('T')[0] : null}</td>
                     </tr>
                     ))}
                   
