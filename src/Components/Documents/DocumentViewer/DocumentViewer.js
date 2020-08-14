@@ -14,8 +14,12 @@ function DocPreview() {
     const title = params.title;
 
     const path = window.location.href;
+
+    const id =  params.id  
+
     // console.log(path)
     const id =  path.slice(41,77)   
+
     let fileURL;
 
     useEffect(() => {

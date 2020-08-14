@@ -124,6 +124,7 @@ function handleDeleteDepartment(id){
 
 return (
   <Fragment>
+
           <Modal show={createmodalIsOpen}>
            <CreateDepartment createDept={handleCreateDepartment} 
            clicked={() => createsetmodalIsOpen(false)} 
@@ -143,12 +144,18 @@ return (
             </RenameDepartment>
           </Modal> */}
 
+
       <div id="second_section">
       <h2>Document List</h2>
         <Search />
         <ProfilePic />
 
             <div>
+            <Modal show={createmodalIsOpen}>
+            <CreateDepartment createDept={handleCreateDepartment} 
+            clicked={() => createsetmodalIsOpen(false)} 
+            departmentTitle={departmentTitle}/>
+            </Modal>
               <IconBar 
                 toggleadd = {() =>{createsetmodalIsOpen(true)}}
               />
@@ -172,7 +179,13 @@ return (
                     {document.folders} </td>
 
                     <td>
-                      { user === 'admin' &&
+                      { user === 'admin' && 
+                      <Modal show={deletemodalIsOpen}>
+                          <DeleteDepartment 
+                            clicked={() => deletesetmodalIsOpen(false)}>
+                          </DeleteDepartment>
+                          <DeleteDepartment  clicked={() => deletesetmodalIsOpen(false)}></DeleteDepartment>
+                        </Modal> &&
                         <IconBarDelete                 
                        delete = {()=>{handleDeleteDepartment(department.entry.id)}}
                       />
