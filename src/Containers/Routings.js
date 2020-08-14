@@ -15,7 +15,12 @@ import ManageShares from "../Components/ManageShares/ManageShares";
 //import SharedWithMe from "../Components/sharedWithMe/sharedWithMe";
 import ChangePassword from "../Components/ChangePassword/ChangePassword";
 import SubDocument from "../Components/Documents/SubDocument/SubDocument";
+
+import PdfViewer from "../Components/Documents/DocumentViewer/DocumentViewer";
+import SearchResult from '../Components/SearchBar/SearchResult';
+
 import DocPreview from "../Components/Documents/DocumentViewer/DocumentViewer";
+
 
 import PrivateRoute from '../Utils/PrivateRoutes';
 import './styles.scss';
@@ -86,8 +91,13 @@ const Routings = withRouter (({ location },props) => {
         {/* <PrivateRoute path="/sharedWithMe" component={SharedWithMe} /> */}
         <PrivateRoute path="/changePassword" component={ChangePassword} />
         <PrivateRoute path="/document/:id" component={SubDocument} />
+
+        <PrivateRoute path="/doc/:id/:name" component={PdfViewer} />
+        <PrivateRoute path="/search/:result" component={SearchResult} />
+
         <PrivateRoute path="/document-details/:id/:title" 
         component={DocPreview} />
+
         {location.pathname !== '/' &&  <Footer />}
       </div>
       </div>

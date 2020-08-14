@@ -1,4 +1,5 @@
 import React,{ useState, useEffect} from "react";
+import {useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -8,6 +9,7 @@ import "./styleSearchBar.scss";
 import { getToken } from '../../Utils/Common';
 
  const Search = () => {
+  let history = useHistory();
   const [data ,setData] = useState([]);
     const [filtered ,setFilterd] = useState([]);
     const [result , setResult] = useState("");
@@ -16,24 +18,16 @@ import { getToken } from '../../Utils/Common';
       // useEffect(()=>{
             const fetchData =  ()=> {
                     try{
-                        axios.post('https://systest.eisenvault.net/alfresco/api/-default-/public/search/versions/1/search',
-                        {
-                          "query": {
-                            "query": `${result}`
-                          },
-                          "include": ["properties", "isLink"],
-                          "fields": ["id", "name", "search"],
-                          "sort": [{"type":"FIELD", "field":"name", "ascending":"true"}],
-                          
-                        }, 
+                        axios.get(`https://systest.eisenvault.net//alfresco/s/slingshot/live-search-docs?t=${result}&limit=5`,
+                         
                              {headers:{
                                 Authorization: `Basic ${btoa(getToken())}`
                                 }
                               }).then((response) => {
                                        console.log("received")
                                      console.log(response.data)
-                                     setData(response.data.list.entries);
-                                      setFilterd(response.data.list.entries);
+                                     setData(response.data.items);
+                                      setFilterd(response.data.items);
                                       setShow(true)
                                    });
                     }catch(err){
@@ -67,6 +61,15 @@ import { getToken } from '../../Utils/Common';
               setShow(false)
             }
         }
+      
+      const onEnter = (event) => {
+        if (event.key === "Enter")
+        history.push(`/search/${result}`)
+      }
+
+        function handleDocument(id , name){
+           history.push(`/doc/${id}/${name}`)
+        }
 
     return (
         <div className="searchBox-container">
@@ -76,12 +79,16 @@ import { getToken } from '../../Utils/Common';
             placeholder="search here .."
             value={result}
             onChange={onChange}
+            onKeyUp={onEnter}
         />
         {show ? <OutsideClickHandler onOutsideClick={handleOutsideClick}><div className="menu-container">
         {data.map((r,i)=> ( 
                 
                 <ul key={i}>
-                <li>{r.entry.name}</li>
+                <li onClick={() => handleDocument(
+                      r.nodeRef.substring(24),
+                      r.name)}
+                      className="search-item">{r.name}</li>
                 </ul>
               )
             )
