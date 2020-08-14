@@ -37,7 +37,7 @@ const handleForgotPassword = () => {
 
   axios.post('https://systest.eisenvault.net/share/proxy/alfresco-noauth/com/flex-solution/reset-password',
   { userName: forgotPswdUserName.value }).then(response => {
-    alert('Email Sent Successfully')
+    setLoading(false);
     console.log("Email Sent");
     console.log(response);
   }).catch(err => {
@@ -47,6 +47,12 @@ const handleForgotPassword = () => {
       setPswdError("The user name doesn't exist.");
   });
 }
+
+const LoadingSpinner = () => (
+  <div>
+    <i className="fa fa-spinner fa-spin" /> Loading...
+  </div>
+);
 
     return(
 
@@ -79,13 +85,16 @@ const handleForgotPassword = () => {
                   resetPassword={handleForgotPassword}
                   clicked={() => setmodalIsOpen(false)}
                   forgotPswdUserName={forgotPswdUserName}/>
+                  
 
                   {err && <><small style={{ color: 'red' }}>
                   {err}</small><br /></>}
                 </Modal>     
 
                 <button id="btn_forgotPassword" type="button" 
-                  onClick={() => setmodalIsOpen(true)}>
+                  onClick={() => {return(setmodalIsOpen(true),
+                    loading ? <LoadingSpinner /> :   alert('Email Sent Successfully')
+                    )}}>
                     Forgot Password?</button>
                     
             </div> 
