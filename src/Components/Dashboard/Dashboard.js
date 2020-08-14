@@ -80,6 +80,7 @@ const Dashboard = () => {
       
       <div className="filesDetail">
         <h3>My Recent Activities</h3>
+
         <table className='documentsList'>
             {currentPosts.map(document => (               
             <tbody key={document.entry.id} >

@@ -35,7 +35,6 @@ $icon-color: #ee9796;
     & h4{
         font-weight: 100;
         display: inline;
-        cursor: pointer;
     }
 }
 
@@ -44,6 +43,7 @@ $icon-color: #ee9796;
 }
 
 .view{
+    cursor: pointer;
     padding-right: 2rem;
     padding-left: 2rem;
 }

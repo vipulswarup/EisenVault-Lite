@@ -3,12 +3,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import ProfilePic from "../Avtar/Avtar";
 import axios from 'axios';
-import './ManageShares.scss'
+import './ManageShares.scss';
+import { useHistory } from 'react-router-dom';
+
 import Search from "../SearchBar/SearchBar";
 import { getToken } from '../../Utils/Common';
 import Pagination from '../Pagination/Pagination';
 
 function ManageShares(){
+  let history = useHistory();
+
   const[FileState,setFileState]=useState([]);
   const[DetailsState,setDetailsState]=useState([]);
 
@@ -25,9 +29,6 @@ function getData(){
  useEffect(()=>{
 
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links?include=properties', 
-
-  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/5ccc676b-0a0c-4f9f-b176-87a786b3b5d8/children?skipCount=0', 
-
   {headers:{
     Authorization: `Basic ${btoa(getToken())}`
     }
@@ -50,9 +51,8 @@ FileState.forEach(d=>{
   })
   console.log(response.data.list.entries)
    //getDetailsData();
-})); 
+}); 
 }
-
 ,[]); 
 
 // function getDetailsData() {
@@ -81,6 +81,10 @@ const currentPosts = FileState.slice(indexOfFirstPost, indexOfLastPost);
 // Change page
 const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+function handleDocument(id,title){
+  history.push(`/document-details/${id}/${title}`)
+}
+
 return( 
       <Fragment>
        
@@ -102,8 +106,11 @@ return(
                   <tbody>
                   { FileState.map((d,i) => (
                     <tr  key={d.entry.id} id="first_details">
-                    <td className="file_name-u">
-                    <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> {d.entry.name}</td>
+                    <td className="file_name-u" onClick={() => handleDocument(
+                            d.entry.nodeId,
+                            d.entry.name) }>
+                    <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> 
+                    {d.entry.name}</td>
                     
                   <td className="details-u-s">{d.EffectiveFrom}</td>
                     <td className="details-u-s">{d.entry.modifiedAt.split('T')[0]}</td>
