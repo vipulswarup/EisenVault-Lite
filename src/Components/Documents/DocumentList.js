@@ -15,7 +15,6 @@ import { CreateDepartment, DeleteDepartment} from "../Modal/DeleteModalSumm/Dele
 import Pagination from '../Pagination/Pagination';
 import IconBar, {IconBarDelete} from '../IconBar/IconBar';
 
-
 const DocumentsList = () => {
   const user = getUser();
   const [createmodalIsOpen, createsetmodalIsOpen] = useState(false);

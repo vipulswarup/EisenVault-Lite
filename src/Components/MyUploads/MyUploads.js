@@ -4,6 +4,7 @@ import { DeleteSummmary } from "../Modal/DeleteModalSumm/DeleteSumm";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import './MyUploads.scss';
+import { useHistory } from 'react-router-dom';
 import Search from "../SearchBar/SearchBar";
 import axios from 'axios';
 import { getToken,getUser} from '../../Utils/Common';
@@ -11,6 +12,8 @@ import ProfilePic from "../Avtar/Avtar";
 import Pagination from '../Pagination/Pagination';
 
 function MyUploads(props){
+  let history = useHistory();
+
   const [modalIsOpen, setmodalIsOpen] = useState(false);
   
   const[FileState,setFileState]=useState([]);
@@ -34,7 +37,7 @@ function MyUploads(props){
             setFileState(FileData.items.map(d=>{
               return {
                 select:false,
-                id:d.nodeRef.substring(23),
+                id:d.nodeRef.substring(24),
                 name:d.name,
                 uploadedOn:d.node.properties["cm:created"].iso8601.split('T')[0]
               }
@@ -50,6 +53,9 @@ function MyUploads(props){
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  function handleDocument(id,title){
+    history.push(`/document-details/${id}/${title}`)
+  }
   const closeModal=()=>{ //function to close modal after performing it's operations
     return  setmodalIsOpen(false);
   }
@@ -97,6 +103,7 @@ function MyUploads(props){
                         <option id="option" value="delete-s">Delete Selected</option>
                       </select>
                     </th>
+
                   <Modal show={modalIsOpen}>
                     <DeleteSummmary deleted={()=>{deleteFileByIds()}} clicked={() => setmodalIsOpen(false)}/>
                   </Modal>
@@ -116,12 +123,15 @@ function MyUploads(props){
                       }} type="checkbox" checked={d.select} />
                       </td>
                       
-                    <td className="file_name-u" >
-                    
-                    <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> {d.name}</td>
+                    <td className="file_name-u"
+                    onClick={() => handleDocument(
+                      d.id,
+                      d.name) }>
+                    <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> 
+                    {d.name}</td>
                     <td className="details-u">{d.uploadedOn}</td>
                     <td className="delete-u">
-          <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
+                    <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
                     onClick={() =>{setmodalIsOpen(true)}}
                   
                       />

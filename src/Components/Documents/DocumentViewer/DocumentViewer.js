@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import Search from "../../SearchBar/SearchBar";
 import ProfilePic from "../../Avtar/Avtar";
 import axios from 'axios';
+import { Item } from '../../backButton/backButton';
+
 import { getToken } from "../../../Utils/Common";
 
 function DocPreview() {
@@ -22,10 +24,10 @@ function DocPreview() {
     {headers:{
         Authorization: `Basic ${btoa(getToken())}`
       }}).then((response) => {
-          let child = response.data.list
-          console.log(child)
+        //   let child = response.data.list
+        //   console.log(child)
 
-        setChildId(child.entries.map(d=>{
+        setChildId(response.data.list.entries.map(d=>{
             return{
                 childNode: d.entry.id
             }
@@ -65,7 +67,7 @@ childId.forEach(d=>{ axios.get(`https://systest.eisenvault.net/alfresco/api/-def
             <Search />
 
             <ProfilePic />
-        
+        <Item />
         <iframe                  
         {...error && <><small style={{ color: 'red' }}>{error}</small><br /></>}
         title='myframe' 
