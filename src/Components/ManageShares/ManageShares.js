@@ -47,7 +47,7 @@ function getData(){
 }); 
 },[])
  
-  
+
 // function getDetailsData() {
 //   FileState.forEach(d=>{
 //   axios.get(`https://systest.eisenvault.net//alfresco/api/-default-/public/alfresco/versions/1/queries/nodes?term=${d.entry.name}&include=effectivity,departmentName,allowableOperations,properties,path`, 
@@ -100,7 +100,7 @@ return(
                             d.entry.name) }>
                     <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> 
                     {d.entry.name}</td></tr>
-                    
+   
                     {DetailsState.map(d => (
                       <tr>
                       <td className="details-u-s">{d.EffectiveFrom ? d.EffectiveFrom.split('T')[0]: null }</td>

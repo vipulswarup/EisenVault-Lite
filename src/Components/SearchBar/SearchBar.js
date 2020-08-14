@@ -68,7 +68,7 @@ import { getToken } from '../../Utils/Common';
       }
 
         function handleDocument(id , name){
-           history.push(`/doc/${id}/${name}`)
+           history.push(`/document-details/${id}/${name}`)
         }
 
     return (

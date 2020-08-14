@@ -50,7 +50,6 @@ useEffect(()=>{
 
     function handleDocument(file , id, title){
       file ? history.push(`/document-details/${id}/${title}`): history.push(`/document/${id}`)
-
     }
     
     return( 
@@ -111,5 +110,5 @@ useEffect(()=>{
 
           )
           }
-
+        
 export default SubDocument;

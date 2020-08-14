@@ -13,9 +13,7 @@ function DocPreview() {
     let params = useParams();
     const title = params.title;
 
-    const path = window.location.href;
-
-    // const id =  params.id  
+    const path = window.location.href; 
 
     // console.log(path)
     const id =  path.slice(41,77)   
