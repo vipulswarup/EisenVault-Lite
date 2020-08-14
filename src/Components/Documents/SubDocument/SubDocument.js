@@ -36,10 +36,7 @@ useEffect(()=>{
 
         setPaginationDefaultDoc(response.data.list.pagination) 
         console.log(response.data.list.pagination)
-      }).catch((error) => {
-        console.log(error);
-      }
-      );
+      })
     },[id]);
 
     // Get current posts
@@ -50,8 +47,8 @@ useEffect(()=>{
     // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    function handleDocument(file , id , name){
-      file ? history.push(`/doc/${id}/${name}`): history.push(`/document/${id}`)
+    function handleDocument(file , id, title){
+      file ? history.push(`/document-details/${id}/${title}`): history.push(`/document/${id}`)
     }
     
     return( 

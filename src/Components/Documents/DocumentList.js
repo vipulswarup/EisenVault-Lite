@@ -11,7 +11,7 @@ import ProfilePic from "../Avtar/Avtar";
 import Search from "../SearchBar/SearchBar";
 
 import Modal from "../Modal/Modal";
-import { CreateDepartment ,RenameDepartment , DeleteDepartment} from "../Modal/DeleteModalSumm/DeleteSumm";
+import { CreateDepartment, DeleteDepartment} from "../Modal/DeleteModalSumm/DeleteSumm";
 import Pagination from '../Pagination/Pagination';
 import IconBar, {IconBarDelete} from '../IconBar/IconBar';
 
@@ -138,11 +138,11 @@ return (
             <DeleteDepartment  clicked={() => deletesetmodalIsOpen(false)}></DeleteDepartment>
           </Modal>
 
-          <Modal show={editmodalIsOpen}>
+          {/* <Modal show={editmodalIsOpen}>
             <RenameDepartment 
               clicked={() => editsetmodalIsOpen(false)}>
             </RenameDepartment>
-          </Modal>
+          </Modal> */}
 
       <div id="second_section">
       <h2>Document List</h2>
