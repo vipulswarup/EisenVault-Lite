@@ -3,12 +3,9 @@ import { useParams , useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { faFile,faTimesCircle,faFolder} from "@fortawesome/free-solid-svg-icons";
+import { faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 
 import {getToken} from  "../../Utils/Common";
-
-
-
 
 function SearchResult(){
   let history = useHistory();
@@ -32,7 +29,7 @@ useEffect(()=>{
         console.log(error);
       }
       );
-    },[]);
+    },[result]);
 
     function handleDocument(id , name){
       history.push(`/doc/${id}/${name}`)

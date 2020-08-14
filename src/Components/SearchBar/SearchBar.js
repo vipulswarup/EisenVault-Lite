@@ -79,10 +79,9 @@ import { getToken } from '../../Utils/Common';
             placeholder="search here .."
             value={result}
             onChange={onChange}
-        />            <FontAwesomeIcon icon={faSearch}/>
-
             onKeyUp={onEnter}
-        />
+        />   
+      
         {show ? <OutsideClickHandler onOutsideClick={handleOutsideClick}><div className="menu-container">
         {data.map((r,i)=> ( 
                 

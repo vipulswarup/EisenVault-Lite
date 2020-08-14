@@ -15,7 +15,7 @@ function DocPreview() {
 
     const path = window.location.href;
 
-    const id =  params.id  
+    // const id =  params.id  
 
     // console.log(path)
     const id =  path.slice(41,77)   
@@ -37,7 +37,7 @@ function DocPreview() {
             }
         })) 
     });
-},[])
+},[id])
 
 childId.forEach(d=>{ axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.childNode}/content?attachment=false`,
     {responseType:'blob',
