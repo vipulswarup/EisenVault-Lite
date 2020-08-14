@@ -125,7 +125,7 @@ function handleDeleteDepartment(id){
 return (
   <Fragment>
 
-          <Modal show={createmodalIsOpen}>
+          {/* <Modal show={createmodalIsOpen}>
            <CreateDepartment createDept={handleCreateDepartment} 
            clicked={() => createsetmodalIsOpen(false)} 
            departmentTitle={departmentTitle}/>
@@ -136,7 +136,7 @@ return (
               clicked={() => deletesetmodalIsOpen(false)}>
             </DeleteDepartment>
             <DeleteDepartment  clicked={() => deletesetmodalIsOpen(false)}></DeleteDepartment>
-          </Modal>
+          </Modal> */}
 
           {/* <Modal show={editmodalIsOpen}>
             <RenameDepartment 
