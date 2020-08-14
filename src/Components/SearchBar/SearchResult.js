@@ -32,7 +32,7 @@ useEffect(()=>{
         console.log(error);
       }
       );
-    },[]);
+    },[result]);
 
     function handleDocument(id , name){
       history.push(`/doc/${id}/${name}`)
