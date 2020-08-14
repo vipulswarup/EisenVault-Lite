@@ -2,6 +2,7 @@ import React, {useEffect,useState,Fragment} from 'react';
 import { useParams , useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Item } from '../../backButton/backButton';
 
 import { faFile,faTimesCircle,faFolder} from "@fortawesome/free-solid-svg-icons";
 import Pagination from '../../Pagination/Pagination';
@@ -36,10 +37,7 @@ useEffect(()=>{
 
         setPaginationDefaultDoc(response.data.list.pagination) 
         console.log(response.data.list.pagination)
-      }).catch((error) => {
-        console.log(error);
-      }
-      );
+      })
     },[id]);
 
     // Get current posts
@@ -50,8 +48,13 @@ useEffect(()=>{
     // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+
     function handleDocument(file , id , name){
       file ? history.push(`/document-detailsnodeRef=workspace://SpacesStore/${id}/${name}`): history.push(`/document/${id}`)
+
+    function handleDocument(file , id, title){
+      file ? history.push(`/document-details/${id}/${title}`): history.push(`/document/${id}`)
+
     }
     
     return( 
@@ -69,7 +72,8 @@ useEffect(()=>{
                     <th id="shared">Created By</th>
                     <th id="shared">Created On</th>
                     <th id="shared">Modified On</th>
-                    <th id="action">Actions</th>
+                    <th>Actions</th>
+                    <th id="action"><Item /></th>
                   </tr>
                   </thead>
                   { currentPosts.map((d) => (

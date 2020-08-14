@@ -3,12 +3,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import ProfilePic from "../Avtar/Avtar";
 import axios from 'axios';
-import './ManageShares.scss'
+import './ManageShares.scss';
+import { useHistory } from 'react-router-dom';
+
 import Search from "../SearchBar/SearchBar";
 import { getToken } from '../../Utils/Common';
 import Pagination from '../Pagination/Pagination';
 
 function ManageShares(){
+  let history = useHistory();
+
   const[FileState,setFileState]=useState([]);
   const[DetailsState,setDetailsState]=useState([]);
 
@@ -32,6 +36,7 @@ function getData(){
     
   setFileState(response.data.list.entries)
   console.log(response.data.list.entries)
+
   response.data.list.entries.forEach(d=>{
       axios.get(`https://systest.eisenvault.net//alfresco/api/-default-/public/alfresco/versions/1/queries/nodes?term=${d.entry.name}&include=effectivity,departmentName,allowableOperations,properties,path`, 
       {headers:{
@@ -53,6 +58,12 @@ function getData(){
 },[])
 
  
+
+   //getDetailsData();
+}); 
+}
+,[]); 
+
 
 // function getDetailsData() {
 //   FileState.forEach(d=>{
@@ -80,6 +91,10 @@ const currentPosts = FileState.slice(indexOfFirstPost, indexOfLastPost);
 // Change page
 const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+function handleDocument(id,title){
+  history.push(`/document-details/${id}/${title}`)
+}
+
 return( 
       <Fragment>
        
@@ -100,9 +115,18 @@ return(
                   </thead>
                   <tbody>
                   { FileState.map((d,i) => (
+
                     <tr  id="first_details">
                     <td className="file_name-u">
                     <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> {d.entry.name}</td>
+
+                    <tr  key={d.entry.id} id="first_details">
+                    <td className="file_name-u" onClick={() => handleDocument(
+                            d.entry.nodeId,
+                            d.entry.name) }>
+                    <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> 
+                    {d.entry.name}</td>
+
                     
                     {DetailsState.map(d => (
                       <tr>

@@ -4,7 +4,8 @@ import axios from 'axios';
 
 import LoginPage from "../Components/Login/Login"
 import NavigationItems from "../Components/Navigation/NavigationItems/NavigationItems";
-import MobileMenu from "../Components/MobileMenu/MobileMenu";
+import SideDrawer from "../Components/MobileMenu/MobileSidebar/Sidedrawer";
+import DrawerToggleButton from "../Components/MobileMenu/MobileMenu";
 import Footer from "../Components/Footer/Footer";
 import MyUploads from "../Components/MyUploads/MyUploads";
 import Dashboard from "../Components/Dashboard/Dashboard";
@@ -14,16 +15,22 @@ import ManageShares from "../Components/ManageShares/ManageShares";
 //import SharedWithMe from "../Components/sharedWithMe/sharedWithMe";
 import ChangePassword from "../Components/ChangePassword/ChangePassword";
 import SubDocument from "../Components/Documents/SubDocument/SubDocument";
+
 import PdfViewer from "../Components/Documents/DocumentViewer/DocumentViewer";
 import SearchResult from '../Components/SearchBar/SearchResult';
 
+import DocPreview from "../Components/Documents/DocumentViewer/DocumentViewer";
+
+
 import PrivateRoute from '../Utils/PrivateRoutes';
-
 import './styles.scss';
-import { getToken, removeUserLocal } from "../Utils/Common";
+import { getToken, removeUserLocal, setUserLocal } from "../Utils/Common";
+import Backdrop from "../Components/Backdrop/Backdrop";
 
-const Routings = withRouter (({ location }) => {
+
+const Routings = withRouter (({ location },props) => {
   const [authLoading, setAuthLoading] = useState(true);
+  const[sideDrawerOpen,setsideDrawerOpen]=useState(false);
 
   useEffect(() => {
     const token = getToken();
@@ -41,18 +48,36 @@ const Routings = withRouter (({ location }) => {
   }).catch(error => {
       removeUserLocal();
       setAuthLoading(false);
+      
     }, []);
 
   if (authLoading && getToken()) {
     return <div className="content">Checking Authentication...</div>
   }
+   let DrawerToggleQuickHandler=()=>{
+    setsideDrawerOpen((prevState)=>{
+      return {sideDrawerOpen: !prevState.sideDrawerOpen}
+    })
+  };
+  let backdropClickHandler=()=>{
+    setsideDrawerOpen(false);
+  }
+    let backdrop;
+    if(sideDrawerOpen){
+      backdrop=<Backdrop click={backdropClickHandler} show/>
+    }
 
   return(
     <Fragment>
         <Route exact path="/" component={LoginPage} />
+    
       <div>
-        {location.pathname !== '/' && <MobileMenu />} 
-      </div>
+        
+      {location.pathname !== '/' ? backdrop : null } 
+      {location.pathname !== '/' && <SideDrawer show={sideDrawerOpen} click={backdropClickHandler}/>}
+      {backdrop}
+      {location.pathname !== '/' && <DrawerToggleButton drawertoggleHandler={DrawerToggleQuickHandler} />}
+      </div> 
 
       <div className="main_body">
         {location.pathname !== '/' && <NavigationItems />}
@@ -66,8 +91,13 @@ const Routings = withRouter (({ location }) => {
         {/* <PrivateRoute path="/sharedWithMe" component={SharedWithMe} /> */}
         <PrivateRoute path="/changePassword" component={ChangePassword} />
         <PrivateRoute path="/document/:id" component={SubDocument} />
+
         <PrivateRoute path="/doc/:id/:name" component={PdfViewer} />
         <PrivateRoute path="/search/:result" component={SearchResult} />
+
+        <PrivateRoute path="/document-details/:id/:title" 
+        component={DocPreview} />
+
         {location.pathname !== '/' &&  <Footer />}
       </div>
       </div>
