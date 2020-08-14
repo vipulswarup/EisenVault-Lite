@@ -70,12 +70,13 @@ childId.forEach(d=>{ axios.get(`https://systest.eisenvault.net/alfresco/api/-def
 
             <ProfilePic />
         <Item />
+        
         <iframe                  
         {...error && <><small style={{ color: 'red' }}>{error}</small><br /></>}
         title='myframe' 
             id='myFrame'
             src = ""
-            allowFullScreen = {true}
+            allowFullScreen
             height = "700px"
             width = "700px"
             /> 
