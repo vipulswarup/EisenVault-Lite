@@ -80,7 +80,8 @@ import { getToken } from '../../Utils/Common';
             value={result}
             onChange={onChange}
             onKeyUp={onEnter}
-        />
+        />   
+      
         {show ? <OutsideClickHandler onOutsideClick={handleOutsideClick}><div className="menu-container">
         {data.map((r,i)=> ( 
                 
@@ -99,22 +100,4 @@ import { getToken } from '../../Utils/Common';
 
  }
   
-
-  //   return (
-  //     <div className="container">
-          
-  //         <ReactSearchBox
-  //           inputBoxHeight= '1rem'
-  //           inputBoxBorderColor= 'transparent'
-  //           dropDownHoverColor= '#ccc'
-  //           dropDownBorderColor= 'transparent'
-  //           placeholder="Start typing to search your documents"
-  //           value=""
-  //           data={data}
-  //           onChange={handleSearch}
-  //         /> 
-  //   </div>
-  //   );
-  // }
-
 export default Search;

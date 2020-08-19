@@ -187,7 +187,7 @@ return (
               clicked={() => deletesetmodalIsOpen(false)}>
             </DeleteDepartment>
             <DeleteDepartment  clicked={() => deletesetmodalIsOpen(false)}></DeleteDepartment>
-          </Modal>
+          </Modal> */}
 
           {/* <Modal show={editmodalIsOpen}>
             <RenameDepartment 

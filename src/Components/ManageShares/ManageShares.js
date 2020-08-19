@@ -5,28 +5,29 @@ import ProfilePic from "../Avtar/Avtar";
 import axios from 'axios';
 import './ManageShares.scss';
 import { useHistory } from 'react-router-dom';
-
 import Search from "../SearchBar/SearchBar";
 import { getToken } from '../../Utils/Common';
 import Pagination from '../Pagination/Pagination';
-
 function ManageShares(){
   let history = useHistory();
-
   const[FileState,setFileState]=useState([]);
   const[DetailsState,setDetailsState]=useState([]);
-
   const [ currentPage, setCurrentPage ] = useState(1);
   const [postsPerPage] = useState(10);
-
  //API CALL
  
+<<<<<<< HEAD
 
  useEffect(()=>{
   getDetailsData();
 },[])
 
  const getDetailsData = () => {
+=======
+function getData(){
+}
+ useEffect(()=>{
+>>>>>>> 34e46c55826ad51e94661ac9c4c81ce5fd2bdcc5
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links?include=properties', 
   {headers:{
     Authorization: `Basic ${btoa(getToken())}`
@@ -34,7 +35,6 @@ function ManageShares(){
   }).then((response) => {  
   setFileState(response.data.list.entries)
   console.log(response.data.list.entries)
-
   response.data.list.entries.forEach(d=>{
       axios.get(`https://systest.eisenvault.net//alfresco/api/-default-/public/alfresco/versions/1/queries/nodes?term=${d.entry.name}&include=effectivity,departmentName,allowableOperations,properties,path`, 
       {headers:{
@@ -52,21 +52,43 @@ function ManageShares(){
       }))})
       .catch((error)=> console.log(error));
     }) 
+<<<<<<< HEAD
 });
   }
 
 
+=======
+}); 
+},[])
+ 
+
+// function getDetailsData() {
+//   FileState.forEach(d=>{
+//   axios.get(`https://systest.eisenvault.net//alfresco/api/-default-/public/alfresco/versions/1/queries/nodes?term=${d.entry.name}&include=effectivity,departmentName,allowableOperations,properties,path`, 
+//   {headers:{
+//     Authorization: `Basic ${btoa(getToken())}`
+//     }
+//   }).then((response) => {
+//     console.log("received")
+//   console.log(response.data)
+//   setDetailsState(response.data.list.entries.map(d=>{
+//     return {
+//       EffectiveFrom:d.entry.properties["cm:from"]    }
+//   }))})
+//   .catch((error)=> console.log(error));
+// })
+//  }
+>>>>>>> 34e46c55826ad51e94661ac9c4c81ce5fd2bdcc5
 // Get current posts
 const indexOfLastPost = currentPage * postsPerPage;
 const indexOfFirstPost = indexOfLastPost - postsPerPage;
 const currentPosts = FileState.slice(indexOfFirstPost, indexOfLastPost);
-
 // Change page
 const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
 function handleDocument(id,title){
   history.push(`/document-details/${id}/${title}`)
 }
+<<<<<<< HEAD
 
 function handleDelete(id){
   axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links/${id}`,  {
@@ -86,6 +108,8 @@ function handleDelete(id){
 });
 }
 
+=======
+>>>>>>> 34e46c55826ad51e94661ac9c4c81ce5fd2bdcc5
 return( 
       <Fragment>
        
@@ -106,7 +130,6 @@ return(
                   </thead>
                   <tbody>
                   { FileState.map((d,i) => (
-
                     <tr  id="first_details">
                     <tr  key={d.entry.id} id="first_details">
                     <td className="file_name-u" onClick={() => handleDocument(
@@ -114,8 +137,7 @@ return(
                             d.entry.name) }>
                     <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> 
                     {d.entry.name}</td></tr>
-
-                    
+   
                     {DetailsState.map(d => (
                       <tr>
                       <td className="details-u-s">{d.EffectiveFrom ? d.EffectiveFrom.split('T')[0]: null }</td>
@@ -133,7 +155,6 @@ return(
               </table>
             </div>
             </div>
-
       <div className="col-md-6">
       <Pagination
        postsPerPage={postsPerPage}
@@ -142,8 +163,6 @@ return(
         />
       </div>
     </Fragment>
-
           )
           }
-
 export default ManageShares;
