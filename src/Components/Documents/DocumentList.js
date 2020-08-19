@@ -30,13 +30,15 @@ const DocumentsList = () => {
   const [postsPerPage] = useState(10);
 
   const departmentTitle = useFormInput ('');
+  const [hasMoreItems , setMoreItems] = useState('');
+  const [skipCount , setSkipCount ] = useState('');
 
   useEffect(()=>{
     getDepartments();
   },[]);
 
   const getDepartments=()=>{
-    axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')`,      
+    axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=0`,      
       {
         headers:
         {
@@ -45,7 +47,9 @@ const DocumentsList = () => {
         }).then((response) => {
       console.log(response.data)
       setDepartments(response.data.list.entries)
-      setPaginationDefaultDept(response.data.list.pagination) 
+      setPaginationDefaultDept(response.data.list.pagination)
+      setMoreItems(response.data.list.pagination.hasMoreItems) 
+      setSkipCount(response.data.list.pagination.skipCount + 10)
       console.log(response.data.list.pagination)     
     });
   }
@@ -121,6 +125,53 @@ function handleDeleteDepartment(id){
     console.log(error)
 });
 }
+
+function next(){
+  
+  //  setSkipCount(skipCount + 10)
+   console.log(skipCount);
+   axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=${skipCount}`,
+   {headers:{
+     Authorization: `Basic ${btoa(getToken())}`
+   }}).then((response) => {
+    console.log(response.data)
+    setDepartments(response.data.list.entries)
+    setPaginationDefaultDept(response.data.list.pagination) 
+    console.log(response.data.list.pagination)
+     setMoreItems(response.data.list.pagination.hasMoreItems)
+     if (response.data.list.pagination.hasMoreItems){
+      setSkipCount(response.data.list.pagination.skipCount + 10)
+     }
+     else{
+      setSkipCount(response.data.list.pagination.skipCount - 10)
+     }
+     console.log(response.data.list.entries)
+     console.log(response.data.list.pagination.skipCount)
+   });
+ 
+}
+
+function previous(){
+  axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=${skipCount}`,
+  {headers:{
+    Authorization: `Basic ${btoa(getToken())}`
+  }}).then((response) => {
+   console.log(response.data)
+   setDepartments(response.data.list.entries)
+   setPaginationDefaultDept(response.data.list.pagination) 
+      setMoreItems(response.data.list.pagination.hasMoreItems)
+      if (response.data.list.pagination.skipCount > 0){
+        setSkipCount(response.data.list.pagination.skipCount - 10)
+      }
+      else{
+        setSkipCount(response.data.list.pagination.skipCount + 10)
+      }
+     
+      console.log(response.data.list.entries)
+      console.log(response.data.list.pagination)
+      console.log(response.data.list.pagination.skipCount)
+    });
+ }
 
 return (
   <Fragment>
@@ -202,9 +253,10 @@ return (
 
       <div className="col-md-6">
       <Pagination
-       postsPerPage={postsPerPage}
-       totalPosts={paginationDefualtDept.count}
-       paginate={paginate}
+       handlePrev={previous}
+       handleNext={next}
+       hasMoreItems={hasMoreItems}
+       skipCount={skipCount-10}
         />
         </div>
 

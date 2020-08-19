@@ -21,19 +21,17 @@ function ManageShares(){
 
  //API CALL
  
-function getData(){
-
-}
-
 
  useEffect(()=>{
+  getDetailsData();
+},[])
 
+ const getDetailsData = () => {
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links?include=properties', 
   {headers:{
     Authorization: `Basic ${btoa(getToken())}`
     }
-  }).then((response) => {
-    
+  }).then((response) => {  
   setFileState(response.data.list.entries)
   console.log(response.data.list.entries)
 
@@ -47,37 +45,15 @@ function getData(){
       console.log(response.data)
       
       setDetailsState(response.data.list.entries.map(d=>{
-        console.log(d.entry.properties["cm:from"])
+        console.log(d.entry.properties["cm:to"])
         return {
           EffectiveFrom:d.entry.properties["cm:from"],   
           EffectiveTo:d.entry.properties["cm:to"] }
       }))})
       .catch((error)=> console.log(error));
     }) 
-}); 
-},[])
-
- 
-
-  
-
-
-// function getDetailsData() {
-//   FileState.forEach(d=>{
-//   axios.get(`https://systest.eisenvault.net//alfresco/api/-default-/public/alfresco/versions/1/queries/nodes?term=${d.entry.name}&include=effectivity,departmentName,allowableOperations,properties,path`, 
-//   {headers:{
-//     Authorization: `Basic ${btoa(getToken())}`
-//     }
-//   }).then((response) => {
-//     console.log("received")
-//   console.log(response.data)
-//   setDetailsState(response.data.list.entries.map(d=>{
-//     return {
-//       EffectiveFrom:d.entry.properties["cm:from"]    }
-//   }))})
-//   .catch((error)=> console.log(error));
-// })
-//  }
+});
+  }
 
 
 // Get current posts
@@ -90,6 +66,24 @@ const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 function handleDocument(id,title){
   history.push(`/document-details/${id}/${title}`)
+}
+
+function handleDelete(id){
+  axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links/${id}`,  {
+    headers:
+          {
+            Authorization: `Basic ${btoa(getToken())}`
+          }
+  }).then(response => {
+    getDetailsData()
+    alert("unshared"); 
+    console.log(response)
+  }).catch(error => {
+    if (error.response.status===404){
+      alert("Something went wrong!!");
+    }
+    console.log(error)
+});
 }
 
 return( 
@@ -131,7 +125,7 @@ return(
                   
                     <td className="delete-u-s">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
-                       />
+                       onClick = {() => handleDelete(d.entry.id)}/>
                   </td>
                   </tr>
                   ) )}
