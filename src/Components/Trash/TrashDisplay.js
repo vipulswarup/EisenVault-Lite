@@ -69,6 +69,7 @@ const permanentDeleteByIds=()=>{
         console.log(response.data);
         closeModal();
         getDeletedData();
+      
          }).catch(err=>alert(err));
      };
     })}
@@ -77,9 +78,7 @@ const permanentDeleteByIds=()=>{
 const RestoreFileByIds=()=>{
   TrashFileState.forEach(d=>{
     if(d.select){
-      axios.post(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes/${d.id}/restore`, 
-      {},
-      axios.put(`https://systest.eisenvault.net/alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
+       axios.put(`https://systest.eisenvault.net/alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
         {headers:
         {
           Authorization: `Basic ${btoa( getToken() )}`
@@ -88,7 +87,7 @@ const RestoreFileByIds=()=>{
           console.log(response.data);
           closeModal();
           getDeletedData();
-          }).catch(err=>alert(err)));
+          }).catch(err=>alert(err));
       };
       })}
 
@@ -112,11 +111,11 @@ return(
                     }));
                   }}/></th>
                 <th id="item_name">Item Name</th>
-                <th id="created">Created</th> 
-                <th id="deleted">Deleted</th>
+                <th id="created">Created on</th> 
+                <th id="deleted">Deleted on</th>
                  <th id="action-trash">
 
-                   <NestedToolTip restored={()=>{RestoreFileByIds()}}/>
+                   {/* <NestedToolTip restored={()=>{RestoreFileByIds()}}/> */}
                    <NestedToolTip restored={()=>{RestoreFileByIds()}} deleted={()=>{permanentDeleteByIds()}}/>
                       {/*  <label>Action </label>
                       <select id="action-t">

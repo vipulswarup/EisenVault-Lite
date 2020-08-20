@@ -37,16 +37,7 @@ import { getToken } from '../../Utils/Common';
                         throw new Error(err);
                     }
                      };
-                  
-        // },[]);
-
-        // useEffect(()=> {
-        //     const results = filtered.filter(res=> res.name.toLowerCase().includes(result)
-
-        //     ); 
-        //     setData(results)
-        // } ,[result])
-        //console.log(data)
+                
       const  handleOutsideClick = (e) => {
         setShow(false)
       }
