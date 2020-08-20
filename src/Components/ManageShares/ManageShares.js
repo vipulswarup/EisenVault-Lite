@@ -14,19 +14,17 @@ function ManageShares(){
   const[DetailsState,setDetailsState]=useState([]);
   const [ currentPage, setCurrentPage ] = useState(1);
   const [postsPerPage] = useState(10);
- //API CALL
- 
+  const [hasMoreItems , setMoreItems] = useState('');
+  const [skipCount , setSkipCount ] = useState('');
 
+ //API CALL
  useEffect(()=>{
   GetDetailsData();
 },[])
 
  const GetDetailsData = () => {
-function GetData(){
-}
- useEffect(()=>{
-  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links?include=properties', 
-  {headers:{
+
+ axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links?&maxItems=10&skipCount=0&include=properties',  {headers:{
     Authorization: `Basic ${btoa(getToken())}`
     }
   }).then((response) => {  
@@ -50,7 +48,6 @@ function GetData(){
       .catch((error)=> console.log(error));
     }) 
 });
-  },[])
  
 
 // function getDetailsData() {
@@ -95,6 +92,43 @@ function handleDelete(id){
     console.log(error)
 });
 }
+function next(){
+  
+  //  setSkipCount(skipCount + 10)
+   console.log(skipCount);
+   axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links?&maxItems=10&skipCount=${skipCount}&include=properties`,
+   {headers:{
+     Authorization: `Basic ${btoa(getToken())}`
+   }}).then((response) => {
+    console.log(response.data)
+     setMoreItems(response.data.list.pagination.hasMoreItems)
+     if (response.data.list.pagination.hasMoreItems){
+      setSkipCount(response.data.list.pagination.skipCount + 10)
+     }
+     else{
+      setSkipCount(response.data.list.pagination.skipCount - 10)
+     }
+    });
+ 
+}
+
+function previous(){
+  axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links?&maxItems=10&skipCount=${skipCount}&include=properties`,
+  {headers:{
+    Authorization: `Basic ${btoa(getToken())}`
+  }}).then((response) => {
+      setMoreItems(response.data.list.pagination.hasMoreItems)
+      if (response.data.list.pagination.skipCount > 0){
+        setSkipCount(response.data.list.pagination.skipCount - 10)
+      }
+      else{
+        setSkipCount(response.data.list.pagination.skipCount + 10)
+      }
+     });
+ }
+
+
+
 
 return( 
       <Fragment>
@@ -143,9 +177,11 @@ return(
             </div>
       <div className="col-md-6">
       <Pagination
-       postsPerPage={postsPerPage}
-       totalPosts={FileState.length}
-       paginate={paginate}
+          handlePrev={previous}
+          handleNext={next}
+          hasMoreItems={hasMoreItems}
+          skipCount={skipCount-10}
+
         />
       </div>
     </Fragment>
