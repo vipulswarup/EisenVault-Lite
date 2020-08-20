@@ -1,16 +1,14 @@
 import React, {useEffect,useState,Fragment} from 'react';
 import { useParams , useHistory } from 'react-router-dom';
-import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Item } from '../../backButton/backButton';
 
 import { faFile,faTimesCircle,faFolder} from "@fortawesome/free-solid-svg-icons";
 import Pagination from '../../Pagination/Pagination';
-
+import {instance} from '../../ApiUrl/endpointName.instatnce'
 import Search from "../../SearchBar/SearchBar";
-import {getToken} from  "../../../Utils/Common";
 import ProfilePic from "../../Avtar/Avtar";
-
+import {getToken} from "../../../Utils/Common"
 import './SubDocument.scss';
 
 function SubDocument(){
@@ -24,6 +22,9 @@ function SubDocument(){
    const [ currentPage, setCurrentPage ] = useState(1);
    const [postsPerPage] = useState(10);
 
+useEffect(()=>{
+        instance.get(`/nodes/${id}/children?skipCount=0`,
+        {headers:
    useEffect(()=>{
     getData();
   },[]);
@@ -33,11 +34,10 @@ function SubDocument(){
           headers:
           {
             Authorization: `Basic ${btoa(getToken())}`
-          }
-          }).then((response) => {
+          }})
+        .then((response) => {
         console.log(response.data)
         setDocuments(response.data.list.entries)
-
         setPaginationDefaultDoc(response.data.list.pagination) 
         console.log(response.data.list.pagination)
       })

@@ -1,5 +1,5 @@
 import React,{Fragment , useEffect , useState} from 'react';
-import axios from 'axios';
+import {instance} from '../ApiUrl/endpointName.instatnce'
 import { useHistory} from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, 
@@ -9,7 +9,7 @@ import { faPen,
 import { faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
 import './DocumentList.scss';
 
-import {getToken,getUser} from  "../../Utils/Common";
+import {getUser,getToken} from  "../../Utils/Common";
 import ProfilePic from "../Avtar/Avtar";
 
 import Search from "../SearchBar/SearchBar";
@@ -22,7 +22,7 @@ import IconBar, {IconBarDelete} from '../IconBar/IconBar';
 const DocumentsList = () => {
   const user = getUser();
   const [createmodalIsOpen, createsetmodalIsOpen] = useState(false);
-  const [editmodalIsOpen, editsetmodalIsOpen] = useState(false);
+  // const [editmodalIsOpen, editsetmodalIsOpen] = useState(false);
   const [deletemodalIsOpen, deletesetmodalIsOpen] = useState(false);
   const [ paginationDefualtDept, setPaginationDefaultDept ] = useState([]);
 
@@ -42,13 +42,13 @@ const DocumentsList = () => {
   },[]);
 
   const getDepartments=()=>{
+    instance.get(`/sites?where=(visibility='PRIVATE')`,
+    {headers:
     axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=0`,      
       {
-        headers:
-        {
-          Authorization: `Basic ${btoa(getToken())}`
-        }
-        }).then((response) => {
+        Authorization: `Basic ${btoa(getToken())}`
+      }})
+    .then((response) => {
       console.log(response.data)
       setDepartments(response.data.list.entries)
       setPaginationDefaultDept(response.data.list.pagination)
@@ -68,13 +68,11 @@ const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 function handleDocumentLibrary(key){
 
-  axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${key}/children`,
-        {
-          headers:
-          {
-            Authorization: `Basic ${btoa(getToken())}`
-          }
-          }).then((response) => {
+  instance.get(`/nodes/${key}/children`,{headers:
+    {
+      Authorization: `Basic ${btoa(getToken())}`
+    }})
+  .then((response) => {
         console.log(response.data)
         setDocuments(response.data.list.entries)
         
@@ -89,15 +87,9 @@ function handleDocumentLibrary(key){
 }
 
 function handleCreateDepartment(){
-  axios.post('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites',
+  instance.post('/sites',
   {
    title: departmentTitle.value , visibility: "PUBLIC"
-  },
-  {
-    headers:
-          {
-            Authorization: `Basic ${btoa(getToken())}`
-          }
   }).then(response => {
     alert("Department successfully created");
     getDepartments()
@@ -112,13 +104,8 @@ createsetmodalIsOpen(false)
 }
 
 function handleDeleteDepartment(id){
-  axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites/${id}?permanent=false`,
-  {
-    headers:
-          {
-            Authorization: `Basic ${btoa(getToken())}`
-          }
-  }).then(response => {
+  instance.delete(`/sites/${id}?permanent=false`)
+  .then(response => {
     alert("Department successfully deleted");
     getDepartments()
     console.log(response)

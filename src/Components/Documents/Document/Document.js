@@ -41,6 +41,10 @@ function Document(){
 
     // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    
+    function handleDocument(id , name){
+      history.push(`/document-details/${id}/${name}`)
+    }
 
     return( 
       <Fragment>
@@ -66,7 +70,10 @@ function Document(){
                   <tbody>
                   { currentPosts.map((d,i) => (
                     <tr  key={d.id} id="first_details">
-                    <td className="file_name-u">
+                    <td className="file_name-u"
+                    onClick={() => handleDocument(
+                      d.entry.id,
+                      d.entry.name) }>
                     <Link to={
                       {pathname:`/document/${d.entry.name}/
                       ${d.entry.id}`}}>

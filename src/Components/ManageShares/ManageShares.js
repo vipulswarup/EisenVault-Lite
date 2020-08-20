@@ -19,12 +19,12 @@ function ManageShares(){
 
  //API CALL
  useEffect(()=>{
-  getDetailsData();
+  GetDetailsData();
 },[])
- 
- const getDetailsData = () => {
-  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links?&maxItems=10&skipCount=0&include=properties', 
-  {headers:{
+
+ const GetDetailsData = () => {
+
+ axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links?&maxItems=10&skipCount=0&include=properties',  {headers:{
     Authorization: `Basic ${btoa(getToken())}`
     }
   }).then((response) => {  
@@ -48,9 +48,24 @@ function ManageShares(){
       .catch((error)=> console.log(error));
     }) 
 });
-  }
+ 
 
-
+// function getDetailsData() {
+//   FileState.forEach(d=>{
+//   axios.get(`https://systest.eisenvault.net//alfresco/api/-default-/public/alfresco/versions/1/queries/nodes?term=${d.entry.name}&include=effectivity,departmentName,allowableOperations,properties,path`, 
+//   {headers:{
+//     Authorization: `Basic ${btoa(getToken())}`
+//     }
+//   }).then((response) => {
+//     console.log("received")
+//   console.log(response.data)
+//   setDetailsState(response.data.list.entries.map(d=>{
+//     return {
+//       EffectiveFrom:d.entry.properties["cm:from"]    }
+//   }))})
+//   .catch((error)=> console.log(error));
+// })
+//  }
 // Get current posts
 const indexOfLastPost = currentPage * postsPerPage;
 const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -62,13 +77,12 @@ function handleDocument(id,title){
 }
 
 function handleDelete(id){
-  axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links/${id}`,  {
-    headers:
+  axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links/${id}`,  
+  {headers:
           {
             Authorization: `Basic ${btoa(getToken())}`
-          }
-  }).then(response => {
-    getDetailsData()
+          }}).then(response => {
+    GetDetailsData()
     alert("unshared"); 
     console.log(response)
   }).catch(error => {
@@ -172,5 +186,6 @@ return(
       </div>
     </Fragment>
           )
-          }
+          }}
+
 export default ManageShares;
