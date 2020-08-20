@@ -16,15 +16,23 @@ function ManageShares(){
   const [postsPerPage] = useState(10);
  //API CALL
  
+<<<<<<< HEAD
+
+ useEffect(()=>{
+  getDetailsData();
+},[])
+
+ const getDetailsData = () => {
+=======
 function getData(){
 }
  useEffect(()=>{
+>>>>>>> 34e46c55826ad51e94661ac9c4c81ce5fd2bdcc5
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links?include=properties', 
   {headers:{
     Authorization: `Basic ${btoa(getToken())}`
     }
-  }).then((response) => {
-    
+  }).then((response) => {  
   setFileState(response.data.list.entries)
   console.log(response.data.list.entries)
   response.data.list.entries.forEach(d=>{
@@ -37,13 +45,19 @@ function getData(){
       console.log(response.data)
       
       setDetailsState(response.data.list.entries.map(d=>{
-        console.log(d.entry.properties["cm:from"])
+        console.log(d.entry.properties["cm:to"])
         return {
           EffectiveFrom:d.entry.properties["cm:from"],   
           EffectiveTo:d.entry.properties["cm:to"] }
       }))})
       .catch((error)=> console.log(error));
     }) 
+<<<<<<< HEAD
+});
+  }
+
+
+=======
 }); 
 },[])
  
@@ -64,6 +78,7 @@ function getData(){
 //   .catch((error)=> console.log(error));
 // })
 //  }
+>>>>>>> 34e46c55826ad51e94661ac9c4c81ce5fd2bdcc5
 // Get current posts
 const indexOfLastPost = currentPage * postsPerPage;
 const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -73,6 +88,28 @@ const paginate = (pageNumber) => setCurrentPage(pageNumber);
 function handleDocument(id,title){
   history.push(`/document-details/${id}/${title}`)
 }
+<<<<<<< HEAD
+
+function handleDelete(id){
+  axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links/${id}`,  {
+    headers:
+          {
+            Authorization: `Basic ${btoa(getToken())}`
+          }
+  }).then(response => {
+    getDetailsData()
+    alert("unshared"); 
+    console.log(response)
+  }).catch(error => {
+    if (error.response.status===404){
+      alert("Something went wrong!!");
+    }
+    console.log(error)
+});
+}
+
+=======
+>>>>>>> 34e46c55826ad51e94661ac9c4c81ce5fd2bdcc5
 return( 
       <Fragment>
        
@@ -110,7 +147,7 @@ return(
                   
                     <td className="delete-u-s">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
-                       />
+                       onClick = {() => handleDelete(d.entry.id)}/>
                   </td>
                   </tr>
                   ) )}
