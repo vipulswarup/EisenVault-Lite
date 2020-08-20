@@ -53,7 +53,8 @@ useEffect(()=>{
                   { documents.map((d) => (
                   <tbody key={d.nodeRef}>
                     <tr id="first_details">
-                    <td className="file_name-u"  onClick={() => handleDocument(
+                    <td className="file_name-u"  
+                    onClick={() => handleDocument(
                       d.nodeRef.substring(24),
                       d.name)}
                    >
