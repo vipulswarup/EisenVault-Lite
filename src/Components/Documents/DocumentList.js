@@ -2,6 +2,10 @@ import React,{Fragment , useEffect , useState} from 'react';
 import {instance} from '../ApiUrl/endpointName.instatnce'
 import { useHistory} from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen, 
+  faPlus, 
+  faTrashAlt } 
+  from "@fortawesome/free-solid-svg-icons";
 import { faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
 import './DocumentList.scss';
 
@@ -30,6 +34,8 @@ const DocumentsList = () => {
   const [postsPerPage] = useState(10);
 
   const departmentTitle = useFormInput ('');
+  const [hasMoreItems , setMoreItems] = useState('');
+  const [skipCount , setSkipCount ] = useState('');
 
   useEffect(()=>{
     getDepartments();
@@ -38,13 +44,16 @@ const DocumentsList = () => {
   const getDepartments=()=>{
     instance.get(`/sites?where=(visibility='PRIVATE')`,
     {headers:
+    axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=0`,      
       {
         Authorization: `Basic ${btoa(getToken())}`
       }})
     .then((response) => {
       console.log(response.data)
       setDepartments(response.data.list.entries)
-      setPaginationDefaultDept(response.data.list.pagination) 
+      setPaginationDefaultDept(response.data.list.pagination)
+      setMoreItems(response.data.list.pagination.hasMoreItems) 
+      setSkipCount(response.data.list.pagination.skipCount + 10)
       console.log(response.data.list.pagination)     
     });
   }
@@ -108,6 +117,53 @@ function handleDeleteDepartment(id){
 });
 }
 
+function next(){
+  
+  //  setSkipCount(skipCount + 10)
+   console.log(skipCount);
+   axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=${skipCount}`,
+   {headers:{
+     Authorization: `Basic ${btoa(getToken())}`
+   }}).then((response) => {
+    console.log(response.data)
+    setDepartments(response.data.list.entries)
+    setPaginationDefaultDept(response.data.list.pagination) 
+    console.log(response.data.list.pagination)
+     setMoreItems(response.data.list.pagination.hasMoreItems)
+     if (response.data.list.pagination.hasMoreItems){
+      setSkipCount(response.data.list.pagination.skipCount + 10)
+     }
+     else{
+      setSkipCount(response.data.list.pagination.skipCount - 10)
+     }
+     console.log(response.data.list.entries)
+     console.log(response.data.list.pagination.skipCount)
+   });
+ 
+}
+
+function previous(){
+  axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=${skipCount}`,
+  {headers:{
+    Authorization: `Basic ${btoa(getToken())}`
+  }}).then((response) => {
+   console.log(response.data)
+   setDepartments(response.data.list.entries)
+   setPaginationDefaultDept(response.data.list.pagination) 
+      setMoreItems(response.data.list.pagination.hasMoreItems)
+      if (response.data.list.pagination.skipCount > 0){
+        setSkipCount(response.data.list.pagination.skipCount - 10)
+      }
+      else{
+        setSkipCount(response.data.list.pagination.skipCount + 10)
+      }
+     
+      console.log(response.data.list.entries)
+      console.log(response.data.list.pagination)
+      console.log(response.data.list.pagination.skipCount)
+    });
+ }
+
 return (
   <Fragment>
     <div id="second_section">
@@ -151,9 +207,12 @@ return (
                           </DeleteDepartment>
                           <DeleteDepartment  clicked={() => deletesetmodalIsOpen(false)}></DeleteDepartment>
                         </Modal> &&
-                        <IconBarDelete                 
-                       delete = {()=>{handleDeleteDepartment(department.entry.id)}}
-                      />
+                      <div>
+                        <FontAwesomeIcon icon={faTrashAlt} onClick={(e) => { if (window.confirm(`Are you sure you wish to delete ${department.entry.title}`))
+                        handleDeleteDepartment(department.entry.id)} }
+                        className="icon-item delete"/>
+                      </div>
+  
                       }
                       
                     </td>
@@ -167,9 +226,10 @@ return (
 
       <div className="col-md-6">
       <Pagination
-       postsPerPage={postsPerPage}
-       totalPosts={paginationDefualtDept.count}
-       paginate={paginate}
+       handlePrev={previous}
+       handleNext={next}
+       hasMoreItems={hasMoreItems}
+       skipCount={skipCount-10}
         />
         </div>
 

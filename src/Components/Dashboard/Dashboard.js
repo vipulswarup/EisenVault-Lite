@@ -12,27 +12,33 @@ import ProfilePic from "../Avtar/Avtar";
 import Pagination from '../Pagination/Pagination';
 
 const Dashboard = () => {
+  let personId = getUser();
   let history = useHistory();
   let params = useParams();
   const id = params.id;
-
+  
   const [count, setCount] = useState(0)
   const [ documents , setDocuments ] = useState([]);
   const [ currentPage, setCurrentPage ] = useState(1);
   const [postsPerPage] = useState(10);
   const [ paginationDefualt, setPaginationDefault ] = useState([]);
+  const [hasMoreItems , setMoreItems] = useState('');
+  const [skipCount , setSkipCount ] = useState('');
 
   //API call to get the activities list.
   useEffect(() => {
 
-    let personId = getUser();
-    axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=0&who=me`,
+    
+    axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=0&who=me&maxItems=10`,
     {headers:{
       Authorization: `Basic ${btoa(getToken())}`
     }}).then((response) => {
       setDocuments(response.data.list.entries)
-      setPaginationDefault(response.data.list.pagination) 
+      setPaginationDefault(response.data.list.pagination)
+      setMoreItems(response.data.list.pagination.hasMoreItems)
+      setSkipCount(response.data.list.pagination.skipCount + 10)
       console.log(response.data.list.entries)
+      console.log(response.data.list.pagination)
     });
   }, []);
 
@@ -50,6 +56,50 @@ const Dashboard = () => {
     
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  function next(){
+  
+    //  setSkipCount(skipCount + 10)
+     console.log(skipCount);
+     axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=${skipCount}&who=me&maxItems=10`,
+     {headers:{
+       Authorization: `Basic ${btoa(getToken())}`
+     }}).then((response) => {
+       setDocuments(response.data.list.entries)
+       setPaginationDefault(response.data.list.pagination)
+       setMoreItems(response.data.list.pagination.hasMoreItems)
+       setMoreItems(response.data.list.pagination.hasMoreItems)
+     if (response.data.list.pagination.hasMoreItems){
+      setSkipCount(response.data.list.pagination.skipCount + 10)
+     }
+     else{
+      setSkipCount(response.data.list.pagination.skipCount - 10)
+     }
+       console.log(response.data.list.entries)
+       console.log(response.data.list.pagination.skipCount)
+     });
+   
+  }
+
+  function previous(){
+      axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=${skipCount}&who=me&maxItems=10`,
+      {headers:{
+        Authorization: `Basic ${btoa(getToken())}`
+      }}).then((response) => {
+        setDocuments(response.data.list.entries)
+        setPaginationDefault(response.data.list.pagination)
+        setMoreItems(response.data.list.pagination.hasMoreItems)
+        if (response.data.list.pagination.skipCount > 0){
+          setSkipCount(response.data.list.pagination.skipCount - 10)
+        }
+        else{
+          setSkipCount(response.data.list.pagination.skipCount + 10)
+        }
+        console.log(response.data.list.entries)
+        console.log(response.data.list.pagination)
+        console.log(response.data.list.pagination.skipCount)
+      });
+   }
 
   function handleDocument(id,title){
     history.push(`/document-details/${id}/${title}`)
@@ -98,9 +148,13 @@ const Dashboard = () => {
   
     <div className="col-md-6">
      <Pagination
-      postsPerPage={postsPerPage}
-      totalPosts={paginationDefualt.count}
-      paginate={paginate}
+     handlePrev={previous}
+     handleNext={next}
+     hasMoreItems={hasMoreItems}
+     skipCount={skipCount}
+      // postsPerPage={postsPerPage}
+      // totalPosts={paginationDefualt.count}
+      // paginate={paginate}
         />  
     </div>
 

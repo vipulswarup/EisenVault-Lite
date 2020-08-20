@@ -25,6 +25,13 @@ function SubDocument(){
 useEffect(()=>{
         instance.get(`/nodes/${id}/children?skipCount=0`,
         {headers:
+   useEffect(()=>{
+    getData();
+  },[]);
+  const getData=()=>{
+            axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/children?skipCount=0`,
+        {
+          headers:
           {
             Authorization: `Basic ${btoa(getToken())}`
           }})
@@ -34,8 +41,19 @@ useEffect(()=>{
         setPaginationDefaultDoc(response.data.list.pagination) 
         console.log(response.data.list.pagination)
       })
-    },[id]);
+    };
+    const handleDelete=(id,name)=>{
+      axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`, 
+      {headers:{
+      Authorization: `Basic ${btoa(getToken())}`
+       }
+     }).then((data)=>{
+          console.log(data);
+          getData();
+           }).catch(err=>alert(err));
+      }
 
+  
     // Get current posts
       const indexOfLastPost = currentPage * postsPerPage;
       const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -86,7 +104,8 @@ useEffect(()=>{
                     <td className="details-u-s">{d.entry.createdAt.split('T')[0]}</td>
                     <td className="details-u-s">{d.entry.modifiedAt.split('T')[0]}</td>
                     <td className="delete-u-s">
-                    <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} />
+                    <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle}
+                    onClick={(e) => { if (window.confirm(`Are you sure you wish to delete ${d.entry.name}`)) handleDelete(d.entry.id,d.entry.name) }} />
                   </td>
                   </tr>
                 </tbody>
@@ -105,6 +124,6 @@ useEffect(()=>{
     </Fragment>
 
           )
-          }
+                    }
         
 export default SubDocument;
