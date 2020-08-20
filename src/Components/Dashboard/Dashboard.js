@@ -51,19 +51,6 @@ const Dashboard = () => {
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // function CheckPosts(){
-  //   const maxitems = (paginationDefualt.maxItems);
-  //   console.log(maxitems)
-
-  //   const hasMoreItem = (paginationDefualt.hasMoreItems);
-  //   console.log(hasMoreItem)
-
-  //   return( hasMoreItem===true ? 
-  //     documents.length+10 && currentPosts.length+100
-  //     : paginationDefualt )
-  // }
-  // CheckPosts();
-
   function handleDocument(id,title){
     history.push(`/document-details/${id}/${title}`)
   }
