@@ -2,6 +2,10 @@ import React,{Fragment , useEffect , useState} from 'react';
 import axios from 'axios';
 import { useHistory} from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen, 
+  faPlus, 
+  faTrashAlt } 
+  from "@fortawesome/free-solid-svg-icons";
 import { faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
 import './DocumentList.scss';
 
@@ -216,9 +220,12 @@ return (
                           </DeleteDepartment>
                           <DeleteDepartment  clicked={() => deletesetmodalIsOpen(false)}></DeleteDepartment>
                         </Modal> &&
-                        <IconBarDelete                 
-                       delete = {()=>{handleDeleteDepartment(department.entry.id)}}
-                      />
+                      <div>
+                        <FontAwesomeIcon icon={faTrashAlt} onClick={(e) => { if (window.confirm(`Are you sure you wish to delete ${department.entry.title}`))
+                        handleDeleteDepartment(department.entry.id)} }
+                        className="icon-item delete"/>
+                      </div>
+  
                       }
                       
                     </td>
