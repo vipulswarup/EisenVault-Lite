@@ -29,7 +29,7 @@ function TrashDisplayFiles(props){
   },[]);
 
 const getDeletedData=()=>{
-  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?&maxItems=10&skipCount=0',
+  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=0&maxItems=10',
     {headers:{
     Authorization: `Basic ${btoa(getToken())}`
      }}).then((response) => {
@@ -96,7 +96,7 @@ const RestoreFileByIds=()=>{
   
         //  setSkipCount(skipCount + 10)
          console.log(skipCount);
-         axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?&maxItems=10&skipCount=${skipCount}`,
+         axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=${skipCount}&maxItems=10`,
          {headers:{
            Authorization: `Basic ${btoa(getToken())}`
          }}).then((response) => {
@@ -113,7 +113,7 @@ const RestoreFileByIds=()=>{
       }
       
       function previous(){
-        axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?&maxItems=10&skipCount=${skipCount}`,
+        axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=${skipCount}&maxItems=10`,
         {headers:{
           Authorization: `Basic ${btoa(getToken())}`
         }}).then((response) => {
