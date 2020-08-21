@@ -16,18 +16,12 @@ function ManageShares(){
   const [postsPerPage] = useState(10);
  //API CALL
  
-<<<<<<< HEAD
 
  useEffect(()=>{
   getDetailsData();
 },[])
 
  const getDetailsData = () => {
-=======
-function getData(){
-}
- useEffect(()=>{
->>>>>>> 34e46c55826ad51e94661ac9c4c81ce5fd2bdcc5
   axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links?include=properties', 
   {headers:{
     Authorization: `Basic ${btoa(getToken())}`
@@ -52,14 +46,12 @@ function getData(){
       }))})
       .catch((error)=> console.log(error));
     }) 
-<<<<<<< HEAD
+
 });
   }
 
 
-=======
-}); 
-},[])
+
  
 
 // function getDetailsData() {
@@ -78,7 +70,7 @@ function getData(){
 //   .catch((error)=> console.log(error));
 // })
 //  }
->>>>>>> 34e46c55826ad51e94661ac9c4c81ce5fd2bdcc5
+
 // Get current posts
 const indexOfLastPost = currentPage * postsPerPage;
 const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -88,7 +80,7 @@ const paginate = (pageNumber) => setCurrentPage(pageNumber);
 function handleDocument(id,title){
   history.push(`/document-details/${id}/${title}`)
 }
-<<<<<<< HEAD
+
 
 function handleDelete(id){
   axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links/${id}`,  {
@@ -108,8 +100,7 @@ function handleDelete(id){
 });
 }
 
-=======
->>>>>>> 34e46c55826ad51e94661ac9c4c81ce5fd2bdcc5
+
 return( 
       <Fragment>
        
