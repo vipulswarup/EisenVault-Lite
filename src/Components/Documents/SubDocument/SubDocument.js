@@ -2,7 +2,7 @@ import React, {useEffect,useState,Fragment} from 'react';
 import { useParams , useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Item } from '../../backButton/backButton';
-
+import axios from 'axios'
 import { faFile,faTimesCircle,faFolder} from "@fortawesome/free-solid-svg-icons";
 import Pagination from '../../Pagination/Pagination';
 import {instance} from '../../ApiUrl/endpointName.instatnce'
@@ -22,27 +22,22 @@ function SubDocument(){
    const [ currentPage, setCurrentPage ] = useState(1);
    const [postsPerPage] = useState(10);
 
-useEffect(()=>{
-        instance.get(`/nodes/${id}/children?skipCount=0`,
-        {headers:
    useEffect(()=>{
     getData();
   },[]);
   const getData=()=>{
-            axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/children?skipCount=0`,
-        {
-          headers:
-          {
-            Authorization: `Basic ${btoa(getToken())}`
-          }})
-        .then((response) => {
-        console.log(response.data)
-        setDocuments(response.data.list.entries)
-        setPaginationDefaultDoc(response.data.list.pagination) 
-        console.log(response.data.list.pagination)
-      })
-    };
-    const handleDelete=(id,name)=>{
+    instance.get(`/nodes/${id}/children?skipCount=0`,
+{headers:
+  {
+    Authorization: `Basic ${btoa(getToken())}`
+  }}).then((response) => {
+console.log(response.data)
+setDocuments(response.data.list.entries)
+setPaginationDefaultDoc(response.data.list.pagination) 
+console.log(response.data.list.pagination)
+})
+};
+const handleDelete=(id,name)=>{
       axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`, 
       {headers:{
       Authorization: `Basic ${btoa(getToken())}`
