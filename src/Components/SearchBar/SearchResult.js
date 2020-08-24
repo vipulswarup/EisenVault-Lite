@@ -3,7 +3,7 @@ import { useParams , useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { faTimesCircle} from "@fortawesome/free-solid-svg-icons";
+import { faTimesCircle, faFile , faFolder} from "@fortawesome/free-solid-svg-icons";
 
 import {getToken} from  "../../Utils/Common";
 
@@ -57,7 +57,10 @@ useEffect(()=>{
                     onClick={() => handleDocument(
                       d.nodeRef.substring(24),
                       d.name)}
-                   >
+                   ><FontAwesomeIcon 
+                   className="pdf-file fas fa-file-pdf" 
+                     icon={d.type === "document" ? faFile : faFolder} 
+                       />
                     {d.name}</td>
                     <td className="details-u-s">{d.path}</td>
                     <td className="delete-u-s">

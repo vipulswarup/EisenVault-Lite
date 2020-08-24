@@ -43,11 +43,10 @@ function ManageShares(){
       }))})
       .catch((error)=> console.log(error));
     }) 
+
 });
   }
 
-
-// Get current posts
 const indexOfLastPost = currentPage * postsPerPage;
 const indexOfFirstPost = indexOfLastPost - postsPerPage;
 const currentPosts = FileState.slice(indexOfFirstPost, indexOfLastPost);
@@ -158,5 +157,7 @@ return(
       </div>
     </Fragment>
           )
-          }
+          };
+
+
 export default ManageShares;
