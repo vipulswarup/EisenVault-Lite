@@ -1,10 +1,14 @@
 import React,{Fragment , useEffect , useState} from 'react';
-import {instance} from '../ApiUrl/endpointName.instatnce'
+// import {instance} from '../ApiUrl/endpointName.instatnce'
 import { useHistory} from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
 import './DocumentList.scss';
+import axios from 'axios';
+import {getUser,getToken} from  "../../Utils/Common";
+import ProfilePic from "../Avtar/Avtar";
+import {instance} from "../ApiUrl/endpointName.instatnce"
 import {getUser,getToken} from  "../../Utils/Common";
 import ProfilePic from "../Avtar/Avtar";
 import Search from "../SearchBar/SearchBar";
@@ -30,7 +34,9 @@ const DocumentsList = () => {
   useEffect(()=>{
     getDepartments();
   },[]);
+  
   const getDepartments=()=>{
+    axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=0`,
     instance.get(`/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=0`,
     {headers:
       {
@@ -51,6 +57,9 @@ const currentPosts = departments.slice(indexOfFirstPost, indexOfLastPost);
 // Change page
 const paginate = (pageNumber) => setCurrentPage(pageNumber);
 function handleDocumentLibrary(key){
+
+  instance.get(`/nodes/${key}/children`
+  ).then((response) => {
   instance.get(`/nodes/${key}/children`,{headers:
     {
       Authorization: `Basic ${btoa(getToken())}`
@@ -85,8 +94,8 @@ function handleCreateDepartment(){
 createsetmodalIsOpen(false)
 }
 function handleDeleteDepartment(id){
-  instance.delete(`/sites/${id}?permanent=false`)
-  .then(response => {
+  instance.delete(`/sites/${id}?permanent=false`
+  ).then(response => {
     alert("Department successfully deleted");
     getDepartments()
     console.log(response)
@@ -101,10 +110,8 @@ function next(){
   
   //  setSkipCount(skipCount + 10)
    console.log(skipCount);
-   instance.get(`/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=${skipCount}`,
-   {headers:{
-     Authorization: `Basic ${btoa(getToken())}`
-   }}).then((response) => {
+   instance.get(`/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=${skipCount}`
+   ).then((response) => {
     console.log(response.data)
     setDepartments(response.data.list.entries)
     setPaginationDefaultDept(response.data.list.pagination) 
@@ -122,10 +129,8 @@ function next(){
  
 }
 function previous(){
-  instance.get(`/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=${skipCount}`,
-  {headers:{
-    Authorization: `Basic ${btoa(getToken())}`
-  }}).then((response) => {
+  instance.get(`/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=${skipCount}`
+  ).then((response) => {
    console.log(response.data)
    setDepartments(response.data.list.entries)
    setPaginationDefaultDept(response.data.list.pagination) 

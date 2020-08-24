@@ -54,15 +54,18 @@ const Routings = withRouter (({ location },props) => {
   if (authLoading && getToken()) {
     return <div className="content">Checking Authentication...</div>
   }
+
    let DrawerToggleQuickHandler=()=>{
     setsideDrawerOpen((prevState)=>{
       return {sideDrawerOpen: !prevState.sideDrawerOpen}
     })
   };
+
   let backdropClickHandler=()=>{
     setsideDrawerOpen(false);
   }
-    let backdrop;
+
+  let backdrop;
     if(sideDrawerOpen){
       backdrop=<Backdrop click={backdropClickHandler} show/>
     }

@@ -74,39 +74,6 @@ export const CreateDepartment = props =>{
   )
 }
 
-// export  const RenameDepartment = props =>{
-//   return(
-//     <Fragment>
-//       <div className="modal-header">
-//           <h2>Rename Department</h2>
-//         </div>
-//         <div className="popup-n">
-//           <div className="content">
-            
-//               <div className="label-input">
-//               <label>Select Input</label>
-//               <input id="name01">
-//               </input>
-//               </div>
-//               <datalist>
-//               <option value="Department"></option>
-//               </datalist>
-//               <br></br>
-//               <div className="label-input">
-//               <label>New Name:</label>
-//               <input type="text" id="name01"></input>
-//               </div>
-            
-//           </div>
-//         </div>
-//         <div id="btns">
-//           <button className="btn-continue" >Rename</button>
-//           <button className="btn-cancel" onClick={props.clicked}>Cancel</button>
-//         </div>
-//     </Fragment>
-//   )
-// }
-
 export const ForgotPassword = props => {
   return(
     <Fragment>
