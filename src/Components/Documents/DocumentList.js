@@ -1,5 +1,7 @@
 import React,{Fragment , useEffect , useState} from 'react';
-// import {instance} from '../ApiUrl/endpointName.instatnce'
+
+import axios from 'axios';
+import {instance} from '../ApiUrl/endpointName.instatnce';
 import { useHistory} from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
@@ -23,6 +25,7 @@ const DocumentsList = () => {
   const [deletemodalIsOpen, deletesetmodalIsOpen] = useState(false);
   const [ paginationDefualtDept, setPaginationDefaultDept ] = useState([]);
   let history = useHistory();
+  let url;
   const [ departments , setDepartments ] = useState([]);
   const [ documents , setDocuments ] = useState([]);
   
@@ -30,14 +33,34 @@ const DocumentsList = () => {
   const [postsPerPage] = useState(10);
   const departmentTitle = useFormInput ('');
   const [hasMoreItems , setMoreItems] = useState('');
-  const [skipCount , setSkipCount ] = useState('');
+
+  const [skipCount , setSkipCount ] = useState(0);
+  // Get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = departments.slice(indexOfFirstPost, indexOfLastPost);
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  //Condition to fetch departments
+    if(user === "admin")
+    {
+     url=`/sites?`
+    }
+    else{
+      url = "/sites?where=(visibility='PRIVATE')&"
+    }
+  
   useEffect(()=>{
     getDepartments();
-  },[]);
+  },[url]);
   
+
+
   const getDepartments=()=>{
     axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=0`,
     instance.get(`/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=0`,
+
     {headers:
       {
         Authorization: `Basic ${btoa(getToken())}`
@@ -50,12 +73,7 @@ const DocumentsList = () => {
       console.log(response.data.list.pagination)     
     });
   }
-// Get current posts
-const indexOfLastPost = currentPage * postsPerPage;
-const indexOfFirstPost = indexOfLastPost - postsPerPage;
-const currentPosts = departments.slice(indexOfFirstPost, indexOfLastPost);
-// Change page
-const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
 function handleDocumentLibrary(key){
 
   instance.get(`/nodes/${key}/children`
@@ -78,10 +96,14 @@ function handleDocumentLibrary(key){
       })     
 }
 function handleCreateDepartment(){
-  instance.post('/sites',
+  instance.post(`/sites`,
   {
-   title: departmentTitle.value , visibility: "PUBLIC"
-  }).then(response => {
+   title: departmentTitle.value , visibility: "PRIVATE"
+  },{headers:
+    {
+      Authorization: `Basic ${btoa(getToken())}`
+    }}
+  ).then(response => {
     alert("Department successfully created");
     getDepartments()
     console.log(response)
@@ -94,8 +116,13 @@ function handleCreateDepartment(){
 createsetmodalIsOpen(false)
 }
 function handleDeleteDepartment(id){
-  instance.delete(`/sites/${id}?permanent=false`
-  ).then(response => {
+  instance.delete(`/sites/${id}?permanent=false`,
+  {headers:
+    {
+      Authorization: `Basic ${btoa(getToken())}`
+    }}
+  )
+  .then(response => {
     alert("Department successfully deleted");
     getDepartments()
     console.log(response)
@@ -110,8 +137,10 @@ function next(){
   
   //  setSkipCount(skipCount + 10)
    console.log(skipCount);
-   instance.get(`/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=${skipCount}`
-   ).then((response) => {
+   instance.get(`${url}maxItems=10&skipCount=${skipCount}`,
+   {headers:{
+     Authorization: `Basic ${btoa(getToken())}`
+   }}).then((response) => {
     console.log(response.data)
     setDepartments(response.data.list.entries)
     setPaginationDefaultDept(response.data.list.pagination) 
@@ -129,8 +158,10 @@ function next(){
  
 }
 function previous(){
-  instance.get(`/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=${skipCount}`
-  ).then((response) => {
+  instance.get(`${url}maxItems=10&skipCount=${skipCount}`,
+  {headers:{
+    Authorization: `Basic ${btoa(getToken())}`
+  }}).then((response) => {
    console.log(response.data)
    setDepartments(response.data.list.entries)
    setPaginationDefaultDept(response.data.list.pagination) 
@@ -152,7 +183,7 @@ return (
     <div id="second_section">
       <h2>Document List</h2>
         <Search />
-        <ProfilePic />
+        <ProfilePic className="profile_picture"/>
             <div>
             <Modal show={createmodalIsOpen}>
             <CreateDepartment createDept={handleCreateDepartment} 
@@ -222,13 +253,6 @@ return (
         onChange: handleChange
       }
     }
+
 export default DocumentsList;
-
-
-
-
-
-
-
-
 

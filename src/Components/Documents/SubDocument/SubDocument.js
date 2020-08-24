@@ -11,45 +11,53 @@ import Search from "../../SearchBar/SearchBar";
 import ProfilePic from "../../Avtar/Avtar";
 import {getToken} from "../../../Utils/Common"
 import './SubDocument.scss';
-
 function SubDocument(){
   let history = useHistory();
   const[documents,setDocuments]=useState([]);
   const [ paginationDefualtDoc, setPaginationDefaultDoc ] = useState([]);
-   let params = useParams();
-   const id = params.id;
-   const [ currentPage, setCurrentPage ] = useState(1);
-   const [postsPerPage] = useState(10);
-   useEffect(()=>{
-    getData();
-  },[]);
+
+  let params = useParams();
+  const id = params.id;
+  const [ currentPage, setCurrentPage ] = useState(1);
+  const [postsPerPage] = useState(10);
+  // Get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = documents.slice(indexOfFirstPost, indexOfLastPost);
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   
-  const getData=()=>{
-    instance.get(`/nodes/${id}/children?skipCount=0`).then((response) => {
+  const getData = () => {
+    axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/children?skipCount=0`,
+    {headers:
+      {
+        Authorization: `Basic ${btoa(getToken())}`
+      }}).then((response) => {
+    console.log(response.data)
+    setDocuments(response.data.list.entries)
+    setPaginationDefaultDoc(response.data.list.pagination) 
+    console.log(response.data.list.pagination)
+    })
+  };
 
-console.log(response.data)
-setDocuments(response.data.list.entries)
-setPaginationDefaultDoc(response.data.list.pagination) 
-console.log(response.data.list.pagination)
-})
-};
 
-const HandleDelete=(id,name)=>{
-      useEffect(() => {
-      instance.delete(`/nodes/${id}`, 
-      ).then((data)=>{
+   useEffect(()=>{
+    getData()
+  },[id]);
+  
+
+const handleDelete=(id,name)=>{
+      axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`, 
+      {headers:{
+      Authorization: `Basic ${btoa(getToken())}`
+       }
+     }).then((data)=>{
           console.log(data);
           getData();
            }).catch(err=>alert(err));
-      }, [])}
-
-    // Get current posts
-      const indexOfLastPost = currentPage * postsPerPage;
-      const indexOfFirstPost = indexOfLastPost - postsPerPage;
-      const currentPosts = documents.slice(indexOfFirstPost, indexOfLastPost);
-    // Change page
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+      }
     
+
     function handleDocument(file , id, title){
       file ? history.push(`/document-details/${id}/${title}`): history.push(`/document/${id}`)
     }
@@ -109,5 +117,4 @@ const HandleDelete=(id,name)=>{
     </Fragment>
           )
     }
-
 export default SubDocument;
