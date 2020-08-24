@@ -28,6 +28,7 @@ const DocumentsList = () => {
   const [postsPerPage] = useState(10);
   const departmentTitle = useFormInput ('');
   const [hasMoreItems , setMoreItems] = useState('');
+
   const [skipCount , setSkipCount ] = useState(0);
   // Get current posts
   const indexOfLastPost = currentPage * postsPerPage;
@@ -49,8 +50,10 @@ const DocumentsList = () => {
     getDepartments();
   },[url]);
   
+
   const getDepartments=()=>{
-    instance.get(`${url}maxItems=10&skipCount=0`,
+    instance.get(`/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=0`,
+
     {headers:
       {
         Authorization: `Basic ${btoa(getToken())}`
@@ -102,7 +105,6 @@ function handleCreateDepartment(){
 });
 createsetmodalIsOpen(false)
 }
-
 function handleDeleteDepartment(id){
   instance.delete(`/sites/${id}?permanent=false`,
   {headers:
@@ -241,4 +243,6 @@ return (
         onChange: handleChange
       }
     }
+
 export default DocumentsList;
+

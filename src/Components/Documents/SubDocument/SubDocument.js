@@ -38,11 +38,13 @@ function SubDocument(){
     })
   };
 
+
    useEffect(()=>{
     getData()
   },[id]);
   
-    const handleDelete=(id,name)=>{
+
+const handleDelete=(id,name)=>{
       axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`, 
       {headers:{
       Authorization: `Basic ${btoa(getToken())}`
