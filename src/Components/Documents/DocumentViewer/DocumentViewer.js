@@ -2,13 +2,17 @@ import React , { Fragment,useState,useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Search from "../../SearchBar/SearchBar";
 import ProfilePic from "../../Avtar/Avtar";
-import {instance} from '../../ApiUrl/endpointName.instatnce'
+import DocumentDetails from "../DocumentDetails/DocumentDetails";
+
+// import {instance} from '../../ApiUrl/endpointName.instatnce'
 import { Item } from '../../backButton/backButton';
 import {getToken} from  "../../../Utils/Common";
 import axios from 'axios';
 
 function DocPreview() {
     const [fileURI, setFileURI] = useState("");
+    const [pdfFileURI, setPdfFileURI] = useState("");
+
     const [error, setError] = useState(null);
     let params = useParams();
     const title = params.title;
@@ -18,67 +22,81 @@ function DocPreview() {
     const id =  path.slice(41,77)   
     const fileType = path.split('.').pop()
     console.log(fileType)
-  
- const PdfViewer = () => {instance.get(`/nodes/${id}`,    
+
+  useEffect(() => {
+    //First find out content type
+    axios.get(`https://cors-anywhere.herokuapp.com/https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content`,
+        {
+          headers: {
+            Authorization: `Basic ${btoa(getToken())}`,
+         },
+        }
+      )
+      .then((response) => {
+        // setDataTypes(response.headers["content-type"])
+        // console.log(dataType)
+        setFileURI(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content`)
+      });
+  }, [id]);
+
+  function DisplayUsingOfficeApps() {
+    var token = getToken();
+    var url =
+      "https://view.officeapps.live.com/op/embed.aspx?src=" +
+      fileURI + "?alf_ticket=" +token;
+    console.log(url);
+    console.log(fileURI);
+    console.log(token);
+    // document.getElementById('myFrame').src=url
+    return (
+      <Fragment>
+      <button onClick={DocumentDetails}>More Details</button>
+
+      <iframe src={url} 
+      title='mydocframe' 
+      id='mydocFrame'
+      width="700px" height="700px">
+      </iframe>
+      </Fragment>
+    );
+  }
+
+  useEffect(() => {axios.get(`https://cors-anywhere.herokuapp.com/https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?attachment=false`,    
    {headers:
     {
       Authorization: `Basic ${btoa(getToken())}`
     }}).then((response)=>{
-        setDataTypes(response.headers["content-type"])
-        console.log(dataType)
+        // setDataTypes(response.headers["content-type"])
+        // console.log(dataType)
 
         // const file = new Blob([response.data],
         //     {type: dataType});
         
-        let pdfPreviewUrl = `https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?attachment=false`
+        setPdfFileURI(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?attachment=false`)
+         })} , [id]) 
+
+ const PdfViewer = () => {
+  
+        return (
+          <Fragment>
+          <button onClick={DocumentDetails}>More Details</button>
+
+          <iframe src={pdfFileURI} 
+          title='myframe' 
+          id='myFrame'
+          width="700px" height="700px" 
+          allowFullScreen/>
+          </Fragment>
+        ); 
         
-        console.log(pdfPreviewUrl)      
-        document.getElementById('myFrame').src=pdfPreviewUrl
-    })}
-
-  useEffect(() => {
-      //First find out content type
-      axios.get(`https://cors-anywhere.herokuapp.com/https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/renditions/pdf/content?attachment=false`,
-          {
-            headers: {
-              Authorization: `Basic ${btoa(getToken())}`,
-            },
-          }
-        )
-        .then((response) => {
-          // setDataTypes(response.headers["content-type"])
-          // console.log(dataType)
-          setFileURI(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/renditions/pdf/content?attachment=false`)
-        });
-    }, [id]);
-
-    function DocumentPreview() {           
-      document.getElementById('myFrame').src=fileURI
-  }
-
-function DocuementRenditions () {(instance.post(`/nodes/${id}/renditions`,
-{"id":"pdf"},
-{headers:
-    {
-      Authorization: `Basic ${btoa(getToken())}`
-    }}).then((response)=>{
-              console.log(response)
-}))}
-
-function CreatePdfPreview() {instance.get(`/nodes/${id}/renditions/pdf`,
-{headers:
-    {
-      Authorization: `Basic ${btoa(getToken())}`
-    }})
-.then((response)=>{
-    console.log(response.data.entry.status)
-    if (response.data.entry.status === "CREATED") 
-    { return (DocumentPreview())}
-    else {return DocuementRenditions()}
-})}
+        //document.getElementById('myFrame').src=pdfPreviewUrl
+    }
     
-(fileType === 'pdf') ? PdfViewer() : (fileType === 'png') 
-? PdfViewer() : CreatePdfPreview()
+function Viewer() { 
+  if (fileType === 'pdf') return PdfViewer() 
+  else if (fileType === 'png') return PdfViewer()
+  else return DisplayUsingOfficeApps()
+}
 
 return(
     <Fragment>
@@ -87,7 +105,8 @@ return(
         <Search />
         <ProfilePic />
         <Item />
-        <iframe                  
+        <Viewer />
+        {/* <iframe                  
         {...error && <>
         <small style={{ color: 'red' }}>{error}</small><br /></>}
         title='myframe' 
@@ -96,7 +115,7 @@ return(
         allowFullScreen
         height = "700px"
         width = "700px"
-        />   
+        />    */}
     </div>
     </Fragment>
 )

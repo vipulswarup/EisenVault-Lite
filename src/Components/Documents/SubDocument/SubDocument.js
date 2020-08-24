@@ -2,7 +2,8 @@ import React, {useEffect,useState,Fragment} from 'react';
 import { useParams , useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Item } from '../../backButton/backButton';
-import axios from 'axios'
+// import axios from 'axios'
+
 import { faFile,faTimesCircle,faFolder} from "@fortawesome/free-solid-svg-icons";
 import Pagination from '../../Pagination/Pagination';
 import {instance} from '../../ApiUrl/endpointName.instatnce'
@@ -14,6 +15,7 @@ function SubDocument(){
   let history = useHistory();
   const[documents,setDocuments]=useState([]);
   const [ paginationDefualtDoc, setPaginationDefaultDoc ] = useState([]);
+
   let params = useParams();
   const id = params.id;
   const [ currentPage, setCurrentPage ] = useState(1);
@@ -59,6 +61,7 @@ const handleDelete=(id,name)=>{
     function handleDocument(file , id, title){
       file ? history.push(`/document-details/${id}/${title}`): history.push(`/document/${id}`)
     }
+
     return( 
       <Fragment>
          <div id="second_section">
@@ -95,7 +98,8 @@ const handleDelete=(id,name)=>{
                     <td className="details-u-s">{d.entry.modifiedAt.split('T')[0]}</td>
                     <td className="delete-u-s">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle}
-                    onClick={(e) => { if (window.confirm(`Are you sure you wish to delete ${d.entry.name}`)) handleDelete(d.entry.id,d.entry.name) }} />
+                    onClick={(e) => { if (window.confirm(`Are you sure you wish to delete ${d.entry.name}`)) 
+                    HandleDelete(d.entry.id,d.entry.name) }} />
                   </td>
                   </tr>
                 </tbody>
@@ -112,5 +116,5 @@ const handleDelete=(id,name)=>{
         </div>
     </Fragment>
           )
-                    }
+    }
 export default SubDocument;

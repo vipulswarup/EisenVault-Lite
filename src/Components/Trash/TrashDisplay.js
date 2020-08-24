@@ -153,15 +153,7 @@ return(
                 <th id="deleted">Deleted on</th>
                  <th id="action-trash">
 
-                   {/* <NestedToolTip restored={()=>{RestoreFileByIds()}}/> */}
-                   <NestedToolTip restored={()=>{RestoreFileByIds()}} deleted={()=>{permanentDeleteByIds()}}/>
-                      {/*  <label>Action </label>
-                      <select id="action-t">
-                        <option value="delete-a">Delete All</option>
-                        <option value="delete-s">Delete Selected</option>
-                        <option value="delete-a">Restore All</option>
-                        <option value="delete-s">Restore Selected</option> 
-                      </select> */}
+                  <NestedToolTip restored={()=>{RestoreFileByIds()}} deleted={()=>{permanentDeleteByIds()}}/>
                   </th>  
 
                   <Modal show={deleting}>

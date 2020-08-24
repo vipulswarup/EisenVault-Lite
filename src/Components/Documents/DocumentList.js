@@ -1,11 +1,16 @@
 import React,{Fragment , useEffect , useState} from 'react';
+
 import axios from 'axios';
-import {instance} from '../ApiUrl/endpointName.instatnce'
+import {instance} from '../ApiUrl/endpointName.instatnce';
 import { useHistory} from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
 import './DocumentList.scss';
+import axios from 'axios';
+import {getUser,getToken} from  "../../Utils/Common";
+import ProfilePic from "../Avtar/Avtar";
+import {instance} from "../ApiUrl/endpointName.instatnce"
 import {getUser,getToken} from  "../../Utils/Common";
 import ProfilePic from "../Avtar/Avtar";
 import Search from "../SearchBar/SearchBar";
@@ -51,7 +56,9 @@ const DocumentsList = () => {
   },[url]);
   
 
+
   const getDepartments=()=>{
+    axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=0`,
     instance.get(`/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=0`,
 
     {headers:
@@ -68,6 +75,9 @@ const DocumentsList = () => {
   }
 
 function handleDocumentLibrary(key){
+
+  instance.get(`/nodes/${key}/children`
+  ).then((response) => {
   instance.get(`/nodes/${key}/children`,{headers:
     {
       Authorization: `Basic ${btoa(getToken())}`
