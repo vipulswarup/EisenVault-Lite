@@ -9,13 +9,13 @@ import axios from 'axios';
 import {getUser,getToken} from  "../../Utils/Common";
 import ProfilePic from "../Avtar/Avtar";
 import {instance} from "../ApiUrl/endpointName.instatnce"
-import {getUser,getToken} from  "../../Utils/Common";
-import ProfilePic from "../Avtar/Avtar";
+
 import Search from "../SearchBar/SearchBar";
 import Modal from "../Modal/Modal";
 import { CreateDepartment, DeleteDepartment} from "../Modal/DeleteModalSumm/DeleteSumm";
 import Pagination from '../Pagination/Pagination';
 import IconBar, {IconBarDelete} from '../IconBar/IconBar';
+
 const DocumentsList = () => {
   const user = getUser();
   const [createmodalIsOpen, createsetmodalIsOpen] = useState(false);
@@ -37,7 +37,6 @@ const DocumentsList = () => {
   
   const getDepartments=()=>{
     axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=0`,
-    instance.get(`/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=0`,
     {headers:
       {
         Authorization: `Basic ${btoa(getToken())}`
@@ -60,11 +59,6 @@ function handleDocumentLibrary(key){
 
   instance.get(`/nodes/${key}/children`
   ).then((response) => {
-  instance.get(`/nodes/${key}/children`,{headers:
-    {
-      Authorization: `Basic ${btoa(getToken())}`
-    }})
-  .then((response) => {
         console.log(response.data)
         setDocuments(response.data.list.entries)
         
