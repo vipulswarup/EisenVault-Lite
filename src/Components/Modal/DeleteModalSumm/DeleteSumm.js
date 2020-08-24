@@ -48,18 +48,18 @@ export const CreateDepartment = props =>{
           <div>
            
             <div className="label-input">
-              <label>Name:</label>
+              <label className="Dh2">Name:</label>
               <input type="text" name="name" {...props.departmentTitle}>
               </input>
               </div>
               <br></br>
               <div className="label-input">
-              <label>URL:</label>
+              <label className="Dh2">URL:</label>
               <input type="text" name="url"></input>
               </div>
               <br></br>
               <div className="label-input">
-            <label>Description:</label>
+            <label className="Dh2">Description:</label>
             <textarea row="8" col="60"></textarea>
             </div>
             

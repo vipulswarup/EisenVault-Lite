@@ -28,11 +28,3 @@ const IconBar = (props) => {
 
 export default IconBar;
 
-export const IconBarDelete = (props) => {
-  return (
-  <div>
-    <FontAwesomeIcon icon={faTrashAlt} onClick={props.delete} 
-    className="icon-item delete"/>
-  </div>
-  )
-}

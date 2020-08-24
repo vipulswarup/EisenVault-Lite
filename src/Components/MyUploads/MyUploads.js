@@ -57,8 +57,9 @@ function MyUploads(props){
     history.push(`/document-details/${id}/${title}`)
   }
   const closeModal=()=>{ //function to close modal after performing it's operations
-    return  setmodalIsOpen(false);
+    return  setmodalIsOpen(false)
   }
+  
   //arrow function for getting file nodeid and putting it dynamically in api to delete single/multiple files
   const deleteFileByIds=()=>{
     FileState.forEach(d=>{
@@ -75,7 +76,19 @@ function MyUploads(props){
        };
       })}
       
-    return( 
+      const handleDelete=(id,name)=>{
+        //alert(`are you sure you want to delete ${name}`)
+        axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`, 
+      {headers:{
+      Authorization: `Basic ${btoa(getToken())}`
+       }
+     }).then((data)=>{
+          console.log(data);
+          getData();
+           }).catch(err=>alert(err));
+      }
+
+      return( 
       <Fragment>
          <div id="second_section">
             <h2>My Uploads</h2>
@@ -103,10 +116,11 @@ function MyUploads(props){
                         <option id="option" value="delete-s">Delete Selected</option>
                       </select>
                     </th>
-
-                  <Modal show={modalIsOpen}>
-                    <DeleteSummmary deleted={()=>{deleteFileByIds()}} clicked={() => setmodalIsOpen(false)}/>
-                  </Modal>
+                      <Modal show={modalIsOpen}>
+                      <DeleteSummmary deleted={()=>{deleteFileByIds()}} clicked={() => setmodalIsOpen(false)} 
+                    />
+                  
+                      </Modal>
                 </tr> 
                   
                   { FileState.map((d,i) => (
@@ -132,11 +146,12 @@ function MyUploads(props){
                     <td className="details-u">{d.uploadedOn}</td>
                     <td className="delete-u">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
-                    onClick={() =>{setmodalIsOpen(true)}}
-                  
+                     onClick={(e) => { if (window.confirm(`Are you sure you wish to delete ${d.name}`)) handleDelete(d.id,d.name) }}                   //{handleDelete(d.id,d.name)}}
                       />
+                
                   </td>
-                  </tr>
+                
+               </tr>
                   
                   ))}
                 </tbody>  
