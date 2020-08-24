@@ -9,37 +9,35 @@ import axios from 'axios';
 import {getUser,getToken} from  "../../Utils/Common";
 import ProfilePic from "../Avtar/Avtar";
 import {instance} from "../ApiUrl/endpointName.instatnce"
+import {getUser,getToken} from  "../../Utils/Common";
+import ProfilePic from "../Avtar/Avtar";
 import Search from "../SearchBar/SearchBar";
-
 import Modal from "../Modal/Modal";
 import { CreateDepartment, DeleteDepartment} from "../Modal/DeleteModalSumm/DeleteSumm";
 import Pagination from '../Pagination/Pagination';
 import IconBar, {IconBarDelete} from '../IconBar/IconBar';
-
 const DocumentsList = () => {
   const user = getUser();
   const [createmodalIsOpen, createsetmodalIsOpen] = useState(false);
   // const [editmodalIsOpen, editsetmodalIsOpen] = useState(false);
   const [deletemodalIsOpen, deletesetmodalIsOpen] = useState(false);
   const [ paginationDefualtDept, setPaginationDefaultDept ] = useState([]);
-
   let history = useHistory();
   const [ departments , setDepartments ] = useState([]);
   const [ documents , setDocuments ] = useState([]);
   
   const [ currentPage, setCurrentPage ] = useState(1);
   const [postsPerPage] = useState(10);
-
   const departmentTitle = useFormInput ('');
   const [hasMoreItems , setMoreItems] = useState('');
   const [skipCount , setSkipCount ] = useState('');
-
   useEffect(()=>{
     getDepartments();
   },[]);
-
+  
   const getDepartments=()=>{
     axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=0`,
+    instance.get(`/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=0`,
     {headers:
       {
         Authorization: `Basic ${btoa(getToken())}`
@@ -52,19 +50,21 @@ const DocumentsList = () => {
       console.log(response.data.list.pagination)     
     });
   }
-
 // Get current posts
 const indexOfLastPost = currentPage * postsPerPage;
 const indexOfFirstPost = indexOfLastPost - postsPerPage;
 const currentPosts = departments.slice(indexOfFirstPost, indexOfLastPost);
-
 // Change page
 const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
 function handleDocumentLibrary(key){
 
   instance.get(`/nodes/${key}/children`
   ).then((response) => {
+  instance.get(`/nodes/${key}/children`,{headers:
+    {
+      Authorization: `Basic ${btoa(getToken())}`
+    }})
+  .then((response) => {
         console.log(response.data)
         setDocuments(response.data.list.entries)
         
@@ -77,7 +77,6 @@ function handleDocumentLibrary(key){
         console.log(error);
       })     
 }
-
 function handleCreateDepartment(){
   instance.post('/sites',
   {
@@ -94,7 +93,6 @@ function handleCreateDepartment(){
 });
 createsetmodalIsOpen(false)
 }
-
 function handleDeleteDepartment(id){
   instance.delete(`/sites/${id}?permanent=false`
   ).then(response => {
@@ -108,7 +106,6 @@ function handleDeleteDepartment(id){
     console.log(error)
 });
 }
-
 function next(){
   
   //  setSkipCount(skipCount + 10)
@@ -131,7 +128,6 @@ function next(){
    });
  
 }
-
 function previous(){
   instance.get(`/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=${skipCount}`
   ).then((response) => {
@@ -151,14 +147,12 @@ function previous(){
       console.log(response.data.list.pagination.skipCount)
     });
  }
-
 return (
   <Fragment>
     <div id="second_section">
       <h2>Document List</h2>
         <Search />
         <ProfilePic />
-
             <div>
             <Modal show={createmodalIsOpen}>
             <CreateDepartment createDept={handleCreateDepartment} 
@@ -169,7 +163,6 @@ return (
                 toggleadd = {() =>{createsetmodalIsOpen(true)}}
               />
             </div>
-
       <ul className='files'>
           
            <table id="doc_list">
@@ -180,13 +173,10 @@ return (
                   
                     <FontAwesomeIcon icon={faGlobeAsia} className="fas"/>
                     {department.entry.title}</td>
-
-
                     <td className='fileDetails' 
                     onClick={() => handleDocumentLibrary(department.entry.guid)}>
                     Document Library
                     {document.folders} </td>
-
                     <td>
                       { user === 'admin' && 
                       <Modal show={deletemodalIsOpen}>
@@ -209,9 +199,7 @@ return (
           ))}
           </table> 
       </ul>
-
       </div>
-
       <div className="col-md-6">
       <Pagination
        handlePrev={previous}
@@ -220,11 +208,9 @@ return (
        skipCount={skipCount-10}
         />
         </div>
-
   </Fragment>
       )
     }
-
     const useFormInput = initialValue => {
       const [value, setValue] = useState(initialValue);
      
@@ -236,5 +222,13 @@ return (
         onChange: handleChange
       }
     }
-
 export default DocumentsList;
+
+
+
+
+
+
+
+
+

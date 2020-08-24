@@ -3,6 +3,7 @@ import { useParams , useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Item } from '../../backButton/backButton';
 // import axios from 'axios'
+
 import { faFile,faTimesCircle,faFolder} from "@fortawesome/free-solid-svg-icons";
 import Pagination from '../../Pagination/Pagination';
 import {instance} from '../../ApiUrl/endpointName.instatnce'
@@ -19,13 +20,13 @@ function SubDocument(){
    const id = params.id;
    const [ currentPage, setCurrentPage ] = useState(1);
    const [postsPerPage] = useState(10);
-   
    useEffect(()=>{
     getData();
   },[]);
   
   const getData=()=>{
     instance.get(`/nodes/${id}/children?skipCount=0`).then((response) => {
+
 console.log(response.data)
 setDocuments(response.data.list.entries)
 setPaginationDefaultDoc(response.data.list.pagination) 

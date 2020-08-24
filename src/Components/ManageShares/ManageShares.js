@@ -26,7 +26,7 @@ function ManageShares(){
  
  const getDetailsData = () => {
   instance.get('/shared-links?skipCount=0&maxItems=10&include=properties'
-  ).then((response) => {  
+  ).then((response) => { 
   setFileState(response.data.list.entries)
   console.log(response.data.list.entries)
   response.data.list.entries.forEach(d=>{
@@ -75,6 +75,7 @@ function next(){
    console.log(skipCount);
    instance.get(`/shared-links?&maxItems=10&skipCount=${skipCount}&include=properties`
    ).then((response) => {
+
     console.log(response.data)
      setMoreItems(response.data.list.pagination.hasMoreItems)
      if (response.data.list.pagination.hasMoreItems){
@@ -90,6 +91,7 @@ function next(){
 function previous(){
   instance.get(`/shared-links?&include=properties&maxItems=10&skipCount=${skipCount}`
   ).then((response) => {
+
       setMoreItems(response.data.list.pagination.hasMoreItems)
       if (response.data.list.pagination.skipCount > 0){
         setSkipCount(response.data.list.pagination.skipCount - 10)
