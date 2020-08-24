@@ -2,42 +2,36 @@ import React, {useEffect,useState,Fragment} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import ProfilePic from "../Avtar/Avtar";
-import axios from 'axios';
+// import axios from 'axios';
 import './ManageShares.scss';
 import { useHistory } from 'react-router-dom';
 import Search from "../SearchBar/SearchBar";
 import { getToken } from '../../Utils/Common';
 import Pagination from '../Pagination/Pagination';
+import {instance} from "../ApiUrl/endpointName.instatnce"
+
 function ManageShares(){
   let history = useHistory();
   const[FileState,setFileState]=useState([]);
   const[DetailsState,setDetailsState]=useState([]);
   const [ currentPage, setCurrentPage ] = useState(1);
   const [postsPerPage] = useState(10);
+  const [hasMoreItems , setMoreItems] = useState('');
+  const [skipCount , setSkipCount ] = useState('');
+
  //API CALL
- 
-
  useEffect(()=>{
-  GetDetailsData();
+  getDetailsData();
 },[])
-
- const GetDetailsData = () => {
-function GetData(){
-}
- useEffect(()=>{
-  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links?include=properties', 
-  {headers:{
-    Authorization: `Basic ${btoa(getToken())}`
-    }
-  }).then((response) => {  
+ 
+ const getDetailsData = () => {
+  instance.get('/shared-links?skipCount=0&maxItems=10&include=properties'
+  ).then((response) => {  
   setFileState(response.data.list.entries)
   console.log(response.data.list.entries)
   response.data.list.entries.forEach(d=>{
-      axios.get(`https://systest.eisenvault.net//alfresco/api/-default-/public/alfresco/versions/1/queries/nodes?term=${d.entry.name}&include=effectivity,departmentName,allowableOperations,properties,path`, 
-      {headers:{
-        Authorization: `Basic ${btoa(getToken())}`
-        }
-      }).then((response) => {
+      instance.get(`/queries/nodes?term=${d.entry.name}&include=allowableOperations,properties,path`
+      ).then((response) => {
         console.log("received")
       console.log(response.data)
       
@@ -50,25 +44,9 @@ function GetData(){
       .catch((error)=> console.log(error));
     }) 
 });
-  },[])
- 
+  }
 
-// function getDetailsData() {
-//   FileState.forEach(d=>{
-//   axios.get(`https://systest.eisenvault.net//alfresco/api/-default-/public/alfresco/versions/1/queries/nodes?term=${d.entry.name}&include=effectivity,departmentName,allowableOperations,properties,path`, 
-//   {headers:{
-//     Authorization: `Basic ${btoa(getToken())}`
-//     }
-//   }).then((response) => {
-//     console.log("received")
-//   console.log(response.data)
-//   setDetailsState(response.data.list.entries.map(d=>{
-//     return {
-//       EffectiveFrom:d.entry.properties["cm:from"]    }
-//   }))})
-//   .catch((error)=> console.log(error));
-// })
-//  }
+
 // Get current posts
 const indexOfLastPost = currentPage * postsPerPage;
 const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -80,12 +58,8 @@ function handleDocument(id,title){
 }
 
 function handleDelete(id){
-  axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links/${id}`,  
-  {headers:
-          {
-            Authorization: `Basic ${btoa(getToken())}`
-          }}).then(response => {
-    GetDetailsData()
+  instance.delete(`/shared-links/${id}`).then(response => {
+    getDetailsData()
     alert("unshared"); 
     console.log(response)
   }).catch(error => {
@@ -95,6 +69,36 @@ function handleDelete(id){
     console.log(error)
 });
 }
+function next(){
+  
+  //  setSkipCount(skipCount + 10)
+   console.log(skipCount);
+   instance.get(`/shared-links?&maxItems=10&skipCount=${skipCount}&include=properties`
+   ).then((response) => {
+    console.log(response.data)
+     setMoreItems(response.data.list.pagination.hasMoreItems)
+     if (response.data.list.pagination.hasMoreItems){
+      setSkipCount(response.data.list.pagination.skipCount + 10)
+     }
+     else{
+      setSkipCount(response.data.list.pagination.skipCount - 10)
+     }
+    });
+ 
+}
+
+function previous(){
+  instance.get(`/shared-links?&include=properties&maxItems=10&skipCount=${skipCount}`
+  ).then((response) => {
+      setMoreItems(response.data.list.pagination.hasMoreItems)
+      if (response.data.list.pagination.skipCount > 0){
+        setSkipCount(response.data.list.pagination.skipCount - 10)
+      }
+      else{
+        setSkipCount(response.data.list.pagination.skipCount + 10)
+      }
+     });
+ }
 
 return( 
       <Fragment>
@@ -143,13 +147,14 @@ return(
             </div>
       <div className="col-md-6">
       <Pagination
-       postsPerPage={postsPerPage}
-       totalPosts={FileState.length}
-       paginate={paginate}
+          handlePrev={previous}
+          handleNext={next}
+          hasMoreItems={hasMoreItems}
+          skipCount={skipCount-10}
+
         />
       </div>
     </Fragment>
           )
-          }}
-
+          }
 export default ManageShares;

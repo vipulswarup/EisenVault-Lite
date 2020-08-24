@@ -1,17 +1,14 @@
 import React,{Fragment , useEffect , useState} from 'react';
-import {instance} from '../ApiUrl/endpointName.instatnce'
+// import {instance} from '../ApiUrl/endpointName.instatnce'
 import { useHistory} from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, 
-  faPlus, 
-  faTrashAlt } 
-  from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
 import './DocumentList.scss';
-
+import axios from 'axios';
 import {getUser,getToken} from  "../../Utils/Common";
 import ProfilePic from "../Avtar/Avtar";
-
+import {instance} from "../ApiUrl/endpointName.instatnce"
 import Search from "../SearchBar/SearchBar";
 
 import Modal from "../Modal/Modal";
@@ -42,13 +39,11 @@ const DocumentsList = () => {
   },[]);
 
   const getDepartments=()=>{
-    instance.get(`/sites?where=(visibility='PRIVATE')`,
+    axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=0`,
     {headers:
-    axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=0`,      
       {
         Authorization: `Basic ${btoa(getToken())}`
-      }})
-    .then((response) => {
+      }}).then((response) => {
       console.log(response.data)
       setDepartments(response.data.list.entries)
       setPaginationDefaultDept(response.data.list.pagination)
@@ -68,11 +63,8 @@ const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 function handleDocumentLibrary(key){
 
-  instance.get(`/nodes/${key}/children`,{headers:
-    {
-      Authorization: `Basic ${btoa(getToken())}`
-    }})
-  .then((response) => {
+  instance.get(`/nodes/${key}/children`
+  ).then((response) => {
         console.log(response.data)
         setDocuments(response.data.list.entries)
         
@@ -104,8 +96,8 @@ createsetmodalIsOpen(false)
 }
 
 function handleDeleteDepartment(id){
-  instance.delete(`/sites/${id}?permanent=false`)
-  .then(response => {
+  instance.delete(`/sites/${id}?permanent=false`
+  ).then(response => {
     alert("Department successfully deleted");
     getDepartments()
     console.log(response)
@@ -121,10 +113,8 @@ function next(){
   
   //  setSkipCount(skipCount + 10)
    console.log(skipCount);
-   axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=${skipCount}`,
-   {headers:{
-     Authorization: `Basic ${btoa(getToken())}`
-   }}).then((response) => {
+   instance.get(`/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=${skipCount}`
+   ).then((response) => {
     console.log(response.data)
     setDepartments(response.data.list.entries)
     setPaginationDefaultDept(response.data.list.pagination) 
@@ -143,10 +133,8 @@ function next(){
 }
 
 function previous(){
-  axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=${skipCount}`,
-  {headers:{
-    Authorization: `Basic ${btoa(getToken())}`
-  }}).then((response) => {
+  instance.get(`/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=${skipCount}`
+  ).then((response) => {
    console.log(response.data)
    setDepartments(response.data.list.entries)
    setPaginationDefaultDept(response.data.list.pagination) 

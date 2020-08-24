@@ -11,7 +11,7 @@ import { faHome,
       faSignOutAlt, 
       faTrash } from "@fortawesome/free-solid-svg-icons";
  import axios from 'axios';
-import "../MobileMenu.css"
+import "../MobileMenu.scss"
 import "../MobileSidebar/Sidedrawer.scss"
 import Auxiliary from '../../../hoc/Auxiliary';
 import { getUser ,getToken} from "../../../Utils/Common";
@@ -23,8 +23,6 @@ const SideDrawer=(props)=>{
 
   // handle click event of logout button
    const handleLogout = () => {
-
-    // removeUserLocal();
     
       axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
       {headers:{
@@ -46,17 +44,11 @@ const SideDrawer=(props)=>{
     return(
         <Auxiliary>
             
-                    <nav role="navigation" >
-                 {/* <div id="menuToggle">
-                
-                     <input type="checkbox" />
-                    
-                     <span></span>
-                     <span></span>
-                     <span></span> */}
+          <nav role="navigation" >
         
-           <ul className={drawerclasses} onClick={props.click}>
-             <div id="dashboard" > 
+           <ul className={drawerclasses} 
+           onClick={props.click}>
+            <div id="dashboard" > 
             <Link to="/dashboard">
               <li> <FontAwesomeIcon 
               className="Icon" 
@@ -143,9 +135,9 @@ const SideDrawer=(props)=>{
                 {user==='admin' && <ProgressBar />}
  
             </div>
-                    </ul>
-              </nav>
-              </Auxiliary>
+          </ul>
+        </nav>
+      </Auxiliary>
 
         );
     

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from '../Modal/Modal';
 import { ForgotPassword } from '../Modal/DeleteModalSumm/DeleteSumm';
@@ -7,8 +7,12 @@ import './LoginPage.scss';
 
 const LoginPage = (props) => {
   const [loading, setLoading] = useState(false);
+  const [pswdloading, setPswdLoading] = useState(false);
+
   const [error, setError] = useState(null);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
+  const [passwordHandler, setPasswordHandler] = useState(false);
+
   const [err, setPswdError] = useState(null);
 
   const userName = useFormInput ('');
@@ -32,12 +36,20 @@ const LoginPage = (props) => {
     });
   }
 
-const handleForgotPassword = () => {
+  const closeModal=()=>{ //function to close modal after performing it's operations
+  return (setmodalIsOpen(false)
+  // setPasswordHandler(false)
+  )
+}
+
+function HandleForgotPassword() {
   setPswdError(null);
+  setPswdLoading(true);
 
   axios.post('https://systest.eisenvault.net/share/proxy/alfresco-noauth/com/flex-solution/reset-password',
   { userName: forgotPswdUserName.value }).then(response => {
-    setLoading(false);
+    setPswdLoading(false);
+    closeModal();
     console.log("Email Sent");
     console.log(response);
   }).catch(err => {
@@ -48,11 +60,9 @@ const handleForgotPassword = () => {
   });
 }
 
-const LoadingSpinner = () => (
-  <div>
-    <i className="fa fa-spinner fa-spin" /> Loading...
-  </div>
-);
+if (loading) {
+  return <div><i className="fa fa-spinner fa-spin" /> Loading...</div>
+}
 
     return(
 
@@ -82,18 +92,16 @@ const LoadingSpinner = () => (
                 <Modal show={modalIsOpen}>
                 
                   <ForgotPassword                   
-                  resetPassword={handleForgotPassword}
+                  resetPassword={HandleForgotPassword}
                   clicked={() => setmodalIsOpen(false)}
                   forgotPswdUserName={forgotPswdUserName}/>
-                  
 
                   {err && <><small style={{ color: 'red' }}>
                   {err}</small><br /></>}
                 </Modal>     
 
                 <button id="btn_forgotPassword" type="button" 
-                  onClick={() => {return(setmodalIsOpen(true),
-                    loading ? <LoadingSpinner /> :   alert('Email Sent Successfully')
+                  onClick={() => {return(setmodalIsOpen(true)
                     )}}>
                     Forgot Password?</button>
                     
