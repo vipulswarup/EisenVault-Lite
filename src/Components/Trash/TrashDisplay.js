@@ -22,6 +22,8 @@ function TrashDisplayFiles(props){
   const [ paginationDefualt, setPaginationDefault ] = useState([]);
   const [hasMoreItems , setMoreItems] = useState('');
   const [skipCount , setSkipCount ] = useState('');
+  const [count,setCount]=useState('');
+  const[Entrieslength,setEntrieslength]=useState('')
 
   //API CALL
   useEffect(()=>{
@@ -29,13 +31,14 @@ function TrashDisplayFiles(props){
   },[]);
 
 const getDeletedData=()=>{
-  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=0&maxItems=10',
+  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=0&maxItems=50',
     {headers:{
     Authorization: `Basic ${btoa(getToken())}`
      }}).then((response) => {
       let FileData=response.data;
       console.log(FileData);
       setPaginationDefault(response.data.list.pagination)
+      setSkipCount(response.data.list.pagination.skipCount+10)
       setTrashFileState(response.data.list.entries.map(d=>{
         return {
           select:false,
@@ -63,7 +66,7 @@ const closeModal=()=>{ //function to close modal after performing it's operation
 const permanentDeleteByIds=()=>{
   TrashFileState.forEach(d=>{
     if(d.select){
-    axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes/${d.id}`, 
+    axios.delete(`https://systest.eisenvault.net/alfresco/s/api/archive/archive/SpacesStore/${d.id}`, 
     {headers:{
     Authorization: `Basic ${btoa(getToken())}`
      }
@@ -92,44 +95,79 @@ const RestoreFileByIds=()=>{
           }).catch(err=>alert(err));
       };
       })}
-      function next(){
-  
-        //  setSkipCount(skipCount + 10)
+
+      const handleDelete=(id)=>{ //method to delete documents without selecting by checkbox
+        axios.delete(`https://systest.eisenvault.net/alfresco/s/api/archive/archive/SpacesStore/${id}`, 
+      {headers:{
+      Authorization: `Basic ${btoa(getToken())}`
+       }
+     }).then((data)=>{
+          console.log(data);
+          getDeletedData();
+           }).catch(err=>alert(err));}
+     
+     const handleRestore=(id)=>{ //method to restore documents without selecting by checkbox
+        axios.put(`https://systest.eisenvault.net/alfresco/s/api/archive/archive/SpacesStore/${id}`, {},
+        {headers:{
+      Authorization: `Basic ${btoa(getToken())}`
+       }
+     }).then((data)=>{
+          console.log(data);
+          getDeletedData();
+           }).catch(err=>alert(err));}
+     
+     
+      function next(){  //function for pagination's next button
+       document.getElementById("myprevBtn").disabled = false;
          console.log(skipCount);
          axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=${skipCount}&maxItems=10`,
          {headers:{
            Authorization: `Basic ${btoa(getToken())}`
          }}).then((response) => {
           console.log(response.data)
-           setMoreItems(response.data.list.pagination.hasMoreItems)
-           if (response.data.list.pagination.hasMoreItems){
-            setSkipCount(response.data.list.pagination.skipCount + 10)
-           }
-           else{
-            setSkipCount(response.data.list.pagination.skipCount - 10)
-           }
+          setTrashFileState(response.data.list.entries.map(d=>{
+            return {
+              select:false,
+              id:d.entry.id,
+              name:d.entry.name,
+              createdOn:d.entry.createdAt.split('T')[0],
+              archivedAt:d.entry.archivedAt.split('T')[0]
+            }})) 
+            setCount(response.data.list.pagination.count)
+              setSkipCount(response.data.list.pagination.skipCount+10)
+              if(response.data.list.entries.length===0){
+                document.getElementById("myBtn").disabled = true;  
+              }
           });
-       
-      }
+        }
       
-      function previous(){
+      function previous(){ 
+        //function for pagination's previous button
+        document.getElementById("myBtn").disabled = false;  
         axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=${skipCount}&maxItems=10`,
         {headers:{
           Authorization: `Basic ${btoa(getToken())}`
         }}).then((response) => {
-            setMoreItems(response.data.list.pagination.hasMoreItems)
-            if (response.data.list.pagination.skipCount > 0){
+          setTrashFileState(response.data.list.entries.map(d=>{
+            return {
+              select:false,
+              id:d.entry.id,
+              name:d.entry.name,
+              createdOn:d.entry.createdAt.split('T')[0],
+              archivedAt:d.entry.archivedAt.split('T')[0]
+            }})) 
+            setCount(response.data.list.pagination.count)
+            if (response.data.list.pagination.skipCount >0){
               setSkipCount(response.data.list.pagination.skipCount - 10)
+              document.getElementById("myprevBtn").disabled = false;
+            }else{
+              document.getElementById("myprevBtn").disabled = true;
             }
-            else{
-              setSkipCount(response.data.list.pagination.skipCount + 10)
-            }
+            console.log(response.data.list.pagination.skipCount)
            });
        }
       
-      
-
-return(
+  return(
     <Fragment>
          <div id="second_section">
          <div className="top-menu">
@@ -187,8 +225,10 @@ return(
                 <td className="created_t">{d.createdOn}</td>                     
                 <td className="deleted_t">{d.archivedAt}</td> 
                 <td className="delete-icon">
-                <FontAwesomeIcon icon={faTrash} className="TrashIcon" onClick={()=>{deleteHandler(true)}}/>
-                <FontAwesomeIcon icon={faUndo} className="UndoIcon"  onClick={() => setmodalIsOpen(true)}/></td>           
+                <FontAwesomeIcon icon={faTrash} className="TrashIcon" 
+                onClick={(e) => { if (window.confirm(`Are you sure you wish to delete ${d.name}`)) handleDelete(d.id) }}/>
+                <FontAwesomeIcon icon={faUndo} className="UndoIcon" 
+                 onClick={(e) => { if (window.confirm(`Are you sure you wish to restore ${d.name}`)) handleRestore(d.id) }}/></td>           
             </tr>
                 ))}
         </tbody>
@@ -201,7 +241,8 @@ return(
              handlePrev={previous}
              handleNext={next}
              hasMoreItems={hasMoreItems}
-             skipCount={skipCount-10}
+             skipCount={skipCount}
+             Count={count}
         />
     </div>
 </Fragment>

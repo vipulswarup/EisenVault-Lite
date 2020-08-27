@@ -61,13 +61,23 @@ import "./stylePagination.scss";
 const Pagination = (props) => {
   return (
     <nav>
-        <ul className='pagination'>
-        <button onClick={props.handlePrev} >
+        {/* <ul className='pagination'>
+        <button onClick={props.handlePrev} className={(props.skipCount<0) ? "pageItem" :"activeState"} >
           Prev
         </button>
-        <button onClick={props.handleNext} className={props.hasMoreItems ? 'activeState' : "pageItem" }>
+        <button onClick={props.handleNext} className={(props.hasMoreItems) || (props.Count<50) ? 'activeState' : "pageItem" }>
           Next
         </button>
+
+        </ul> */}
+         <ul className='pagination' >
+        <button onClick={props.handlePrev} id="myprevBtn"  >
+          Prev
+        </button>
+        <button onClick={props.handleNext} id="myBtn">
+          Next
+        </button>
+
         </ul>
     </nav>
   )
