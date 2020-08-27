@@ -32,9 +32,9 @@ export const RestoreSummary= props =>{
        <button className="btn-cancel btn-c" onClick={props.clicked}>
         CANCEL
       </button>
-      <button className="btn-continue btn-d" onClick={props.deleted}>RESTORE</button>
+      <button className="btn-continue btn-d" onClick={props.deleted}>
+        RESTORE</button>
     </Fragment>
-
   )
 }
 
@@ -145,6 +145,44 @@ export const DeleteDepartment = (props) => {
   )
 }
 
-export const AuditTrail = (props) => {
+export const ChangeTypes = (props) => {
+  return(
+    <Fragment>
+      <div className="modal-header">
+        <h2>{props.fileName}</h2>
+        </div>
+        <div>
+          <div>
+            <h3>Auto Identified Category: Aadhaar Card</h3>
+           
+            <div className="label-input">
+              <label>New Category: </label>
+              <input type="text" name="name">
+              </input>
+              </div>
+              <br></br>
+              <div className="label-input">
+              <label>URL:</label>
+              <input type="text" name="url"></input>
+              </div>
+              <br></br>
+              <div className="label-input">
+            <label>Description:</label>
+            <textarea row="8" col="60"></textarea>
+            </div>
+            
+            <div className="label-input">
+            <input type="checkbox"></input>
+            <label>Please confirm whether you want to delete the department and all its contents.</label>
+            </div>
+          </div>
+        </div>
+        <div id="btns">
 
+          <button className="btn-continue">Delete Department</button>
+          <button className="btn-continue" onClick={props.deleteDept}>Delete</button>
+          <button onClick={props.clicked} className="btn-cancel">Cancel</button>
+        </div>
+    </Fragment>
+)
 }

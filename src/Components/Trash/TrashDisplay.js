@@ -169,9 +169,8 @@ const RestoreFileByIds=()=>{
       
   return(
     <Fragment>
-         <div id="second_section">
-         <div className="top-menu">
-
+        <div id="second_section">
+          <div className="top-menu">
             <h2>Trash</h2>
             <Search />
             <ProfilePic />
