@@ -2,8 +2,8 @@ import React, {useEffect,useState,Fragment} from 'react';
 import { useParams , useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Item } from '../../backButton/backButton';
-// import axios from 'axios'
-
+import axios from 'axios'
+import alertify from 'alertifyjs';
 import { faFile,faTimesCircle,faFolder} from "@fortawesome/free-solid-svg-icons";
 import Pagination from '../../Pagination/Pagination';
 import {instance} from '../../ApiUrl/endpointName.instatnce'
@@ -26,7 +26,7 @@ function SubDocument(){
   const currentPosts = documents.slice(indexOfFirstPost, indexOfLastPost);
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  
+ 
   const getData = () => {
     axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/children?skipCount=0`,
     {headers:
@@ -53,6 +53,7 @@ const handleDelete=(id,name)=>{
        }
      }).then((data)=>{
           console.log(data);
+          alertify.confirm().destroy(); 
           getData();
            }).catch(err=>alert(err));
       }
@@ -81,7 +82,7 @@ const handleDelete=(id,name)=>{
                   </tr>
                   </thead>
                   { currentPosts.map((d) => (
-                  <tbody key={d.id}>
+                  <tbody key={d.entry.id}>
                     <tr id="first_details">
                     <td className="file_name-u" 
                     onClick={() => handleDocument(
@@ -98,8 +99,11 @@ const handleDelete=(id,name)=>{
                     <td className="details-u-s">{d.entry.modifiedAt.split('T')[0]}</td>
                     <td className="delete-u-s">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle}
-                    onClick={(e) => { if (window.confirm(`Are you sure you wish to delete ${d.entry.name}`)) 
-                    HandleDelete(d.entry.id,d.entry.name) }} />
+                    onClick={()=>{ alertify.confirm().setting({transition:'pulse',
+                                buttonFocus : "ok",
+                                'message' : 'DO YOU WANT TO DELETE THIS FILE '+ d.entry.name,'onok': () => {handleDelete(d.entry.id)} ,
+                                'oncancel': () => {alertify.confirm().destroy();}}).show()
+                    }} />
                   </td>
                   </tr>
                 </tbody>
