@@ -8,13 +8,13 @@ import './DocumentList.scss';
 import axios from 'axios';
 import alertify from 'alertifyjs';
 import {instance} from "../ApiUrl/endpointName.instatnce"
-import {getUser,getToken} from  "../../Utils/Common";
-import ProfilePic from "../Avtar/Avtar";
+
 import Search from "../SearchBar/SearchBar";
 import Modal from "../Modal/Modal";
 import { CreateDepartment, DeleteDepartment} from "../Modal/DeleteModalSumm/DeleteSumm";
 import Pagination from '../Pagination/Pagination';
 import IconBar, {IconBarDelete} from '../IconBar/IconBar';
+
 const DocumentsList = () => {
   const user = getUser();
   const [createmodalIsOpen, createsetmodalIsOpen] = useState(false);
@@ -52,15 +52,13 @@ const DocumentsList = () => {
     getDepartments();
   },[url]);
   
-
-
   const getDepartments=()=>{
     instance.get(`${url}maxItems=10&skipCount=0`,
-
-    {headers:
-      {
+    headers:{
         Authorization: `Basic ${btoa(getToken())}`
-      }}).then((response) => {
+        }
+      }
+    ).then((response) => {
       console.log(response.data)
       setDepartments(response.data.list.entries)
       setPaginationDefaultDept(response.data.list.pagination)
@@ -71,11 +69,13 @@ const DocumentsList = () => {
   }
 
 function handleDocumentLibrary(key){
-  instance.get(`/nodes/${key}/children`,{headers:
-    {
+  instance.get(`/nodes/${key}/children`,
+  {
+  headers:{
       Authorization: `Basic ${btoa(getToken())}`
-    }})
-  .then((response) => {
+      }
+    }
+  ).then((response) => {
         console.log(response.data)
         setDocuments(response.data.list.entries)
         
@@ -88,14 +88,16 @@ function handleDocumentLibrary(key){
         console.log(error);
       })     
 }
+
 function handleCreateDepartment(){
   instance.post(`/sites`,
   {
    title: departmentTitle.value , visibility: "PRIVATE"
-  },{headers:
-    {
+  },
+  {
+  headers:{
       Authorization: `Basic ${btoa(getToken())}`
-    }}
+      } }
   ).then(response => {
     alert("Department successfully created");
     getDepartments()
@@ -108,12 +110,13 @@ function handleCreateDepartment(){
 });
 createsetmodalIsOpen(false)
 }
+
 function handleDeleteDepartment(id){
   instance.delete(`/sites/${id}?permanent=false`,
-  {headers:
-    {
+  {
+  headers:{
       Authorization: `Basic ${btoa(getToken())}`
-    }}
+      } } 
   )
   .then(response => {
     alert("Department successfully deleted");
@@ -175,9 +178,13 @@ function previous(){
 return (
   <Fragment>
     <div id="second_section">
+
+      <div className="top-menu">
       <h2>Document List</h2>
         <Search />
         <ProfilePic className="profile_picture"/>
+        </div>
+
             <div>
             <Modal show={createmodalIsOpen}>
             <CreateDepartment createDept={handleCreateDepartment} 
@@ -211,7 +218,7 @@ return (
                           <DeleteDepartment  clicked={() => deletesetmodalIsOpen(false)}></DeleteDepartment>
                         </Modal> &&
                       <div>
-                        <FontAwesomeIcon icon={faTrashAlt} 
+        <FontAwesomeIcon icon={faTrashAlt} 
                         onClick={()=>{ alertify.confirm().setting({transition:'pulse',
                                 buttonFocus : "ok",
                                 'message' : 'DO YOU WANT TO DELETE THIS FILE '+ department.entry.title,'onok': () => {handleDeleteDepartment(department.entry.id)} ,

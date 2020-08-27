@@ -126,10 +126,12 @@ return(
       <Fragment>
        
          <div id="second_section">
+         <div className="top-menu">
+
             <h2>Manage Shares</h2>
             <Search />
             <ProfilePic />
-            
+          </div>
               <div className="filesShared">
                 <table id="doc_list">
                   <thead>

@@ -144,3 +144,7 @@ export const DeleteDepartment = (props) => {
     </Fragment>
   )
 }
+
+export const AuditTrail = (props) => {
+
+}
