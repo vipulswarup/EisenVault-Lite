@@ -181,7 +181,8 @@ return (
                           <DeleteDepartment  clicked={() => deletesetmodalIsOpen(false)}></DeleteDepartment>
                         </Modal> &&
                       <div>
-                        <FontAwesomeIcon icon={faTrashAlt} onClick={(e) => { if (window.confirm(`Are you sure you wish to delete ${department.entry.title}`))
+                        <FontAwesomeIcon icon={faTrashAlt}
+                         onClick={(e) => { if (window.confirm(`Are you sure you wish to delete ${department.entry.title}`))
                         handleDeleteDepartment(department.entry.id)} }
                         className="icon-item delete"/>
                       </div>
