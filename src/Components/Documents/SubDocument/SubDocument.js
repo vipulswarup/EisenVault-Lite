@@ -2,7 +2,7 @@ import React, {useEffect,useState,Fragment} from 'react';
 import { useParams , useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Item } from '../../backButton/backButton';
-// import axios from 'axios'
+import axios from 'axios'
 
 import { faFile,faTimesCircle,faFolder} from "@fortawesome/free-solid-svg-icons";
 import Pagination from '../../Pagination/Pagination';
@@ -11,6 +11,7 @@ import Search from "../../SearchBar/SearchBar";
 import ProfilePic from "../../Avtar/Avtar";
 import {getToken} from "../../../Utils/Common"
 import './SubDocument.scss';
+
 function SubDocument(){
   let history = useHistory();
   const[documents,setDocuments]=useState([]);
@@ -27,31 +28,30 @@ function SubDocument(){
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   
+  useEffect(()=>{
+    getData()
+  },[id]);
+
   const getData = () => {
-    axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/children?skipCount=0`,
-    {headers:
-      {
+    instance.get(`/nodes/${id}/children?skipCount=0`,
+    {
+    headers:{
         Authorization: `Basic ${btoa(getToken())}`
-      }}).then((response) => {
+        } }).then((response) => {
     console.log(response.data)
     setDocuments(response.data.list.entries)
     setPaginationDefaultDoc(response.data.list.pagination) 
     console.log(response.data.list.pagination)
     })
   };
-
-
-   useEffect(()=>{
-    getData()
-  },[id]);
   
-
 const handleDelete=(id,name)=>{
-      axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`, 
-      {headers:{
-      Authorization: `Basic ${btoa(getToken())}`
-       }
-     }).then((data)=>{
+      instance.delete(`/nodes/${id}`,
+      {
+      headers:{
+          Authorization: `Basic ${btoa(getToken())}`
+          } }
+      ).then((data)=>{
           console.log(data);
           getData();
            }).catch(err=>alert(err));
@@ -65,9 +65,13 @@ const handleDelete=(id,name)=>{
     return( 
       <Fragment>
          <div id="second_section">
+         <div className="top-menu">
+
             <h2>Document Library</h2>
             <Search />
-            <ProfilePic /> 
+            <ProfilePic />
+            </div> 
+            
               <div className="filesShared">
                 <table id="doc_list">
                   <thead>
@@ -99,7 +103,7 @@ const handleDelete=(id,name)=>{
                     <td className="delete-u-s">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle}
                     onClick={(e) => { if (window.confirm(`Are you sure you wish to delete ${d.entry.name}`)) 
-                    HandleDelete(d.entry.id,d.entry.name) }} />
+                    handleDelete(d.entry.id,d.entry.name) }} />
                   </td>
                   </tr>
                 </tbody>

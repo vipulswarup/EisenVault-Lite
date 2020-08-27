@@ -25,12 +25,20 @@ function ManageShares(){
 },[])
  
  const getDetailsData = () => {
-  instance.get('/shared-links?skipCount=0&maxItems=10&include=properties'
+  instance.get('/shared-links?skipCount=0&maxItems=10&include=properties',
+  {
+  headers:{
+      Authorization: `Basic ${btoa(getToken())}`
+      } }
   ).then((response) => { 
   setFileState(response.data.list.entries)
   console.log(response.data.list.entries)
   response.data.list.entries.forEach(d=>{
-      instance.get(`/queries/nodes?term=${d.entry.name}&include=allowableOperations,properties,path`
+      instance.get(`/queries/nodes?term=${d.entry.name}&include=allowableOperations,properties,path`,
+      {
+      headers:{
+          Authorization: `Basic ${btoa(getToken())}`
+          } }
       ).then((response) => {
         console.log("received")
       console.log(response.data)
@@ -57,7 +65,11 @@ function handleDocument(id,title){
 }
 
 function handleDelete(id){
-  instance.delete(`/shared-links/${id}`).then(response => {
+  instance.delete(`/shared-links/${id}`,
+  {
+  headers:{
+      Authorization: `Basic ${btoa(getToken())}`
+      } }).then(response => {
     getDetailsData()
     alert("unshared"); 
     console.log(response)
@@ -72,7 +84,11 @@ function next(){
   
   //  setSkipCount(skipCount + 10)
    console.log(skipCount);
-   instance.get(`/shared-links?&maxItems=10&skipCount=${skipCount}&include=properties`
+   instance.get(`/shared-links?&maxItems=10&skipCount=${skipCount}&include=properties`,
+   {
+   headers:{
+       Authorization: `Basic ${btoa(getToken())}`
+       } }
    ).then((response) => {
 
     console.log(response.data)
@@ -88,7 +104,11 @@ function next(){
 }
 
 function previous(){
-  instance.get(`/shared-links?&include=properties&maxItems=10&skipCount=${skipCount}`
+  instance.get(`/shared-links?&include=properties&maxItems=10&skipCount=${skipCount}`,
+  {
+  headers:{
+      Authorization: `Basic ${btoa(getToken())}`
+      } }
   ).then((response) => {
 
       setMoreItems(response.data.list.pagination.hasMoreItems)
@@ -105,10 +125,12 @@ return(
       <Fragment>
        
          <div id="second_section">
+         <div className="top-menu">
+
             <h2>Manage Shares</h2>
             <Search />
             <ProfilePic />
-            
+          </div>
               <div className="filesShared">
                 <table id="doc_list">
                   <thead>

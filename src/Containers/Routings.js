@@ -5,7 +5,7 @@ import axios from 'axios';
 import LoginPage from "../Components/Login/Login"
 import NavigationItems from "../Components/Navigation/NavigationItems/NavigationItems";
 import SideDrawer from "../Components/MobileMenu/MobileSidebar/Sidedrawer";
-import DrawerToggleButton from "../Components/MobileMenu/MobileMenu";
+import {DrawerToggleButton,MoreDetailToggleButton} from "../Components/MobileMenu/MobileMenu";
 import Footer from "../Components/Footer/Footer";
 import MyUploads from "../Components/MyUploads/MyUploads";
 import Dashboard from "../Components/Dashboard/Dashboard";
@@ -21,16 +21,15 @@ import SearchResult from '../Components/SearchBar/SearchResult';
 
 import DocPreview from "../Components/Documents/DocumentViewer/DocumentViewer";
 
-
 import PrivateRoute from '../Utils/PrivateRoutes';
 import './styles.scss';
 import { getToken, removeUserLocal, setUserLocal } from "../Utils/Common";
 import Backdrop from "../Components/Backdrop/Backdrop";
 
-
 const Routings = withRouter (({ location },props) => {
   const [authLoading, setAuthLoading] = useState(true);
   const[sideDrawerOpen,setsideDrawerOpen]=useState(false);
+  const[moreDetails,setMoreDetails]=useState(false);
 
   useEffect(() => {
     const token = getToken();
@@ -60,6 +59,12 @@ const Routings = withRouter (({ location },props) => {
       return {sideDrawerOpen: !prevState.sideDrawerOpen}
     })
   };
+
+  // let MoreDetailsHandler=()=>{
+  //   setMoreDetails((prevState)=>{
+  //     return {moreDetails: !prevState.sideDrawerOpen}
+  //   })
+  // };
 
   let backdropClickHandler=()=>{
     setsideDrawerOpen(false);
@@ -99,7 +104,7 @@ const Routings = withRouter (({ location },props) => {
         <PrivateRoute path="/search/:result" component={SearchResult} />
 
         <PrivateRoute path="/document-details/:id/:title" 
-        component={DocPreview} />
+        component={DocPreview} />  
 
         {location.pathname !== '/' &&  <Footer />}
       </div>

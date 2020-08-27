@@ -2,16 +2,17 @@ import React , { Fragment,useState,useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Search from "../../SearchBar/SearchBar";
 import ProfilePic from "../../Avtar/Avtar";
-import DocumentDetails from "../DocumentDetails/DocumentDetails";
-
-// import {instance} from '../../ApiUrl/endpointName.instatnce'
+import DocumentDetails from "../../MoreDetails/MoreDetails";
+import "../DocumentViewer/DocumentViewer.scss"
 import { Item } from '../../backButton/backButton';
 import {getToken} from  "../../../Utils/Common";
 import axios from 'axios';
+import {MoreDetailToggleButton} from "../../MobileMenu/MobileMenu"
 
 function DocPreview() {
     const [fileURI, setFileURI] = useState("");
     const [pdfFileURI, setPdfFileURI] = useState("");
+    const[moreDetails,setMoreDetails]=useState(false);
 
     const [error, setError] = useState(null);
     let params = useParams();
@@ -31,13 +32,18 @@ function DocPreview() {
             Authorization: `Basic ${btoa(getToken())}`,
          },
         }
-      )
-      .then((response) => {
+      ).then((response) => {
         // setDataTypes(response.headers["content-type"])
         // console.log(dataType)
         setFileURI(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content`)
       });
   }, [id]);
+
+  let MoreDetailsHandler=()=>{
+    setMoreDetails((prevState)=>{
+      return {moreDetails: !prevState.moreDetails}
+    })
+  };
 
   function DisplayUsingOfficeApps() {
     var token = getToken();
@@ -50,8 +56,9 @@ function DocPreview() {
     // document.getElementById('myFrame').src=url
     return (
       <Fragment>
-      <button onClick={DocumentDetails}>More Details</button>
-
+      {/* <MoreDetailToggleButton details={MoreDetailsHandler} /> */}
+      <button onClick={()=>{setMoreDetails(true)}}>More</button>
+      {setMoreDetails(true)? <DocumentDetails show={moreDetails}/>: null}
       <iframe src={url} 
       title='mydocframe' 
       id='mydocFrame'
@@ -79,13 +86,19 @@ function DocPreview() {
   
         return (
           <Fragment>
-          <button onClick={DocumentDetails}>More Details</button>
+          
+          <div className="docFrame">
+          <MoreDetailToggleButton details={MoreDetailsHandler} />
+          <DocumentDetails/>
 
-          <iframe src={pdfFileURI} 
-          title='myframe' 
-          id='myFrame'
-          width="700px" height="700px" 
-          allowFullScreen/>
+            <iframe src={pdfFileURI} 
+            title='myframe' 
+            id='myFrame'
+            width="700px" 
+            height="700px" 
+            marginWidth="1rem"
+            allowFullScreen/>
+          </div>
           </Fragment>
         ); 
         
@@ -101,21 +114,16 @@ function Viewer() {
 return(
     <Fragment>
      <div id="second_section">
+     <div className="top-menu">
+
         <h2>{title}</h2>
         <Search />
         <ProfilePic />
+      </div>
+      
         <Item />
         <Viewer />
-        {/* <iframe                  
-        {...error && <>
-        <small style={{ color: 'red' }}>{error}</small><br /></>}
-        title='myframe' 
-        id='myFrame'
-        src = ""
-        allowFullScreen
-        height = "700px"
-        width = "700px"
-        />    */}
+        
     </div>
     </Fragment>
 )

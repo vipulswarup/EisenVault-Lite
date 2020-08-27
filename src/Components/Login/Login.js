@@ -23,7 +23,7 @@ const LoginPage = (props) => {
     setError(null);
     setLoading(true);
  //{ userId: 'admin', password: 'Systest@987'}
-    axios.post('https://systest.eisenvault.net/alfresco/api/-default-/public/authentication/versions/1/tickets', 
+    axios.post('https://cors-anywhere.herokuapp.com/https://systest.eisenvault.net/alfresco/api/-default-/public/authentication/versions/1/tickets', 
     { userId: userName.value, password: password.value}).then(response => {
       setLoading(false);
       setUserLocal(response.data.entry.id, response.data.entry.userId);

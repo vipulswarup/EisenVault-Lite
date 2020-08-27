@@ -91,9 +91,14 @@ function MyUploads(props){
       return( 
       <Fragment>
          <div id="second_section">
+
+         <div className="top-menu">
+
             <h2>My Uploads</h2>
             <Search />
-              <ProfilePic />
+            <ProfilePic />
+          </div>
+
                <div className="filesUpload">
                 <table id="doc_list">
                   <tbody>
