@@ -1,4 +1,4 @@
-import React , { Fragment,useRef,useEffect } from 'react';
+import React , { Fragment,useRef,useEffect, useState } from 'react';
 import "./MoreDetails.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faShareAlt} from "@fortawesome/free-solid-svg-icons"
@@ -7,10 +7,12 @@ import { useHistory } from "react-router-dom";
 import {getToken} from "../../Utils/Common";
 import Axios from 'axios';
 import useOutsideClick from '../Backdrop/OutsideClick';
+import { MoreDetailToggleButton } from '../MobileMenu/MobileMenu';
 
 const DocumentDetails = (props) => {
     const ref = useRef();
-
+    const [docTypes, setDocTypes] = useState([]);
+    const [auditDetails, setAuditDetails] = useState([])
     // useOutsideClick(ref, () => {
     //   alert('You clicked outside')
     // });
@@ -45,17 +47,34 @@ const DocumentDetails = (props) => {
            },
           }).then((response) => {
               console.log(response.data.types)
+              setDocTypes(response.data.map(({documentTypes})=>
+              ({label: documentTypes, value:documentTypes})
+              ))
           })
     }
 
     function AuditTrail(){
-        Axios.get("https://systest.eisenvault.net/alfresco/s/ev/nodeaudittrail?nodeRef=workspace://SpacesStore/4c0fe138-f27d-43b2-9f36-81ad2634ac1f",
+        Axios.get(`https://systest.eisenvault.net/alfresco/s/ev/nodeaudittrail?nodeRef=workspace://SpacesStore/${id}`,
         {
             headers: {
               Authorization: `Basic ${btoa(getToken())}`,
            },
           }).then((response)=>{
-              console.log(response.data)
+              let MoreData=response.data;
+              console.log(MoreData)
+
+              setAuditDetails(
+                response.data[0].map(d=>{
+                    console.log(d.time)
+
+                    return{
+                    time: d.time,
+                    action: d.method,
+                    property: d.propertyList
+                    }
+                })
+              )
+
           })}
 
     return(
@@ -106,12 +125,14 @@ const DocumentDetails = (props) => {
                     <p>234 Kb</p>
                     </div>
 
-                    <div className="details-p">
-                    <p>Activity History:</p>
-                    <p>Viewed By Emily Rose, 2 days ago</p>
-                    <p>Edited By Emily Rose, 3 days ago</p>
-                    <p>Edited By Dan Rose, 4 days ago</p>
-                    </div>
+                    {auditDetails.map((audit) =>(
+                        <tr key={audit.id} className="details-p">
+                        <td>Activity History:</td>
+                        <td>Viewed By Emily Rose, {auditDetails.time}</td>
+                        <td>Edited By Emily Rose, {audit.time}</td>
+                        <td>Edited By Dan Rose, {audit.time}</td>
+                        </tr>
+                    ))}
                 
                     <div className="details-p">
                         <a id="audit-trail" onClick={()=>(AuditTrail())}>(click to view detailed history)</a>
