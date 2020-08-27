@@ -1,11 +1,14 @@
 $sidebar-color: #E07050;
+$font-color:#073453;
+$white-color: white;
 
-#pdf-preview{
-    position: fixed;
-    z-index:200;
-    width: 50%;
+.pdf-preview {
+    display: inline-block;
+    position: absolute;
+    // z-index:200;
+    width: 30%;
     height:890px;
-    margin: -60px 0 0 -85px;
+    margin-left: 35rem;
     padding: 5.6rem 5.6rem 11.4rem 5.6rem;
     background-color: $sidebar-color;
     box-shadow: 1px 0px 7px rgba(0,0,0,0.5);
@@ -13,4 +16,11 @@ $sidebar-color: #E07050;
     -webkit-font-smoothing: antialiased; 
     transform: translateX(-100%);
     transition: transform 0.3s ease-out ;
+    & a{
+        text-decoration: none;
+      }
+}
+
+.pdf-preview.open{
+    transform:translateX(0);
 }

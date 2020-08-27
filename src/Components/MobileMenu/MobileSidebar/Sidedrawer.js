@@ -35,10 +35,12 @@ const SideDrawer=(props)=>{
           else setError("Your authentication details have not been recognized or EisenVault may not be available at this time.");        
       }, [])
    }
+   
   let drawerclasses='Side-drawer';
   if(props.show){
     drawerclasses='Side-drawer open';
   }
+  
   const user = getUser();
    
     return(

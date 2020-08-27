@@ -42,12 +42,15 @@ function handlechangePassword(){
 return(
     <Fragment>
         <div id="second_section">
+        <div className="top-menu">
+
             <h2>CHANGE PASSWORD</h2>
-              <div>
+              
                 <Search />
 
                 <ProfilePic />
-                
+                </div>
+
                 <div id="share-details-n">
                 <div id="column-1">
                     <p>Enter Old Password</p>
@@ -61,7 +64,6 @@ return(
                 </div>
                 <button className="btn01" type="button" onClick={handlechangePassword}>Change</button>
                 <button className="btn02" type="button">Cancel</button>
-            </div>
             </div>
             </div>
                 

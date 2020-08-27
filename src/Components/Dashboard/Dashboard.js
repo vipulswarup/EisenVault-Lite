@@ -109,12 +109,15 @@ const Dashboard = () => {
   <Fragment>
 
       <div id="second_section">
-      <h2>Dashboard</h2>
+
+      <div className="top-menu">
+
+        <h2>Dashboard</h2>
         
         <Search />
         <ProfilePic />
         
-      
+      </div>
       <div className="filesDetail">
         <h3>My Recent Activities</h3>
 

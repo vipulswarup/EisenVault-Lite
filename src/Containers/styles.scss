@@ -14,12 +14,20 @@ $font-color:#073453;
 
 #second_section{
   display: inline-block;
-  margin: 1.5rem;
+  margin: 0;
+}
+
+#second_section .top-menu{
+  width: 100%;
+
+  & h2{
+    margin-left: 2rem;
+  }
 }
 
 .avtarStyle{
   float: right;
-  margin: 0.2rem 1rem 0 1rem;
+  margin: 0;
 }
 
 @media (min-width:1024px) and (max-width:1279px){

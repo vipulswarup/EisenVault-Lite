@@ -1,7 +1,5 @@
 import React,{Fragment , useEffect , useState} from 'react';
 
-import axios from 'axios';
-import {instance} from '../ApiUrl/endpointName.instatnce';
 import { useHistory} from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
@@ -55,14 +53,14 @@ const DocumentsList = () => {
     getDepartments();
   },[url]);
   
-
-
   const getDepartments=()=>{
-    axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/sites?where=(visibility='PRIVATE')&maxItems=10&skipCount=0`,
-    {headers:
-      {
+    instance.get(`${url}maxItems=10&skipCount=0`,
+    {
+    headers:{
         Authorization: `Basic ${btoa(getToken())}`
-      }}).then((response) => {
+        }
+      }
+    ).then((response) => {
       console.log(response.data)
       setDepartments(response.data.list.entries)
       setPaginationDefaultDept(response.data.list.pagination)
@@ -74,7 +72,12 @@ const DocumentsList = () => {
 
 function handleDocumentLibrary(key){
 
-  instance.get(`/nodes/${key}/children`
+  instance.get(`/nodes/${key}/children`,
+  {
+  headers:{
+      Authorization: `Basic ${btoa(getToken())}`
+      }
+    }
   ).then((response) => {
         console.log(response.data)
         setDocuments(response.data.list.entries)
@@ -88,14 +91,16 @@ function handleDocumentLibrary(key){
         console.log(error);
       })     
 }
+
 function handleCreateDepartment(){
   instance.post(`/sites`,
   {
    title: departmentTitle.value , visibility: "PRIVATE"
-  },{headers:
-    {
+  },
+  {
+  headers:{
       Authorization: `Basic ${btoa(getToken())}`
-    }}
+      } }
   ).then(response => {
     alert("Department successfully created");
     getDepartments()
@@ -108,12 +113,13 @@ function handleCreateDepartment(){
 });
 createsetmodalIsOpen(false)
 }
+
 function handleDeleteDepartment(id){
   instance.delete(`/sites/${id}?permanent=false`,
-  {headers:
-    {
+  {
+  headers:{
       Authorization: `Basic ${btoa(getToken())}`
-    }}
+      } } 
   )
   .then(response => {
     alert("Department successfully deleted");
@@ -174,9 +180,13 @@ function previous(){
 return (
   <Fragment>
     <div id="second_section">
+
+      <div className="top-menu">
       <h2>Document List</h2>
         <Search />
         <ProfilePic className="profile_picture"/>
+        </div>
+
             <div>
             <Modal show={createmodalIsOpen}>
             <CreateDepartment createDept={handleCreateDepartment} 
