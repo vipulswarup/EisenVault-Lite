@@ -4,9 +4,19 @@ th#item-names{
     border-left: 1px solid #073453;
     border-top-left-radius: 1rem;
    border-bottom-left-radius: 1rem;
+   
+}
+th#action{
+    border-right: 1px solid #073453;
+    border-top-right-radius: 1rem;
+   border-bottom-right-radius: 1rem;
+}
+#shared{
+    margin-right:2rem;
 }
 .details-u-s{
-    padding-left: 2rem;
+    padding-left: 1rem;
+    margin-left: 1rem;
     color: $font-color;
 }
 .shared-s{
@@ -15,4 +25,12 @@ th#item-names{
 }
 #icons{
     color: $font-color;
+    min-width: 100rem;
+}
+#items{
+    display:flex;
+    flex-flow:row;
+}
+#container{
+    display:inline-block;
 }

@@ -6,8 +6,7 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
 import './DocumentList.scss';
 import axios from 'axios';
-import {getUser,getToken} from  "../../Utils/Common";
-import ProfilePic from "../Avtar/Avtar";
+import alertify from 'alertifyjs';
 import {instance} from "../ApiUrl/endpointName.instatnce"
 
 import Search from "../SearchBar/SearchBar";
@@ -55,7 +54,6 @@ const DocumentsList = () => {
   
   const getDepartments=()=>{
     instance.get(`${url}maxItems=10&skipCount=0`,
-    {
     headers:{
         Authorization: `Basic ${btoa(getToken())}`
         }
@@ -71,7 +69,6 @@ const DocumentsList = () => {
   }
 
 function handleDocumentLibrary(key){
-
   instance.get(`/nodes/${key}/children`,
   {
   headers:{
@@ -123,6 +120,7 @@ function handleDeleteDepartment(id){
   )
   .then(response => {
     alert("Department successfully deleted");
+    alertify.confirm().destroy();
     getDepartments()
     console.log(response)
   }).catch(error => {
@@ -220,9 +218,12 @@ return (
                           <DeleteDepartment  clicked={() => deletesetmodalIsOpen(false)}></DeleteDepartment>
                         </Modal> &&
                       <div>
-                        <FontAwesomeIcon icon={faTrashAlt}
-                         onClick={(e) => { if (window.confirm(`Are you sure you wish to delete ${department.entry.title}`))
-                        handleDeleteDepartment(department.entry.id)} }
+        <FontAwesomeIcon icon={faTrashAlt} 
+                        onClick={()=>{ alertify.confirm().setting({transition:'pulse',
+                                buttonFocus : "ok",
+                                'message' : 'DO YOU WANT TO DELETE THIS FILE '+ department.entry.title,'onok': () => {handleDeleteDepartment(department.entry.id)} ,
+                                'oncancel': () => {alertify.confirm().destroy();}}).show()
+                    }}
                         className="icon-item delete"/>
                       </div>
   
