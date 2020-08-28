@@ -41,7 +41,29 @@ export const RestoreSummary= props =>{
 export const CreateDepartment = props =>{
   return (
     <Fragment>
-       <div className="modal-header">
+      <div id="popup2" class="popup-n">
+            
+                <h2 class="head">Create Department</h2><br></br>
+                <div class="content">
+                    <p>
+                        <label>Name:</label>
+                        <input type="text" id="name" name="name"  {...props.departmentTitle}></input><br></br>
+                        <label>URL:</label>
+                        <input type="text" id="url" name="url"></input><br></br>
+                        <label class="describe">Description:</label>
+                        <textarea rows = "6" cols = "40" id = "desc"></textarea>  
+                        <div id="btns">
+                        <button id="btn03"  onClick={props.createDept}>Ok</button>
+                        <button className="btn-cancel" onClick={props.clicked}>Cancel</button>
+                    </div>                   
+                    </p>
+                   
+                </div>
+            
+        </div>
+
+
+       {/* <div className="modal-header">
               <h2>Create Department</h2>
             </div>
             <div>
@@ -68,7 +90,7 @@ export const CreateDepartment = props =>{
         <div id="btns">
           <button onClick={props.createDept} className="btn-continue">Create</button>
           <button onClick={props.clicked} className="btn-cancel">Cancel</button>
-        </div>
+        </div> */}
     </Fragment>
 
   )

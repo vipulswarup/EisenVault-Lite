@@ -124,7 +124,7 @@ const Dashboard = () => {
         <table className='documentsList'>
             {currentPosts.map(document => (               
             <tbody key={document.entry.id} >
-                <tr className='files'>
+                <tr >
                   <td className='fileName'>                             
                     <FontAwesomeIcon icon={faFile} />
                         <h4>

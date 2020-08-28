@@ -11,7 +11,7 @@ import Pagination from '../../Pagination/Pagination';
 import {instance} from '../../ApiUrl/endpointName.instatnce'
 import Search from "../../SearchBar/SearchBar";
 import ProfilePic from "../../Avtar/Avtar";
-import {getToken} from "../../../Utils/Common"
+import {getToken} from "../../../Utils/Common";
 import './SubDocument.scss';
 
 function SubDocument(){
