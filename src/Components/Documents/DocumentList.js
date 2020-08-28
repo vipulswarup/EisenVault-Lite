@@ -12,7 +12,6 @@ import {instance} from "../ApiUrl/endpointName.instatnce"
 import ProfilePic from "../Avtar/Avtar";
 import { getToken, getUser } from '../../Utils/Common';
 import Search from "../SearchBar/SearchBar";
-import ProfilePic from "../Avtar/Avtar";
 import { getToken, getUser } from '../../Utils/Common';
 import Modal from "../Modal/Modal";
 import { CreateDepartment, DeleteDepartment} from "../Modal/DeleteModalSumm/DeleteSumm";
@@ -58,12 +57,8 @@ const DocumentsList = () => {
   
   const getDepartments=()=>{
     instance.get(`${url}maxItems=10&skipCount=0`,
-<<<<<<< HEAD
-    {headers:{
-=======
     {
     headers:{
->>>>>>> c03d27edf5a013165b7d557bb007e259522ee768
         Authorization: `Basic ${btoa(getToken())}`
         }}).then((response) => {
       console.log(response.data)
