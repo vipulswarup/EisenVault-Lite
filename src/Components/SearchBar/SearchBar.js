@@ -67,7 +67,7 @@ import { getToken } from '../../Utils/Common';
         <input 
             className="searchBox"
             type="text"
-            placeholder="search here .."
+            placeholder="Type here to search ..."
             value={result}
             onChange={onChange}
             onKeyUp={onEnter}
