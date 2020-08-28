@@ -39,6 +39,7 @@ $icon-color: #ee9796;
  input[type=checkbox] {
   height:1.4rem;
   width: 1.4rem;
+  margin-left:1.9rem;
 }
 
  th#icon01 {
@@ -53,6 +54,7 @@ $icon-color: #ee9796;
     border-collapse: separate;
     padding-top:1rem;
     padding-bottom:1rem;
+    padding-right:1.9rem;
 }
 th#action {
   border-right: 1px solid #073453;
@@ -79,11 +81,209 @@ th#action {
   margin-left:4rem; 
 }
 
-.file_name-u {
-  padding-left: 3rem;
-   }
+// .file_name-u {
+//   padding-left: 3rem;
+//    }
+#action label{
+    padding-left:3.5rem;
+    overflow: hidden;  
+    white-space: nowrap;
 
+
+}
+#action label #action-t{
+    margin-right:1rem;
+
+}
+#shared{
+    padding-left:2rem;
+    overflow: hidden;  
+white-space: nowrap;
+}
 .details-u {
-padding-left: 3rem;
+padding-left: 2rem;
 color:$font-color;
+overflow: hidden;  
+white-space: nowrap;  
 }  
+.file_name-u{
+    padding-left:2rem;
+}
+.delete-u{
+    padding-left:2rem;
+}
+
+// @media(min-width:533px) and (max-width:1022px){
+//  #item-name{
+//    padding-right:3.5rem;
+//  }
+//  #shared{
+//    padding-right:3.5rem;
+//   overflow: hidden;
+//   white-space: nowrap;
+//  }
+//  .file_name-u{
+   
+//   overflow: hidden;
+//   white-space: nowrap;
+
+//  }
+//  .details-u{
+//   overflow: hidden;
+//   white-space: nowrap;
+
+//  }
+ 
+// .filesUpload td.file_icon1 input[type=checkbox] {
+//   margin: 0.4rem 1.4rem 0.9rem 1.9rem;
+  
+// }
+// .files td{
+//   font-size: 5px;
+// }
+// }
+
+
+
+@media (min-width:533px) and (max-width:1022px){
+
+  .files{
+      margin-top: 8rem;
+
+      & .filesUpload td.file_icon1 input[type=checkbox] {
+          margin: 0.4rem 1.4rem 0.9rem 1.9rem;
+          
+        }
+        & .filesUpload td.file_icon1{
+            padding-left: 1rem;
+        }
+      }
+  th{
+      border-top: 1px solid #073453;
+      border-bottom: 1px solid #073453;
+      border-collapse: separate;  
+      text-align: left;
+      padding-right:2rem;
+     overflow: hidden;  
+     white-space: nowrap;  
+
+      & #action-t{
+          width: 1.2rem;
+      }
+
+      &#action-trash{ 
+          border-right: 1px solid #073453;
+          border-bottom-right-radius: 1rem;
+          border-top-right-radius: 1rem;       
+          padding-left: 1.5rem;
+      }
+  }
+
+  th#icon01{
+      border-left: 1px solid #073453;
+      border-top-left-radius: 1rem;
+      border-bottom-left-radius: 1rem;
+  }
+
+  th#icon{
+      padding: 1.2rem 2rem;
+      border-left: 1px solid #073453;
+      border-top-left-radius: 1rem;
+      border-bottom-left-radius: 1rem;
+  }
+
+  th#action{
+      border-right: 1px solid #073453;
+      border-top-right-radius: 1rem;
+      border-bottom-right-radius: 1rem;
+  }
+
+  .files{ 
+      width:106%;
+
+      & td i {
+          padding: 0.5rem ;
+      }   
+
+          & td{
+              font-size:15px;
+              
+              &.file_icon1{
+                  border-bottom-left-radius: 1rem;
+                  border-top-left-radius: 1rem; 
+              }
+  
+              &.delete-icon{
+                  display: inline-block; 
+              }
+  
+              & .flaticon-delete{
+                  padding: 0;
+              }
+  
+              & .restore-icon{
+                  padding-left: 0;
+              }
+          }
+  
+      & .delete-s{
+          padding: 0 0.5rem;
+
+          & .tooltip .tooltiptext {
+              width: 75px;
+              padding: 0;
+              bottom: 100%;
+              left: 140%;
+              margin-left: -80px;
+          } 
+      }
+  }
+#item-name{
+    padding-left:0.5rem;
+}
+  #doc_list {
+    margin: 1rem 1rem;
+   
+  }
+  #action label{
+      padding-left:1.3rem;
+  }
+  #shared{
+    padding-left:1.4rem;
+  }
+  th {
+    border-top: 1px solid #073453;
+    border-bottom: 1px solid #073453;
+    border-collapse: separate;
+    padding-top:1rem;
+    padding-bottom:1rem;
+
+}
+.file_name-u{
+    
+    padding-left:0rem;
+}
+.delete-u{
+    padding-left:0rem;
+}
+}
+
+@media(min-width:1024px) and (max-width:1130px){
+    #shared{
+        padding-left:0rem;
+      }
+      #action label{
+        padding-left:0.1rem;
+    }
+    .details-u{
+        padding-left:0.3rem;
+    }
+    .file_name-u{
+        overflow: hidden;  
+        white-space: nowrap; 
+        padding-left:0rem;
+    }
+    .delete-u{
+        padding-left:0rem;
+    }
+}
