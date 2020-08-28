@@ -9,8 +9,11 @@ import { faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
 import './DocumentList.scss';
 import alertify from 'alertifyjs';
 import {instance} from "../ApiUrl/endpointName.instatnce"
-
+import ProfilePic from "../Avtar/Avtar";
+import { getToken, getUser } from '../../Utils/Common';
 import Search from "../SearchBar/SearchBar";
+import ProfilePic from "../Avtar/Avtar";
+import { getToken, getUser } from '../../Utils/Common';
 import Modal from "../Modal/Modal";
 import { CreateDepartment, DeleteDepartment} from "../Modal/DeleteModalSumm/DeleteSumm";
 import Pagination from '../Pagination/Pagination';
@@ -55,7 +58,12 @@ const DocumentsList = () => {
   
   const getDepartments=()=>{
     instance.get(`${url}maxItems=10&skipCount=0`,
+<<<<<<< HEAD
     {headers:{
+=======
+    {
+    headers:{
+>>>>>>> c03d27edf5a013165b7d557bb007e259522ee768
         Authorization: `Basic ${btoa(getToken())}`
         }}).then((response) => {
       console.log(response.data)
@@ -194,11 +202,12 @@ return (
                 toggleadd = {() =>{createsetmodalIsOpen(true)}}
               />
             </div>
-      <ul className='files'>
+      <div className='files'>
           
            <table id="doc_list">
+           <tbody >
           {currentPosts.map(department => (
-              <tbody key={department.entry.id}>
+            
                   <tr className='details'>
                   <td className='fileicon'>
                   
@@ -217,10 +226,10 @@ return (
                           <DeleteDepartment  clicked={() => deletesetmodalIsOpen(false)}></DeleteDepartment>
                         </Modal> &&
                       <div>
-        <FontAwesomeIcon icon={faTrashAlt} 
+                    <FontAwesomeIcon icon={faTrashAlt} 
                         onClick={()=>{ alertify.confirm().setting({transition:'pulse',
                                 buttonFocus : "ok",
-                                'message' : 'DO YOU WANT TO DELETE THIS FILE '+ department.entry.title,'onok': () => {handleDeleteDepartment(department.entry.id)} ,
+                                'message' : 'DO YOU WANT TO DELETE THIS DEPARTMENT '+ department.entry.title,'onok': () => {handleDeleteDepartment(department.entry.id)} ,
                                 'oncancel': () => {alertify.confirm().destroy();}}).show()
                     }}
                         className="icon-item delete"/>
@@ -230,12 +239,11 @@ return (
                       
                     </td>
                    </tr>
-                </tbody>
+               
           ))}
+           </tbody>
           </table> 
-      </ul>
-      </div>
-      <div className="col-md-6">
+          <div className="col-md-6">
       <Pagination
        handlePrev={previous}
        handleNext={next}
@@ -243,6 +251,9 @@ return (
        skipCount={skipCount-10}
         />
         </div>
+      </div>
+      </div>
+     
   </Fragment>
       )
     }
