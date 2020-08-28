@@ -94,7 +94,7 @@ function DocPreview() {
             <iframe src={pdfFileURI} 
             title='myframe' 
             id='myFrame'
-            width="700px" 
+            width="600px" 
             height="700px" 
             marginWidth="1rem"
             allowFullScreen/>

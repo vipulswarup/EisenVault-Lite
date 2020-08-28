@@ -6,13 +6,28 @@ import {instance} from "../ApiUrl/endpointName.instatnce"
 import { useHistory } from "react-router-dom";
 import {getToken} from "../../Utils/Common";
 import Axios from 'axios';
+import Modal from '../Modal/Modal';
+
 import useOutsideClick from '../Backdrop/OutsideClick';
 import { MoreDetailToggleButton } from '../MobileMenu/MobileMenu';
+import {ChangeTypes, AuditDetails} from "../Modal/DeleteModalSumm/DeleteSumm"
 
 const DocumentDetails = (props) => {
     const ref = useRef();
+    const [modalIsOpen, setmodalIsOpen] = useState(false);
+    const [auditIsOpen, setAuditIsOpen] = useState(false);
+
     const [docTypes, setDocTypes] = useState([]);
+    const [docSize, setDocSize] = useState([]);
+    const [modificationDate, setmodificationDate] = useState([]);
+    const [documentType, setDocumentType] = useState([]);
+    const [currentVersion, setCurrentVersion] = useState([]);
+    const [latestVersion, setLatestVersion] = useState([]);
+    const [olderVersion, setOlderVersion] = useState([]);
+
     const [auditDetails, setAuditDetails] = useState([])
+    const [fullAuditDetails, setFullAuditDetails] = useState([])
+
     // useOutsideClick(ref, () => {
     //   alert('You clicked outside')
     // });
@@ -26,6 +41,38 @@ const DocumentDetails = (props) => {
     if(props.show){
       detailclasses='pdf-preview open';
     }
+
+    function bytesToSize(bytes, seperator = "") {
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+        if (bytes === 0) return 'n/a'
+        const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
+        if (i === 0) return `${bytes}${seperator}${sizes[i]}`
+        return `${(bytes / (1024 ** i)).toFixed(1)}${seperator}${sizes[i]}`
+      }
+
+      const closeModal=()=>{ 
+        //function to close modal after performing it's operations
+      return (setmodalIsOpen(false)
+      // setPasswordHandler(false)
+      )
+    }
+
+    useEffect(()=>{
+        DocDetails();
+    },[])
+
+    function DocDetails(){
+        instance.get(`/nodes/${id}`,
+        {
+            headers: {
+              Authorization: `Basic ${btoa(getToken())}`,
+           }
+          }).then((response) => {
+            console.log(response.data.entry)
+            setmodificationDate(response.data.entry.modifiedAt.split('T')[0])
+            setDocumentType(response.data.entry.nodeType.split(':')[1])
+            setDocSize(response.data.entry.content)
+    })}
 
     function DocumentShare () {
         instance.post(`/shared-links`,
@@ -46,12 +93,20 @@ const DocumentDetails = (props) => {
               Authorization: `Basic ${btoa(getToken())}`,
            },
           }).then((response) => {
-              console.log(response.data.types)
-              setDocTypes(response.data.map(({documentTypes})=>
-              ({label: documentTypes, value:documentTypes})
-              ))
-          })
+              console.log(response.data.types[0])
+            //   closeModal();
+
+              setDocTypes(                <select>
+               {response.data.map(({documentTypes, i})=>
+                    <option key={i}>
+                    {documentTypes.value}</option>
+            )}
+            </select>
+        )})
     }
+
+
+    useEffect(()=>{AuditTrail()}, [])
 
     function AuditTrail(){
         Axios.get(`https://systest.eisenvault.net/alfresco/s/ev/nodeaudittrail?nodeRef=workspace://SpacesStore/${id}`,
@@ -63,19 +118,42 @@ const DocumentDetails = (props) => {
               let MoreData=response.data;
               console.log(MoreData)
 
-              setAuditDetails(
-                response.data[0].map(d=>{
-                    console.log(d.time)
+        setFullAuditDetails(MoreData.data.map(d=>{
+            return{
+            timeF: d.time.split('T')[0],
+            actionF: d.method,
+            userF: d.userName.split('.')[0]
+            }
+        }))
 
+
+        setAuditDetails(MoreData.data.slice(0,5).map(d=>{
                     return{
-                    time: d.time,
+                    time: d.time.split('T')[0],
                     action: d.method,
-                    property: d.propertyList
+                    user: d.userName.split('.')[0]
                     }
-                })
-              )
-
+                }))
           })}
+
+    useEffect(()=>{versions()},[])
+
+    function versions() {
+    instance.get(`/nodes/${id}/versions`,
+    {
+        headers: {
+          Authorization: `Basic ${btoa(getToken())}`,
+       },
+      }).then((response)=>{
+            setLatestVersion(response.data.list.entries[0])
+            setCurrentVersion(response.data.list.entries.map((d)=>{
+                console.log(d.entry.id)
+              return{
+                  curretVersionId: d.entry.id
+              }
+          }))
+    })
+    }
 
     return(
         <Fragment>
@@ -87,56 +165,65 @@ const DocumentDetails = (props) => {
                         <button onClick={()=> (DocumentShare())}>
                         <FontAwesomeIcon className="Icon" icon={faShareAlt}/>Click here to share</button> 
                     
+                <Modal show={modalIsOpen}>
+                
+                <ChangeTypes   
+                documentType ={documentType}                
+                changeType={ChangeDocType}
+                clicked={() => setmodalIsOpen(false)}
+                docTypes={docTypes}>
+                </ChangeTypes>
+              </Modal> 
+
                     <p className="top-heaading">Category:</p>
-                    <p>Aadhaar Card <a className="pdf-link" onClick={()=>(ChangeDocType())}>
+                    <p>{documentType} 
+                    <a className="pdf-link" onClick={() => 
+                    {return(setmodalIsOpen(true)
+                    )}}>
                         (click here to change)</a></p>
                     </div>
 
-                    {/* <div id="popup1" className="overlay">
-                        <div className="popup-n">
-                            <h2>PDF-Sample.pdf</h2>
-                            <a className="close" href="#">&times;</a>
-                            <div className="content">
-                                <h3>Auto Identified Category:  Aadhaar Card</h3>
-                                <p>
-                                    <label>New Category:</label>
-
-                                    <input list="brow">
-                                    <datalist id = "brow">
-                                    <option value = "Passport"></option>
-                                    <option value = "Phone Bill"></option>
-                                    <option value = "Utility Bill"></option>
-                                    <option value = "Insurance Policy"></option>
-                                    </datalist> 
-                                    </input>
-                                </p>
-                                <button type="button">Change</button>
-                            </div>
-                        </div>
-                    </div> */}
-                    
                     <div className="details-p">
-                    <p>Last Modified:</p>
-                    <p>10 December 2019 1:00 PM</p>
+                    <p>Last Modified: {modificationDate}</p>
                     </div>
                     
                     <div className="details-p">
-                    <p>File Size:</p>
-                    <p>234 Kb</p>
+                    <p>File Size: {bytesToSize(docSize.sizeInBytes)}</p>
                     </div>
 
+                    <div className="details-p">
+                    <p>Activities:</p>  
                     {auditDetails.map((audit) =>(
-                        <tr key={audit.id} className="details-p">
-                        <td>Activity History:</td>
-                        <td>Viewed By Emily Rose, {auditDetails.time}</td>
-                        <td>Edited By Emily Rose, {audit.time}</td>
-                        <td>Edited By Dan Rose, {audit.time}</td>
-                        </tr>
+                        <p> {audit.action} by {audit.user} on {audit.time}</p>
                     ))}
-                
-                    <div className="details-p">
-                        <a id="audit-trail" onClick={()=>(AuditTrail())}>(click to view detailed history)</a>
                     </div>
+
+                <Modal show={auditIsOpen}>
+                
+                <AuditDetails  
+                clicked={() => setAuditIsOpen(false)}
+                // action={actionF}
+                // user={userF}
+                // time={timeF}
+                    >
+                </AuditDetails>
+              </Modal> 
+
+                    <div className="details-p">
+                       <p> <a id="audit-trail" onClick={() => 
+                        {return(setAuditIsOpen(true)
+                        )}}>
+                        (click to view detailed history)</a></p>
+                    </div> 
+
+                    <div className="details-p">
+                        <p>Current Version:</p>
+                        {currentVersion.map((versionId)=>
+                        ( <p>{versionId.curretVersionId}</p>
+                        ))}
+                    </div>
+                
+                    
                 
                     {/* <div id="popup2" className="overlay">
                         <div className="popup">
@@ -186,22 +273,17 @@ const DocumentDetails = (props) => {
                             </div>
                         </div>
                     </div> */}
-                
-                    <div className="details-p">
-                        <p>Current Version:</p>
-                        <p>2.1</p>
-                    </div>
 
-                    <div className="details-p">
+                    {/* <div className="details-p">
                         <p>Previous Versions:</p>
                         <p>2.0 - 2 days ago</p>
                         <p>1.1 - 3 days ago</p>
                         <p>1.0 - 4 days ago</p>
-                    </div>
+                    </div> */}
                 
                 </div>
             </div>
         </Fragment>
      ) }
 
-export default DocumentDetails;
+export default DocumentDetails; 
