@@ -36,7 +36,8 @@ const LoginPage = (props) => {
     });
   }
 
-  const closeModal=()=>{ //function to close modal after performing it's operations
+  const closeModal=()=>{ 
+    //function to close modal after performing it's operations
   return (setmodalIsOpen(false)
   // setPasswordHandler(false)
   )

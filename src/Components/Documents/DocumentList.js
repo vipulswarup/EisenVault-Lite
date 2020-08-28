@@ -1,11 +1,12 @@
 import React,{Fragment , useEffect , useState} from 'react';
+import {getToken,getUser} from "../../Utils/Common";
+import ProfilePic from "../Avtar/Avtar";
 
 import { useHistory} from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
 import './DocumentList.scss';
-import axios from 'axios';
 import alertify from 'alertifyjs';
 import {instance} from "../ApiUrl/endpointName.instatnce"
 
@@ -54,11 +55,9 @@ const DocumentsList = () => {
   
   const getDepartments=()=>{
     instance.get(`${url}maxItems=10&skipCount=0`,
-    headers:{
+    {headers:{
         Authorization: `Basic ${btoa(getToken())}`
-        }
-      }
-    ).then((response) => {
+        }}).then((response) => {
       console.log(response.data)
       setDepartments(response.data.list.entries)
       setPaginationDefaultDept(response.data.list.pagination)
