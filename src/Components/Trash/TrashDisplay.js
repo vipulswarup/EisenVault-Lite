@@ -2,11 +2,11 @@ import React, { Fragment,useEffect,useState} from 'react';
 import Modal from "../Modal/Modal";
 import { DeleteSummmary,RestoreSummary } from "../Modal/DeleteModalSumm/DeleteSumm";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash,faUndo} from "@fortawesome/free-solid-svg-icons";
+import { faTrash,faUndo,faFile,faFolder} from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
 import Pagination from '../Pagination/Pagination';
 import Search from '../SearchBar/SearchBar';
-import '../MyUploads/MyUploads.scss';
+// import '../MyUploads/MyUploads.scss';
 import './TrashDisplay.scss';
 import '../../Containers/styles.scss';
 import { getToken } from '../../Utils/Common';
@@ -45,7 +45,8 @@ const getDeletedData=()=>{
           id:d.entry.id,
           name:d.entry.name,
           createdOn:d.entry.createdAt.split('T')[0],
-          archivedAt:d.entry.archivedAt.split('T')[0]
+          archivedAt:d.entry.archivedAt.split('T')[0],
+          type:d.entry.isFile
         }})) 
       }).catch(err=>alert(err));
 };
@@ -221,15 +222,18 @@ const RestoreFileByIds=()=>{
                     }));
                    }} type="checkbox" checked={d.select}
                     /> </td> 
-                <td className="file_name_t">{d.name}</td>
-                <td className="created_t">{d.createdOn}</td>                     
+                 <td className="file_name-u">
+                 <FontAwesomeIcon className="pdf-file fas fa-file-pdf" 
+                     icon={d.type ? faFile : faFolder}/> 
+                    {d.name}</td>         
+                 <td className="created_t">{d.createdOn}</td>                     
                 <td className="deleted_t">{d.archivedAt}</td> 
                 <td className="delete-icon">
                 <FontAwesomeIcon icon={faTrash} className="TrashIcon" 
                 onClick={(e) => { if (window.confirm(`Are you sure you wish to delete ${d.name}`)) handleDelete(d.id) }}/>
                 <FontAwesomeIcon icon={faUndo} className="UndoIcon" 
-                 onClick={(e) => { if (window.confirm(`Are you sure you wish to restore ${d.name}`)) handleRestore(d.id) }}/></td>           
-            </tr>
+                 onClick={(e) => { if (window.confirm(`Are you sure you wish to restore ${d.name}`)) handleRestore(d.id) }}/>
+                 </td></tr>
                 ))}
         </tbody>
       </table>

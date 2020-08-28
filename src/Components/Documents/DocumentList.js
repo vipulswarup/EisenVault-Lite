@@ -8,7 +8,8 @@ import './DocumentList.scss';
 import axios from 'axios';
 import alertify from 'alertifyjs';
 import {instance} from "../ApiUrl/endpointName.instatnce"
-
+import ProfilePic from "../Avtar/Avtar";
+import { getToken, getUser } from '../../Utils/Common';
 import Search from "../SearchBar/SearchBar";
 import Modal from "../Modal/Modal";
 import { CreateDepartment, DeleteDepartment} from "../Modal/DeleteModalSumm/DeleteSumm";
@@ -54,6 +55,7 @@ const DocumentsList = () => {
   
   const getDepartments=()=>{
     instance.get(`${url}maxItems=10&skipCount=0`,
+    {
     headers:{
         Authorization: `Basic ${btoa(getToken())}`
         }
