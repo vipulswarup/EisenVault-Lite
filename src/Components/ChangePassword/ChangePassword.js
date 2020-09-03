@@ -42,14 +42,16 @@ function handlechangePassword(){
 return(
     <Fragment>
         <div id="second_section">
-        <div className="top-menu">
 
-            <h2>CHANGE PASSWORD</h2>
               
-                <Search />
+            <div className="title">
+            <h2>CHANGE PASSWORD</h2>
+            <ProfilePic />
+            </div> 
 
-                <ProfilePic />
-                </div>
+            <div className="search-profile">
+            <Search />
+            </div> 
 
                 <div id="share-details-n">
                 <div id="column-1">

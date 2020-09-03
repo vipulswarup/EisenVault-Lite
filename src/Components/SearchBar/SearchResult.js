@@ -1,11 +1,12 @@
 import React, {useEffect,useState,Fragment} from 'react';
 import { useParams , useHistory } from 'react-router-dom';
-import axios from 'axios';
+import { Item } from '../backButton/backButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { faTimesCircle, faFile , faFolder} from "@fortawesome/free-solid-svg-icons";
 
 import {getToken} from  "../../Utils/Common";
+import { instance } from '../ApiUrl/endpointName.instatnce';
 
 function SearchResult(){
   let history = useHistory();
@@ -16,7 +17,7 @@ function SearchResult(){
    
 
 useEffect(()=>{
-        axios.get(`https://systest.eisenvault.net/alfresco/s/slingshot/search?term=${result}`,
+        instance.get(`/alfresco/s/slingshot/search?term=${result}`,
         {
           headers:
           {
@@ -47,7 +48,8 @@ useEffect(()=>{
                   <tr id="icons">
                     <th id="item-names">Item Name</th>
                     <th id="shared">Department Name</th>
-                    <th id="action">Actions</th>
+                    <th>Actions</th>
+                    <th id="action"><Item/></th>
                   </tr>
                   </thead>
                   { documents.map((d) => (

@@ -27,7 +27,7 @@ function ManageShares(){
 },[])
  
  const getDetailsData = () => {
-  instance.get('/shared-links?skipCount=0&maxItems=10&include=properties',
+  instance.get('/alfresco/api/-default-/public/alfresco/versions/1/shared-links?skipCount=0&maxItems=10&include=properties',
   {headers:
     {
       Authorization: `Basic ${btoa(getToken())}`
@@ -36,7 +36,7 @@ function ManageShares(){
   setFileState(response.data.list.entries)
   console.log(response.data)
   response.data.list.entries.forEach(d=>{
-      instance.get(`/nodes/${d.entry.nodeId}?include=properties`,
+      instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.entry.nodeId}?include=properties`,
       {headers:
         {
           Authorization: `Basic ${btoa(getToken())}`
@@ -66,7 +66,7 @@ function handleDocument(id,title){
 }
 
 function handleDelete(id){
-  instance.delete(`/shared-links/${id}`,
+  instance.delete(`/alfresco/api/-default-/public/alfresco/versions/1/shared-links/${id}`,
   {headers:
     {
       Authorization: `Basic ${btoa(getToken())}`
@@ -85,7 +85,7 @@ function next(){
   
   //  setSkipCount(skipCount + 10)
    console.log(skipCount);
-   instance.get(`/shared-links?&maxItems=10&skipCount=${skipCount}&include=properties`,
+   instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/shared-links?&maxItems=10&skipCount=${skipCount}&include=properties`,
    {headers:
      {
        Authorization: `Basic ${btoa(getToken())}`
@@ -105,7 +105,7 @@ function next(){
 }
 
 function previous(){
-  instance.get(`/shared-links?&include=properties&maxItems=10&skipCount=${skipCount}`,
+  instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/shared-links?&include=properties&maxItems=10&skipCount=${skipCount}`,
   {headers:
     {
       Authorization: `Basic ${btoa(getToken())}`
@@ -126,12 +126,15 @@ return(
       <Fragment>
        
          <div id="second_section">
-         <div className="top-menu">
-
+         <div className="title">
             <h2>Manage Shares</h2>
-            <Search />
             <ProfilePic />
           </div>
+
+          <div className="search-profile">
+            <Search />
+          </div>
+          
               <div className="filesShared">
                 <table id="doc_list">
                   <thead>
@@ -143,7 +146,6 @@ return(
                   </tr>
                   </thead>
                   
-                    
                   { FileState.map((d) => (
                     <tbody key={d.entry.nodeId}>
                     <tr  id="first_details"  >

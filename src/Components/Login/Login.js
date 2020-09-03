@@ -1,9 +1,10 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import Modal from '../Modal/Modal';
 import { ForgotPassword } from '../Modal/DeleteModalSumm/DeleteSumm';
 import { setUserLocal } from '../../Utils/Common';
 import './LoginPage.scss';
+import { instance } from '../ApiUrl/endpointName.instatnce';
 
 const LoginPage = (props) => {
   const [loading, setLoading] = useState(false);
@@ -23,7 +24,7 @@ const LoginPage = (props) => {
     setError(null);
     setLoading(true);
  //{ userId: 'admin', password: 'Systest@987'}
-    axios.post('https://cors-anywhere.herokuapp.com/https://systest.eisenvault.net/alfresco/api/-default-/public/authentication/versions/1/tickets', 
+    instance.post('/alfresco/api/-default-/public/authentication/versions/1/tickets', 
     { userId: userName.value, password: password.value}).then(response => {
       setLoading(false);
       setUserLocal(response.data.entry.id, response.data.entry.userId);
@@ -47,7 +48,7 @@ function HandleForgotPassword() {
   setPswdError(null);
   setPswdLoading(true);
 
-  axios.post('https://systest.eisenvault.net/share/proxy/alfresco-noauth/com/flex-solution/reset-password',
+  instance.post('/share/proxy/alfresco-noauth/com/flex-solution/reset-password',
   { userName: forgotPswdUserName.value }).then(response => {
     setPswdLoading(false);
     closeModal();

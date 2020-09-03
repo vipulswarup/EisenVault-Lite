@@ -9,14 +9,10 @@ import { faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
 import './DocumentList.scss';
 import alertify from 'alertifyjs';
 import {instance} from "../ApiUrl/endpointName.instatnce"
-import ProfilePic from "../Avtar/Avtar";
-import { getToken, getUser } from '../../Utils/Common';
 import Search from "../SearchBar/SearchBar";
-import { getToken, getUser } from '../../Utils/Common';
 import Modal from "../Modal/Modal";
-import { CreateDepartment, DeleteDepartment} from "../Modal/DeleteModalSumm/DeleteSumm";
+import { DeleteDepartment} from "../Modal/DeleteModalSumm/DeleteSumm";
 import Pagination from '../Pagination/Pagination';
-import IconBar, {IconBarDelete} from '../IconBar/IconBar';
 
 const DocumentsList = () => {
   const user = getUser();
@@ -56,7 +52,7 @@ const DocumentsList = () => {
   },[url]);
   
   const getDepartments=()=>{
-    instance.get(`${url}maxItems=10&skipCount=0`,
+    instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/${url}maxItems=10&skipCount=0`,
     {
     headers:{
         Authorization: `Basic ${btoa(getToken())}`
@@ -71,7 +67,7 @@ const DocumentsList = () => {
   }
 
 function handleDocumentLibrary(key){
-  instance.get(`/nodes/${key}/children`,
+  instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${key}/children`,
   {
   headers:{
       Authorization: `Basic ${btoa(getToken())}`
@@ -82,7 +78,8 @@ function handleDocumentLibrary(key){
         setDocuments(response.data.list.entries)
         
         response.data.list.entries.map(d => (
-          d.entry.name === 'documentLibrary' ?  history.push(`/document/${d.entry.id}`)
+          d.entry.name === 'documentLibrary' ?  
+          history.push(`/document/${d.entry.id}`)
           : null
         ) 
           )
@@ -92,7 +89,7 @@ function handleDocumentLibrary(key){
 }
 
 function handleCreateDepartment(){
-  instance.post(`/sites`,
+  instance.post(`/alfresco/api/-default-/public/alfresco/versions/1/sites`,
   {
    title: departmentTitle.value , visibility: "PRIVATE"
   },
@@ -114,7 +111,7 @@ createsetmodalIsOpen(false)
 }
 
 function handleDeleteDepartment(id){
-  instance.delete(`/sites/${id}?permanent=false`,
+  instance.delete(`/alfresco/api/-default-/public/alfresco/versions/1/sites/${id}?permanent=false`,
   {
   headers:{
       Authorization: `Basic ${btoa(getToken())}`
@@ -136,7 +133,7 @@ function next(){
   
   //  setSkipCount(skipCount + 10)
    console.log(skipCount);
-   instance.get(`${url}maxItems=10&skipCount=${skipCount}`,
+   instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/${url}maxItems=10&skipCount=${skipCount}`,
    {headers:{
      Authorization: `Basic ${btoa(getToken())}`
    }}).then((response) => {
@@ -153,11 +150,11 @@ function next(){
      }
      console.log(response.data.list.entries)
      console.log(response.data.list.pagination.skipCount)
-   });
- 
+   }); 
 }
+
 function previous(){
-  instance.get(`${url}maxItems=10&skipCount=${skipCount}`,
+  instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/${url}maxItems=10&skipCount=${skipCount}`,
   {headers:{
     Authorization: `Basic ${btoa(getToken())}`
   }}).then((response) => {
@@ -181,22 +178,23 @@ return (
   <Fragment>
     <div id="second_section">
 
-      <div className="top-menu">
-      <h2>Document List</h2>
+    <div className="title">
+      <h2>My Departments</h2>
+      <ProfilePic className="profile_picture"/>
+      </div>
+      
+      <div className="search-profile">
         <Search />
-        <ProfilePic className="profile_picture"/>
         </div>
 
-            <div>
-            <Modal show={createmodalIsOpen}>
+            {/* <Modal show={createmodalIsOpen}>
             <CreateDepartment createDept={handleCreateDepartment} 
             clicked={() => createsetmodalIsOpen(false)} 
             departmentTitle={departmentTitle}/>
             </Modal>
               <IconBar 
                 toggleadd = {() =>{createsetmodalIsOpen(true)}}
-              />
-            </div>
+              /> */}
       <div className='files'>
           
            <table id="doc_list">
