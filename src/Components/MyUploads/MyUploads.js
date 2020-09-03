@@ -6,10 +6,11 @@ import { faFile,faFolder,faTimesCircle} from "@fortawesome/free-solid-svg-icons"
 import './MyUploads.scss';
 import { useHistory } from 'react-router-dom';
 import Search from "../SearchBar/SearchBar";
-import axios from 'axios';
+// import axios from 'axios';
 import { getToken,getUser} from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 import Pagination from '../Pagination/Pagination';
+import { instance } from '../ApiUrl/endpointName.instatnce';
 
 function MyUploads(props){
   let history = useHistory();
@@ -25,9 +26,9 @@ function MyUploads(props){
   const [hasMoreItems , setMoreItems] = useState('');
   const [skipCount , setSkipCount ] = useState('');
 
-  //api call
+  //api call 
     const getData=()=>{
-      axios.post(`https://systest.eisenvault.net/alfresco/api/-default-/public/search/versions/1/search`,
+      instance.post(`/alfresco/api/-default-/public/search/versions/1/search`,
       {
         "query": 
           {"query": `cm:creator:${getUser()}`},
@@ -64,9 +65,6 @@ function MyUploads(props){
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  function handleDocument(id,title){
-    history.push(`/document-details/${id}/${title}`)
-  }
   const closeModal=()=>{ //function to close modal after performing it's operations
     return  setmodalIsOpen(false)
   }
@@ -75,7 +73,7 @@ function MyUploads(props){
   const deleteFileByIds=()=>{
     FileState.forEach(d=>{
       if(d.select){
-      axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
+      instance.delete(`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
       {headers:{
       Authorization: `Basic ${btoa(getToken())}`
        }
@@ -88,7 +86,7 @@ function MyUploads(props){
       })}
       
       const handleDelete=(id)=>{  //method to delete document without selecting by checkbox
-        axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`, 
+        instance.delete(`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`, 
       {headers:{
       Authorization: `Basic ${btoa(getToken())}`
        }
@@ -100,7 +98,7 @@ function MyUploads(props){
 
       function next(){
         document.getElementById("myprevBtn").disabled = false;
-        axios.post(`https://systest.eisenvault.net/alfresco/api/-default-/public/search/versions/1/search`,
+        instance.post(`/alfresco/api/-default-/public/search/versions/1/search`,
         {
           "query": 
             {"query": `cm:creator:${getUser()}`},
@@ -138,7 +136,7 @@ function MyUploads(props){
     
       function previous(){
         document.getElementById("myBtn").disabled = false;
-        axios.post(`https://systest.eisenvault.net/alfresco/api/-default-/public/search/versions/1/search`,
+        instance.post(`/alfresco/api/-default-/public/search/versions/1/search`,
         {
           "query": 
             {"query": `cm:creator:${getUser()}`},
@@ -178,14 +176,16 @@ function MyUploads(props){
       <Fragment>
          <div id="second_section">
 
-         <div className="top-menu">
-
-            <h2>My Uploads</h2>
-            <Search />
+         <div className="title">
             <ProfilePic />
+            <h2>My Uploads</h2>
           </div>
 
-               <div className="filesUpload">
+          <div className="search-profile">
+            <Search />
+          </div>
+
+              <div className="filesUpload">
                 <table id="doc_list">
                   <tbody>
                   <tr id="icons">
@@ -214,7 +214,7 @@ function MyUploads(props){
                       </Modal>
                 </tr> 
                   
-                  { FileState.map((d,i) => (
+                  { FileState.map((d) => (
                      <tr  key={d.id}  id="first_details">
                     <td className="file_icon1">
                       <input onChange={(event)=>{
