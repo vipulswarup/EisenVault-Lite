@@ -36,7 +36,6 @@ const Dashboard = () => {
   }, []);
 
   function next(){
-  
     //  setSkipCount(skipCount + 10)
      console.log(skipCount);
      axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=${skipCount}&who=me&maxItems=10`,
