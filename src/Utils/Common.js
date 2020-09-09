@@ -18,9 +18,7 @@ export const setUrl = (url) => {
    
   // return the URL from the Local storage
   export const getUrl = () => {
-    return localStorage.getItem('url')
-    // axios.defaults.baseURL = localStorage.getItem('url')
-    
+    return localStorage.getItem('url')    
   }
 
   // return the token from the Local storage

@@ -28,14 +28,12 @@ const LoginPage = (props) => {
 
   const handleLogin = () => {
     setUrl(url.value)
-  const userUrl = url.value
-  console.log(userUrl)
-  
+
     setError(null);
     setLoading(true);
     // Axios.post(getUrl()+'/alfresco/api/-default-/public/authentication/versions/1/tickets', 
 
-    axios.post(userUrl+'/alfresco/api/-default-/public/authentication/versions/1/tickets', 
+    axios.post(getUrl()+'/alfresco/api/-default-/public/authentication/versions/1/tickets', 
     { userId: userName.value, password: password.value}).then(response => {
       setLoading(false);
       setUserLocal(response.data.entry.id, response.data.entry.userId);
