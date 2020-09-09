@@ -12,10 +12,9 @@ import { faHome,
       faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import  './NavigationItems.scss';
-import Axios from 'axios';
+import axios from 'axios';
 // import {instance} from "../../ApiUrl/endpointName.instatnce"
 import { getToken,getUser,getUrl } from '../../../Utils/Common';
-import { instance } from '../../ApiUrl/endpointName.instatnce';
 
 function NavigationItems() {
   const history = useHistory();
@@ -25,7 +24,7 @@ function NavigationItems() {
   const user = getUser();
   // handle click event of logout button
    const handleLogout = () => {    
-      Axios.delete(`alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
+      axios.delete(getUrl()+`alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
       {headers:{
         Authorization: `Basic ${btoa(getToken())}`}
       }).then(response => {

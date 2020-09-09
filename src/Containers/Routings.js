@@ -5,7 +5,7 @@ import axios from 'axios';
 import LoginPage from "../Components/Login/Login"
 import NavigationItems from "../Components/Navigation/NavigationItems/NavigationItems";
 import SideDrawer from "../Components/MobileMenu/MobileSidebar/Sidedrawer";
-import {DrawerToggleButton,MoreDetailToggleButton} from "../Components/MobileMenu/MobileMenu";
+import {DrawerToggleButton} from "../Components/MobileMenu/MobileMenu";
 import Footer from "../Components/Footer/Footer";
 import MyUploads from "../Components/MyUploads/MyUploads";
 import Dashboard from "../Components/Dashboard/Dashboard";
@@ -23,9 +23,9 @@ import DocPreview from "../Components/Documents/DocumentViewer/DocumentViewer";
 
 import PrivateRoute from '../Utils/PrivateRoutes';
 import './styles.scss';
-import { getToken, removeUserLocal, setUserLocal } from "../Utils/Common";
+import { getToken, removeUserLocal, setUserLocal, getUrl } from "../Utils/Common";
 import Backdrop from "../Components/Backdrop/Backdrop";
-import { instance } from "../Components/ApiUrl/endpointName.instatnce";
+// import { instance } from "../Components/ApiUrl/endpointName.instatnce";
 
 const Routings = withRouter (({ location },props) => {
   const [authLoading, setAuthLoading] = useState(true);
@@ -38,7 +38,7 @@ const Routings = withRouter (({ location },props) => {
     }
   })
 
-  instance.get(`/alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
+  axios.get(getUrl()+`alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
   {headers:{
     Authorization: `Basic ${btoa(getToken())}`}
   }).then(response => {
