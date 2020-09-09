@@ -1,8 +1,8 @@
 import React , { Fragment,useRef,useEffect, useState } from 'react';
 import { useHistory,useParams } from "react-router-dom";
-// import Axios from 'axios';
-import {getToken} from "../../Utils/Common";
-import { instance } from '../ApiUrl/endpointName.instatnce';
+import Axios from 'axios';
+import {getToken, getUrl} from "../../Utils/Common";
+// import { instance } from '../ApiUrl/endpointName.instatnce';
 import "./MoreDetails.scss"
 // useEffect(()=>{FullAudittrails()},[])
 
@@ -17,7 +17,7 @@ function FullAudittrails() {
     const id =  path.slice(32,68) 
     console.log(id)
 
-    useEffect(() => {instance.get(`/alfresco/s/ev/nodeaudittrail?nodeRef=workspace://SpacesStore/${id}`,
+    useEffect(() => {Axios.get(getUrl()+`/alfresco/s/ev/nodeaudittrail?nodeRef=workspace://SpacesStore/${id}`,
         {
             headers: {
               Authorization: `Basic ${btoa(getToken())}`,

@@ -2,14 +2,14 @@ import React, {useEffect,useState,Fragment} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import ProfilePic from "../Avtar/Avtar";
-// import axios from 'axios';
+import Axios from 'axios';
 import alertify from 'alertifyjs';
 import './ManageShares.scss';
 import { useHistory } from 'react-router-dom';
 import Search from "../SearchBar/SearchBar";
-import { getToken } from '../../Utils/Common';
+import { getToken, getUrl } from '../../Utils/Common';
 import Pagination from '../Pagination/Pagination';
-import {instance} from "../ApiUrl/endpointName.instatnce"
+// import {instance} from "../ApiUrl/endpointName.instatnce"
 
 function ManageShares(){
   let history = useHistory();
@@ -27,7 +27,7 @@ function ManageShares(){
 },[])
  
  const getDetailsData = () => {
-  instance.get('/alfresco/api/-default-/public/alfresco/versions/1/shared-links?skipCount=0&maxItems=10&include=properties',
+  Axios.get(getUrl()+'/alfresco/api/-default-/public/alfresco/versions/1/shared-links?skipCount=0&maxItems=10&include=properties',
   {headers:
     {
       Authorization: `Basic ${btoa(getToken())}`
@@ -36,7 +36,7 @@ function ManageShares(){
   setFileState(response.data.list.entries)
   console.log(response.data)
   response.data.list.entries.forEach(d=>{
-      instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.entry.nodeId}?include=properties`,
+      Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.entry.nodeId}?include=properties`,
       {headers:
         {
           Authorization: `Basic ${btoa(getToken())}`
@@ -58,15 +58,13 @@ function ManageShares(){
 const indexOfLastPost = currentPage * postsPerPage;
 const indexOfFirstPost = indexOfLastPost - postsPerPage;
 const currentPosts = FileState.slice(indexOfFirstPost, indexOfLastPost);
-// Change page
-const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 function handleDocument(id,title){
   history.push(`/document-details/${id}/${title}`)
 }
 
 function handleDelete(id){
-  instance.delete(`/alfresco/api/-default-/public/alfresco/versions/1/shared-links/${id}`,
+  Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/shared-links/${id}`,
   {headers:
     {
       Authorization: `Basic ${btoa(getToken())}`
@@ -81,11 +79,12 @@ function handleDelete(id){
     console.log(error)
 });
 }
+
 function next(){
   
   //  setSkipCount(skipCount + 10)
    console.log(skipCount);
-   instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/shared-links?&maxItems=10&skipCount=${skipCount}&include=properties`,
+   Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/shared-links?&maxItems=10&skipCount=${skipCount}&include=properties`,
    {headers:
      {
        Authorization: `Basic ${btoa(getToken())}`
@@ -105,7 +104,7 @@ function next(){
 }
 
 function previous(){
-  instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/shared-links?&include=properties&maxItems=10&skipCount=${skipCount}`,
+  Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/shared-links?&include=properties&maxItems=10&skipCount=${skipCount}`,
   {headers:
     {
       Authorization: `Basic ${btoa(getToken())}`

@@ -6,11 +6,11 @@ import { faFile,faFolder,faTimesCircle} from "@fortawesome/free-solid-svg-icons"
 import './MyUploads.scss';
 import { useHistory } from 'react-router-dom';
 import Search from "../SearchBar/SearchBar";
-// import axios from 'axios';
-import { getToken,getUser} from '../../Utils/Common';
+import Axios from 'axios';
+import { getToken,getUser, getUrl} from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 import Pagination from '../Pagination/Pagination';
-import { instance } from '../ApiUrl/endpointName.instatnce';
+// import { instance } from '../ApiUrl/endpointName.instatnce';
 
 function MyUploads(props){
   let history = useHistory();
@@ -28,7 +28,7 @@ function MyUploads(props){
 
   //api call 
     const getData=()=>{
-      instance.post(`/alfresco/api/-default-/public/search/versions/1/search`,
+      Axios.post(getUrl()+`/alfresco/api/-default-/public/search/versions/1/search`,
       {
         "query": 
           {"query": `cm:creator:${getUser()}`},
@@ -62,9 +62,6 @@ function MyUploads(props){
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = FileState.slice(indexOfFirstPost, indexOfLastPost);
 
-  // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
   const closeModal=()=>{ //function to close modal after performing it's operations
     return  setmodalIsOpen(false)
   }
@@ -73,7 +70,7 @@ function MyUploads(props){
   const deleteFileByIds=()=>{
     FileState.forEach(d=>{
       if(d.select){
-      instance.delete(`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
+      Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
       {headers:{
       Authorization: `Basic ${btoa(getToken())}`
        }
@@ -86,7 +83,7 @@ function MyUploads(props){
       })}
       
       const handleDelete=(id)=>{  //method to delete document without selecting by checkbox
-        instance.delete(`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`, 
+        Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`, 
       {headers:{
       Authorization: `Basic ${btoa(getToken())}`
        }
@@ -98,7 +95,7 @@ function MyUploads(props){
 
       function next(){
         document.getElementById("myprevBtn").disabled = false;
-        instance.post(`/alfresco/api/-default-/public/search/versions/1/search`,
+        Axios.post(getUrl()+`/alfresco/api/-default-/public/search/versions/1/search`,
         {
           "query": 
             {"query": `cm:creator:${getUser()}`},
@@ -136,7 +133,7 @@ function MyUploads(props){
     
       function previous(){
         document.getElementById("myBtn").disabled = false;
-        instance.post(`/alfresco/api/-default-/public/search/versions/1/search`,
+        Axios.post(getUrl()+`/alfresco/api/-default-/public/search/versions/1/search`,
         {
           "query": 
             {"query": `cm:creator:${getUser()}`},

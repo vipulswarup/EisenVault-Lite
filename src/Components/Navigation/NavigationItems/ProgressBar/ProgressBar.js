@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from "react";
-import { getToken } from "../../../../Utils/Common";
-// import axios from 'axios';
-import { instance } from "../../../ApiUrl/endpointName.instatnce";
+import { getToken,getUrl } from "../../../../Utils/Common";
+import Axios from 'axios';
+// import { instance } from "../../../ApiUrl/endpointName.instatnce";
 
 //To make the calculation from bytes to GB.
 function bytesToSize(bytes, seperator = "") {
@@ -18,7 +18,7 @@ const ProgressBar = () => {
   
   //API call
   useEffect(() => {
-    instance.get('/alfresco/s/aws-reposize',
+    Axios.get(getUrl()+'/alfresco/s/aws-reposize',
     {headers:{
       Authorization: `Basic ${btoa(getToken())}`
     }

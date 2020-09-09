@@ -4,9 +4,9 @@ import { Item } from '../backButton/backButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { faTimesCircle, faFile , faFolder} from "@fortawesome/free-solid-svg-icons";
-
-import {getToken} from  "../../Utils/Common";
-import { instance } from '../ApiUrl/endpointName.instatnce';
+import Axios from 'axios';
+import { getToken,getUrl } from  "../../Utils/Common";
+// import { instance } from '../ApiUrl/endpointName.instatnce';
 
 function SearchResult(){
   let history = useHistory();
@@ -15,9 +15,8 @@ function SearchResult(){
    let params = useParams();
    const result = params.result;
    
-
 useEffect(()=>{
-        instance.get(`/alfresco/s/slingshot/search?term=${result}`,
+        Axios.get(getUrl()+`/alfresco/s/slingshot/search?term=${result}`,
         {
           headers:
           {

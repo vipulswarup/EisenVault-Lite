@@ -1,5 +1,5 @@
 import React,{Fragment , useEffect , useState} from 'react';
-import {getToken,getUser} from "../../Utils/Common";
+import {getToken,getUser,getUrl} from "../../Utils/Common";
 import ProfilePic from "../Avtar/Avtar";
 
 import { useHistory} from 'react-router-dom';
@@ -8,11 +8,12 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
 import './DocumentList.scss';
 import alertify from 'alertifyjs';
-import {instance} from "../ApiUrl/endpointName.instatnce"
+// import {instance} from "../ApiUrl/endpointName.instatnce"
 import Search from "../SearchBar/SearchBar";
 import Modal from "../Modal/Modal";
 import { DeleteDepartment} from "../Modal/DeleteModalSumm/DeleteSumm";
 import Pagination from '../Pagination/Pagination';
+import Axios from 'axios';
 
 const DocumentsList = () => {
   const user = getUser();
@@ -52,7 +53,7 @@ const DocumentsList = () => {
   },[url]);
   
   const getDepartments=()=>{
-    instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/${url}maxItems=10&skipCount=0`,
+    Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/${url}maxItems=10&skipCount=0`,
     {
     headers:{
         Authorization: `Basic ${btoa(getToken())}`
@@ -67,7 +68,7 @@ const DocumentsList = () => {
   }
 
 function handleDocumentLibrary(key){
-  instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${key}/children`,
+  Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${key}/children`,
   {
   headers:{
       Authorization: `Basic ${btoa(getToken())}`
@@ -88,30 +89,30 @@ function handleDocumentLibrary(key){
       })     
 }
 
-function handleCreateDepartment(){
-  instance.post(`/alfresco/api/-default-/public/alfresco/versions/1/sites`,
-  {
-   title: departmentTitle.value , visibility: "PRIVATE"
-  },
-  {
-  headers:{
-      Authorization: `Basic ${btoa(getToken())}`
-      } }
-  ).then(response => {
-    alert("Department successfully created");
-    getDepartments()
-    console.log(response)
-  }).catch(error => {
-    if (error.response.status===409){
-      alert("Department with this name already exists");
-    }
-    console.log(error)
-});
-createsetmodalIsOpen(false)
-}
+// function handleCreateDepartment(){
+//   Axios.post(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/sites`,
+//   {
+//    title: departmentTitle.value , visibility: "PRIVATE"
+//   },
+//   {
+//   headers:{
+//       Authorization: `Basic ${btoa(getToken())}`
+//       } }
+//   ).then(response => {
+//     alert("Department successfully created");
+//     getDepartments()
+//     console.log(response)
+//   }).catch(error => {
+//     if (error.response.status===409){
+//       alert("Department with this name already exists");
+//     }
+//     console.log(error)
+// });
+// createsetmodalIsOpen(false)
+// }
 
 function handleDeleteDepartment(id){
-  instance.delete(`/alfresco/api/-default-/public/alfresco/versions/1/sites/${id}?permanent=false`,
+  Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/sites/${id}?permanent=false`,
   {
   headers:{
       Authorization: `Basic ${btoa(getToken())}`
@@ -133,7 +134,7 @@ function next(){
   
   //  setSkipCount(skipCount + 10)
    console.log(skipCount);
-   instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/${url}maxItems=10&skipCount=${skipCount}`,
+   Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/${url}maxItems=10&skipCount=${skipCount}`,
    {headers:{
      Authorization: `Basic ${btoa(getToken())}`
    }}).then((response) => {
@@ -154,7 +155,7 @@ function next(){
 }
 
 function previous(){
-  instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/${url}maxItems=10&skipCount=${skipCount}`,
+  Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/${url}maxItems=10&skipCount=${skipCount}`,
   {headers:{
     Authorization: `Basic ${btoa(getToken())}`
   }}).then((response) => {

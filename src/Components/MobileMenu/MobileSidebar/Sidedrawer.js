@@ -10,12 +10,12 @@ import { faHome,
       faKey, 
       faSignOutAlt, 
       faTrash } from "@fortawesome/free-solid-svg-icons";
-//  import axios from 'axios';
+import Axios from 'axios';
 import "../MobileMenu.scss"
 import "../MobileSidebar/Sidedrawer.scss"
 import Auxiliary from '../../../hoc/Auxiliary';
-import { getUser ,getToken} from "../../../Utils/Common";
-import { instance } from '../../ApiUrl/endpointName.instatnce';
+import { getUser ,getToken,getUrl} from "../../../Utils/Common";
+// import { instance } from '../../ApiUrl/endpointName.instatnce';
 
 const SideDrawer=(props)=>{
   const history = useHistory();
@@ -25,7 +25,7 @@ const SideDrawer=(props)=>{
   // handle click event of logout button
    const handleLogout = () => {
     
-      instance.delete(`/alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
+      Axios.delete(getUrl()+`/alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
       {headers:{
         Authorization: `Basic ${btoa(getToken())}`}
       }).then(response => {

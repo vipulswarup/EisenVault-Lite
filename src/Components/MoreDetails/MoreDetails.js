@@ -2,10 +2,10 @@ import React , { Fragment,useEffect, useState } from 'react';
 import "./MoreDetails.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faShareAlt} from "@fortawesome/free-solid-svg-icons"
-import {instance} from "../ApiUrl/endpointName.instatnce"
+// import {instance} from "../ApiUrl/endpointName.instatnce"
 import { useHistory,useParams } from "react-router-dom";
-import {getToken} from "../../Utils/Common";
-// import Axios from 'axios';
+import {getToken, getUrl} from "../../Utils/Common";
+import Axios from 'axios';
 
 const DocumentDetails = (props) => {
 
@@ -40,7 +40,7 @@ const DocumentDetails = (props) => {
     },[id])
 
     function DocDetails(){
-        instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`,
+        Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`,
         {
             headers: {
               Authorization: `Basic ${btoa(getToken())}`,
@@ -55,7 +55,7 @@ const DocumentDetails = (props) => {
     })}
 
     function DocumentShare () {
-        instance.post(`/alfresco/api/-default-/public/alfresco/versions/1/shared-links`,
+        Axios.post(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/shared-links`,
         {"nodeId":`${id}`},
         {
             headers: {
@@ -70,7 +70,7 @@ const DocumentDetails = (props) => {
     useEffect(()=>{AuditTrail()}, [id])
 
     function AuditTrail(){
-        instance.get(`/alfresco/s/ev/nodeaudittrail?nodeRef=workspace://SpacesStore/${id}`,
+        Axios.get(getUrl()+`/alfresco/s/ev/nodeaudittrail?nodeRef=workspace://SpacesStore/${id}`,
         {
             headers: {
               Authorization: `Basic ${btoa(getToken())}`,
@@ -97,7 +97,7 @@ const DocumentDetails = (props) => {
         [id])
 
     function versions() {
-    instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/versions`,
+    Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/versions`,
     {
         headers: {
           Authorization: `Basic ${btoa(getToken())}`,
