@@ -32,78 +32,37 @@ export const RestoreSummary= props =>{
        <button className="btn-cancel btn-c" onClick={props.clicked}>
         CANCEL
       </button>
-      <button className="btn-continue btn-d" onClick={props.deleted}>RESTORE</button>
+      <button className="btn-continue btn-d" onClick={props.deleted}>
+        RESTORE</button>
     </Fragment>
-
   )
 }
 
-export const CreateDepartment = props =>{
-  return (
-    <Fragment>
-       <div className="modal-header">
-              <h2>Create Department</h2>
-            </div>
-            <div>
-          <div>
-           
-            <div className="label-input">
-              <label>Name:</label>
-              <input type="text" name="name" {...props.departmentTitle}>
-              </input>
-              </div>
-              <br></br>
-              <div className="label-input">
-              <label>URL:</label>
-              <input type="text" name="url"></input>
-              </div>
-              <br></br>
-              <div className="label-input">
-            <label>Description:</label>
-            <textarea row="8" col="60"></textarea>
-            </div>
-            
-          </div>
-        </div>
-        <div id="btns">
-          <button onClick={props.createDept} className="btn-continue">Create</button>
-          <button onClick={props.clicked} className="btn-cancel">Cancel</button>
-        </div>
-    </Fragment>
-
-  )
-}
-
-// export  const RenameDepartment = props =>{
-//   return(
+// export const CreateDepartment = props =>{
+//   return (
 //     <Fragment>
-//       <div className="modal-header">
-//           <h2>Rename Department</h2>
-//         </div>
-//         <div className="popup-n">
-//           <div className="content">
+//       <div id="popup2" class="popup-n">
             
-//               <div className="label-input">
-//               <label>Select Input</label>
-//               <input id="name01">
-//               </input>
-//               </div>
-//               <datalist>
-//               <option value="Department"></option>
-//               </datalist>
-//               <br></br>
-//               <div className="label-input">
-//               <label>New Name:</label>
-//               <input type="text" id="name01"></input>
-//               </div>
+//                 <h2 class="head">Create Department</h2><br></br>
+//                 <div class="content">
+//                     <p>
+//                         <label>Name:</label>
+//                         <input type="text" id="name" name="name"  {...props.departmentTitle}></input><br></br>
+//                         <label>URL:</label>
+//                         <input type="text" id="url" name="url"></input><br></br>
+//                         <label class="describe">Description:</label>
+//                         <textarea rows = "6" cols = "40" id = "desc"></textarea>  
+//                         <div id="btns">
+//                         <button id="btn03"  onClick={props.createDept}>Ok</button>
+//                         <button className="btn-cancel" onClick={props.clicked}>Cancel</button>
+//                     </div>                   
+//                     </p>
+                   
+//                 </div>
             
-//           </div>
-//         </div>
-//         <div id="btns">
-//           <button className="btn-continue" >Rename</button>
-//           <button className="btn-cancel" onClick={props.clicked}>Cancel</button>
 //         </div>
 //     </Fragment>
+
 //   )
 // }
 
@@ -177,3 +136,30 @@ export const DeleteDepartment = (props) => {
     </Fragment>
   )
 }
+
+// export const ChangeTypes = (props) => {
+//   return(
+//     <Fragment>
+//       <div className="modal-header">
+//         <h2>{props.fileName}</h2>
+//         </div>
+//         <div>
+//           <div>
+//             <h3>Auto Identified Category: {props.documentType}</h3>
+           
+//             <div className="label-input">
+//               <label>New Category: </label>
+//               <select id="typeDropDown" value={props.docTypes}>
+//                   {props.docTypes}
+//               </select>
+//               </div>
+//           </div>
+//         </div>
+//         <div id="btns">
+
+//           <button className="btn-continue" onClick={props.changeType}>Change</button>
+//           <button onClick={props.clicked} className="btn-cancel">Cancel</button>
+//         </div>
+//     </Fragment>
+// )
+// }

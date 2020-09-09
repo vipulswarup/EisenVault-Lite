@@ -3,21 +3,19 @@ $icon-color: #ee9796;
 
 .TrashIcon{
   color:$icon-color;
-  margin-left:3rem;
+  margin-left:0.5rem;
 }
 .UndoIcon{
     color:$icon-color;
-    margin-left:1.5rem; 
+    margin-left:0.5rem; 
 }
-.file_name_t{
-    padding-left:2.5rem;
-}
-.created_t{
-    padding-left:2.5rem;
 
+td.file_name-u{
+    word-break: break-all;
 }
+
 .deleted_t{
-    padding-left:2.5rem;
+    padding-left:1rem;
 }
 th#action-trash {
     border-right: 1px solid #073453;
@@ -30,5 +28,59 @@ th#action-trash {
 }
 #option{
     cursor:pointer;
+}
+th#created{
+    // padding-left:2.2rem;
+    overflow:hidden;
+    // white-space: nowrap;
+}
+th#deleted{
+    // padding-left:2rem;
+    overflow:hidden;
+    // white-space: nowrap;
+}
+th#action-trash{
+    padding-left:0rem;
+}
+.file_name_t{
+    overflow:hidden;
+    // white-space: nowrap;
+}
 
+@media (min-width:533px) and (max-width:784px){
+    .filesUpload td{
+        font-size: 14px;
+    }
+    th#created{
+        padding-left:0.1rem;
+        font-size: 14px;
+
+    }
+    #item_name{
+        font-size: 14px;
+    }
+    th#deleted{
+        padding-left:0rem;
+        font-size: 14px;
+     }
+     .created_t{
+        padding-left:0.1rem;
+ 
+     }
+     .deleted_t{
+        padding-left:0.1rem;
+     }
+     th#action-trash{
+        padding-left:0rem;
+        font-size: 14px;
+    }
+    .file_name-u{
+        padding-left:0rem;
+        font-size: 14px;
+    }
+    .delete-icon{
+        padding-left:0rem;
+        font-size: 14px;
+    }
+    
 }

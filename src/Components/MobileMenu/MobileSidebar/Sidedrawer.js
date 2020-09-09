@@ -10,11 +10,12 @@ import { faHome,
       faKey, 
       faSignOutAlt, 
       faTrash } from "@fortawesome/free-solid-svg-icons";
- import axios from 'axios';
-import "../MobileMenu.css"
+import Axios from 'axios';
+import "../MobileMenu.scss"
 import "../MobileSidebar/Sidedrawer.scss"
 import Auxiliary from '../../../hoc/Auxiliary';
-import { getUser ,getToken} from "../../../Utils/Common";
+import { getUser ,getToken,getUrl} from "../../../Utils/Common";
+// import { instance } from '../../ApiUrl/endpointName.instatnce';
 
 const SideDrawer=(props)=>{
   const history = useHistory();
@@ -23,10 +24,8 @@ const SideDrawer=(props)=>{
 
   // handle click event of logout button
    const handleLogout = () => {
-
-    // removeUserLocal();
     
-      axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
+      Axios.delete(getUrl()+`/alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
       {headers:{
         Authorization: `Basic ${btoa(getToken())}`}
       }).then(response => {
@@ -37,26 +36,22 @@ const SideDrawer=(props)=>{
           else setError("Your authentication details have not been recognized or EisenVault may not be available at this time.");        
       }, [])
    }
+   
   let drawerclasses='Side-drawer';
   if(props.show){
     drawerclasses='Side-drawer open';
   }
+  
   const user = getUser();
    
     return(
         <Auxiliary>
             
-                    <nav role="navigation" >
-                 {/* <div id="menuToggle">
-                
-                     <input type="checkbox" />
-                    
-                     <span></span>
-                     <span></span>
-                     <span></span> */}
+          <nav role="navigation" >
         
-           <ul className={drawerclasses} onClick={props.click}>
-             <div id="dashboard" > 
+           <ul className={drawerclasses} 
+           onClick={props.click}>
+            <div id="dashboard" > 
             <Link to="/dashboard">
               <li> <FontAwesomeIcon 
               className="Icon" 
@@ -71,7 +66,7 @@ const SideDrawer=(props)=>{
               <li> <FontAwesomeIcon 
               className="Icon" 
               icon={faFileAlt}/>
-              <p> &nbsp;DOCUMENTS</p>
+              <p> &nbsp;DEPARTMENTS</p>
               </li></Link>
 
             <Link to="/myUploads">
@@ -143,9 +138,9 @@ const SideDrawer=(props)=>{
                 {user==='admin' && <ProgressBar />}
  
             </div>
-                    </ul>
-              </nav>
-              </Auxiliary>
+          </ul>
+        </nav>
+      </Auxiliary>
 
         );
     

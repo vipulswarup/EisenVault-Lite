@@ -5,7 +5,7 @@ import axios from 'axios';
 import LoginPage from "../Components/Login/Login"
 import NavigationItems from "../Components/Navigation/NavigationItems/NavigationItems";
 import SideDrawer from "../Components/MobileMenu/MobileSidebar/Sidedrawer";
-import DrawerToggleButton from "../Components/MobileMenu/MobileMenu";
+import {DrawerToggleButton,MoreDetailToggleButton} from "../Components/MobileMenu/MobileMenu";
 import Footer from "../Components/Footer/Footer";
 import MyUploads from "../Components/MyUploads/MyUploads";
 import Dashboard from "../Components/Dashboard/Dashboard";
@@ -15,18 +15,17 @@ import ManageShares from "../Components/ManageShares/ManageShares";
 //import SharedWithMe from "../Components/sharedWithMe/sharedWithMe";
 import ChangePassword from "../Components/ChangePassword/ChangePassword";
 import SubDocument from "../Components/Documents/SubDocument/SubDocument";
-
+import FullAudittrails from "../Components/MoreDetails/FullAuditTrails";
 import PdfViewer from "../Components/Documents/DocumentViewer/DocumentViewer";
 import SearchResult from '../Components/SearchBar/SearchResult';
 
 import DocPreview from "../Components/Documents/DocumentViewer/DocumentViewer";
 
-
 import PrivateRoute from '../Utils/PrivateRoutes';
 import './styles.scss';
 import { getToken, removeUserLocal, setUserLocal } from "../Utils/Common";
 import Backdrop from "../Components/Backdrop/Backdrop";
-
+import { instance } from "../Components/ApiUrl/endpointName.instatnce";
 
 const Routings = withRouter (({ location },props) => {
   const [authLoading, setAuthLoading] = useState(true);
@@ -39,7 +38,7 @@ const Routings = withRouter (({ location },props) => {
     }
   })
 
-  axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
+  instance.get(`/alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
   {headers:{
     Authorization: `Basic ${btoa(getToken())}`}
   }).then(response => {
@@ -48,21 +47,23 @@ const Routings = withRouter (({ location },props) => {
   }).catch(error => {
       removeUserLocal();
       setAuthLoading(false);
-      
     }, []);
 
   if (authLoading && getToken()) {
     return <div className="content">Checking Authentication...</div>
   }
+
    let DrawerToggleQuickHandler=()=>{
     setsideDrawerOpen((prevState)=>{
       return {sideDrawerOpen: !prevState.sideDrawerOpen}
     })
   };
+
   let backdropClickHandler=()=>{
     setsideDrawerOpen(false);
   }
-    let backdrop;
+
+  let backdrop;
     if(sideDrawerOpen){
       backdrop=<Backdrop click={backdropClickHandler} show/>
     }
@@ -91,12 +92,12 @@ const Routings = withRouter (({ location },props) => {
         {/* <PrivateRoute path="/sharedWithMe" component={SharedWithMe} /> */}
         <PrivateRoute path="/changePassword" component={ChangePassword} />
         <PrivateRoute path="/document/:id" component={SubDocument} />
-
+        <PrivateRoute path="/actions/:id/AuditTrails" component={FullAudittrails}/>
         <PrivateRoute path="/doc/:id/:name" component={PdfViewer} />
         <PrivateRoute path="/search/:result" component={SearchResult} />
 
         <PrivateRoute path="/document-details/:id/:title" 
-        component={DocPreview} />
+        component={DocPreview} />  
 
         {location.pathname !== '/' &&  <Footer />}
       </div>

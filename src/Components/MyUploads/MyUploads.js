@@ -2,44 +2,56 @@ import React, {useEffect,useState,Fragment} from 'react'
 import Modal from "../Modal/Modal";
 import { DeleteSummmary } from "../Modal/DeleteModalSumm/DeleteSumm";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
+import { faFile,faFolder,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import './MyUploads.scss';
 import { useHistory } from 'react-router-dom';
 import Search from "../SearchBar/SearchBar";
-import axios from 'axios';
-import { getToken,getUser} from '../../Utils/Common';
+import Axios from 'axios';
+import { getToken,getUser, getUrl} from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 import Pagination from '../Pagination/Pagination';
+// import { instance } from '../ApiUrl/endpointName.instatnce';
 
 function MyUploads(props){
   let history = useHistory();
 
   const [modalIsOpen, setmodalIsOpen] = useState(false);
-  
   const[FileState,setFileState]=useState([]);
   useEffect(()=>{
     getData();
   },[]);
-
   const [ currentPage, setCurrentPage ] = useState(1);
   const [postsPerPage] = useState(10);
-  const [ paginationDefualt, setPaginationDefault ] = useState([]);
+  //const [ paginationDefualt, setPaginationDefault ] = useState([]);
+  const [hasMoreItems , setMoreItems] = useState('');
+  const [skipCount , setSkipCount ] = useState('');
 
-  //api call
+  //api call 
     const getData=()=>{
-    axios.get(`https://systest.eisenvault.net/alfresco/s/slingshot/search?query={"prop_cm_creator":"${getUser()}","datatype":"cm:content"}`, 
-        {headers:{
-          Authorization: `Basic ${btoa(getToken())}`
-           }}).then((response)=>{
+      Axios.post(getUrl()+`/alfresco/api/-default-/public/search/versions/1/search`,
+      {
+        "query": 
+          {"query": `cm:creator:${getUser()}`},
+          "paging": {
+            "maxItems": "10",
+            "skipCount": "0"
+          }
+      },
+       {headers:{
+        Authorization: `Basic ${btoa(getToken())}`
+         }}).then((response)=>{
              let FileData=response.data;
              console.log(FileData);
-            setPaginationDefault(response.data.totalRecords) 
-            setFileState(FileData.items.map(d=>{
+            //setPaginationDefault(response.data.totalRecords) 
+            setMoreItems(response.data.list.pagination.hasMoreItems)
+            setSkipCount(response.data.list.pagination.skipCount + 10)
+            setFileState(FileData.list.entries.map(d=>{
               return {
                 select:false,
-                id:d.nodeRef.substring(24),
-                name:d.name,
-                uploadedOn:d.node.properties["cm:created"].iso8601.split('T')[0]
+                id:d.entry.id,
+                name:d.entry.name,
+                uploadedOn:d.entry.createdAt.split('T')[0],
+                type:d.entry.isFile
               }
             })) 
             }).catch(err=>alert(err));
@@ -50,20 +62,15 @@ function MyUploads(props){
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = FileState.slice(indexOfFirstPost, indexOfLastPost);
 
-  // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  function handleDocument(id,title){
-    history.push(`/document-details/${id}/${title}`)
-  }
   const closeModal=()=>{ //function to close modal after performing it's operations
-    return  setmodalIsOpen(false);
+    return  setmodalIsOpen(false)
   }
+  
   //arrow function for getting file nodeid and putting it dynamically in api to delete single/multiple files
   const deleteFileByIds=()=>{
     FileState.forEach(d=>{
       if(d.select){
-      axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
+      Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
       {headers:{
       Authorization: `Basic ${btoa(getToken())}`
        }
@@ -75,13 +82,107 @@ function MyUploads(props){
        };
       })}
       
-    return( 
+      const handleDelete=(id)=>{  //method to delete document without selecting by checkbox
+        Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`, 
+      {headers:{
+      Authorization: `Basic ${btoa(getToken())}`
+       }
+     }).then((data)=>{
+          console.log(data);
+          getData();
+           }).catch(err=>alert(err));
+      }
+
+      function next(){
+        document.getElementById("myprevBtn").disabled = false;
+        Axios.post(getUrl()+`/alfresco/api/-default-/public/search/versions/1/search`,
+        {
+          "query": 
+            {"query": `cm:creator:${getUser()}`},
+            "paging": {
+              "maxItems": "10",
+              "skipCount": `${skipCount}`
+            }
+        },
+        {headers:{
+           Authorization: `Basic ${btoa(getToken())}`
+         }}).then((response) => {
+          setFileState(response.data.list.entries.map(d=>{
+            return {
+              select:false,
+              id:d.entry.id,
+              name:d.entry.name,
+              uploadedOn:d.entry.createdAt.split('T')[0],
+              type:d.entry.isFile
+            }
+          }))
+           setMoreItems(response.data.list.pagination.hasMoreItems)
+         if (response.data.list.pagination.hasMoreItems){
+          setSkipCount(response.data.list.pagination.skipCount + 10)
+          document.getElementById("myBtn").disabled = false;
+         }
+         else{
+          document.getElementById("myBtn").disabled = true;
+         }
+         
+       console.log(response.data.list.entries)
+       console.log(response.data.list.pagination.skipCount)
+         });
+       
+      }
+    
+      function previous(){
+        document.getElementById("myBtn").disabled = false;
+        Axios.post(getUrl()+`/alfresco/api/-default-/public/search/versions/1/search`,
+        {
+          "query": 
+            {"query": `cm:creator:${getUser()}`},
+            "paging": {
+              "maxItems": "10",
+              "skipCount": `${skipCount}`
+            }
+        },
+        {headers:{
+           Authorization: `Basic ${btoa(getToken())}`
+         }}).then((response) => {
+          setFileState(response.data.list.entries.map(d=>{
+            return {
+              select:false,
+              id:d.entry.id,
+              name:d.entry.name,
+              uploadedOn:d.entry.createdAt.split('T')[0],
+              type:d.entry.isFile
+            }
+          }))
+          setMoreItems(response.data.list.pagination.hasMoreItems)
+          if (response.data.list.pagination.skipCount > 0){
+            setSkipCount(response.data.list.pagination.skipCount - 10)
+            document.getElementById("myprevBtn").disabled = false;
+          }else{
+            document.getElementById("myprevBtn").disabled = true;
+          }
+          console.log(response.data.list.entries)
+          console.log(response.data.list.pagination)
+          console.log(response.data.list.pagination.skipCount)
+        }); }
+
+    function handleDocument(id,title){
+        history.push(`/document-details/${id}/${title}`)
+      }
+      return( 
       <Fragment>
          <div id="second_section">
+
+         <div className="title">
+            <ProfilePic />
             <h2>My Uploads</h2>
+          </div>
+
+          <div className="search-profile">
             <Search />
-              <ProfilePic />
-               <div className="filesUpload">
+          </div>
+
+              <div className="filesUpload">
                 <table id="doc_list">
                   <tbody>
                   <tr id="icons">
@@ -103,13 +204,14 @@ function MyUploads(props){
                         <option id="option" value="delete-s">Delete Selected</option>
                       </select>
                     </th>
-
-                  <Modal show={modalIsOpen}>
-                    <DeleteSummmary deleted={()=>{deleteFileByIds()}} clicked={() => setmodalIsOpen(false)}/>
-                  </Modal>
+                      <Modal show={modalIsOpen}>
+                      <DeleteSummmary deleted={()=>{deleteFileByIds()}} clicked={() => setmodalIsOpen(false)} 
+                    />
+                  
+                      </Modal>
                 </tr> 
                   
-                  { FileState.map((d,i) => (
+                  { FileState.map((d) => (
                      <tr  key={d.id}  id="first_details">
                     <td className="file_icon1">
                       <input onChange={(event)=>{
@@ -127,31 +229,31 @@ function MyUploads(props){
                     onClick={() => handleDocument(
                       d.id,
                       d.name) }>
-                    <FontAwesomeIcon className="pdf-file fas fa-file-pdf" icon={faFilePdf}/> 
+                    <FontAwesomeIcon className="pdf-file fas fa-file-pdf" 
+                     icon={d.type ? faFile : faFolder}/> 
                     {d.name}</td>
                     <td className="details-u">{d.uploadedOn}</td>
                     <td className="delete-u">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
-                    onClick={() =>{setmodalIsOpen(true)}}
-                  
+                     onClick={(e) => { if (window.confirm(`Are you sure you wish to delete ${d.name}`)) handleDelete(d.id,d.name) }}                   //{handleDelete(d.id,d.name)}}
                       />
-                  </td>
-                  </tr>
-                  
-                  ))}
-                </tbody>  
-              </table>
+                </td>
+              </tr>
+                ))}
+             </tbody>  
+            </table>
               
-              </div>
-              </div>
+          </div>
+        </div>
 
       <div className="col-md-6">
-      <Pagination
-       postsPerPage={postsPerPage}
-       totalPosts={FileState.length}
-       paginate={paginate}
-        />
-        </div>
+        <Pagination
+          handlePrev={previous}
+          handleNext={next}
+          hasMoreItems={hasMoreItems}
+          skipCount={skipCount}
+              />  
+      </div>
     </Fragment>
 
           )

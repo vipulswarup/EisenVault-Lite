@@ -1,11 +1,12 @@
 import React, {useEffect,useState,Fragment} from 'react';
 import { useParams , useHistory } from 'react-router-dom';
-import axios from 'axios';
+import { Item } from '../backButton/backButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { faTimesCircle} from "@fortawesome/free-solid-svg-icons";
-
-import {getToken} from  "../../Utils/Common";
+import { faTimesCircle, faFile , faFolder} from "@fortawesome/free-solid-svg-icons";
+import Axios from 'axios';
+import { getToken,getUrl } from  "../../Utils/Common";
+// import { instance } from '../ApiUrl/endpointName.instatnce';
 
 function SearchResult(){
   let history = useHistory();
@@ -14,9 +15,8 @@ function SearchResult(){
    let params = useParams();
    const result = params.result;
    
-
 useEffect(()=>{
-        axios.get(`https://systest.eisenvault.net/alfresco/s/slingshot/search?term=${result}`,
+        Axios.get(getUrl()+`/alfresco/s/slingshot/search?term=${result}`,
         {
           headers:
           {
@@ -47,16 +47,21 @@ useEffect(()=>{
                   <tr id="icons">
                     <th id="item-names">Item Name</th>
                     <th id="shared">Department Name</th>
-                    <th id="action">Actions</th>
+                    <th>Actions</th>
+                    <th id="action"><Item/></th>
                   </tr>
                   </thead>
                   { documents.map((d) => (
                   <tbody key={d.nodeRef}>
                     <tr id="first_details">
-                    <td className="file_name-u"  onClick={() => handleDocument(
+                    <td className="file_name-u"  
+                    onClick={() => handleDocument(
                       d.nodeRef.substring(24),
                       d.name)}
-                   >
+                   ><FontAwesomeIcon 
+                   className="pdf-file fas fa-file-pdf" 
+                     icon={d.type === "document" ? faFile : faFolder} 
+                       />
                     {d.name}</td>
                     <td className="details-u-s">{d.path}</td>
                     <td className="delete-u-s">

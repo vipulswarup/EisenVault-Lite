@@ -1,6 +1,6 @@
 import React, { Fragment , useState} from 'react';
 import axios from 'axios';
-import {getToken,getUser} from  "../../Utils/Common";
+import {getToken,getUser,getUrl} from  "../../Utils/Common";
 import './ChangePassword.scss';
 import ProfilePic from "../Avtar/Avtar";
 
@@ -16,7 +16,7 @@ function ChangePassword(props){
 
 function handlechangePassword(){
     if (newPassword.value === confirmPassword.value){
-        axios.post(`https://systest.eisenvault.net/alfresco/service/api/person/changepassword/${userName}`,{
+        axios.post(getUrl()+`/alfresco/service/api/person/changepassword/${userName}`,{
         newpw : newPassword.value, oldpw : oldPassword.value
         },
         {
@@ -42,12 +42,17 @@ function handlechangePassword(){
 return(
     <Fragment>
         <div id="second_section">
-            <h2>CHANGE PASSWORD</h2>
-              <div>
-                <Search />
 
-                <ProfilePic />
-                
+              
+            <div className="title">
+            <h2>CHANGE PASSWORD</h2>
+            <ProfilePic />
+            </div> 
+
+            <div className="search-profile">
+            <Search />
+            </div> 
+
                 <div id="share-details-n">
                 <div id="column-1">
                     <p>Enter Old Password</p>
@@ -61,7 +66,6 @@ return(
                 </div>
                 <button className="btn01" type="button" onClick={handlechangePassword}>Change</button>
                 <button className="btn02" type="button">Cancel</button>
-            </div>
             </div>
             </div>
                 

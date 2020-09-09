@@ -1,6 +1,7 @@
 $sidebar-color: #E07050;
 $font-color:#073453;
 $white-color: white;
+
 .Side-drawer {
     position: fixed;
     z-index:200;
@@ -24,9 +25,9 @@ $white-color: white;
         text-decoration: none;
 
         & p{
-            color: $white-color;
+            color: $white-color!important;
             display: inline;
-            font-size: 16px;
+            font-size: 16px!important;
             margin-left: 2rem;
         }
     }

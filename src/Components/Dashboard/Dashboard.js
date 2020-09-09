@@ -1,68 +1,81 @@
 import React,{Fragment, useEffect, useState} from 'react';
 import './styleDashboard.scss';
-import axios from 'axios';
 import { useParams, useHistory } from 'react-router-dom';
 
-// import documentsPreview from '../DocumentsPreview/DocumentsPreview';
-import { getToken, getUser } from "../../Utils/Common";
+import { getToken, getUser, getUrl } from "../../Utils/Common";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFile, faEye } from "@fortawesome/free-solid-svg-icons";
 import Search from "../SearchBar/SearchBar";
 import ProfilePic from "../Avtar/Avtar";
 import Pagination from '../Pagination/Pagination';
+// import { instance } from '../ApiUrl/endpointName.instatnce';
+import axios from 'axios';
 
 const Dashboard = () => {
+  let personId = getUser();
   let history = useHistory();
   let params = useParams();
   const id = params.id;
-
-  const [count, setCount] = useState(0)
+  
   const [ documents , setDocuments ] = useState([]);
-  const [ currentPage, setCurrentPage ] = useState(1);
-  const [postsPerPage] = useState(10);
-  const [ paginationDefualt, setPaginationDefault ] = useState([]);
+  const [hasMoreItems , setMoreItems] = useState('');
+  const [skipCount , setSkipCount ] = useState('');
 
   //API call to get the activities list.
   useEffect(() => {
-
-    let personId = getUser();
-    axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=0&who=me`,
+    axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=0&who=me&maxItems=10`,
     {headers:{
       Authorization: `Basic ${btoa(getToken())}`
     }}).then((response) => {
       setDocuments(response.data.list.entries)
-      setPaginationDefault(response.data.list.pagination) 
+      setMoreItems(response.data.list.pagination.hasMoreItems)
+      setSkipCount(response.data.list.pagination.skipCount + 10)
       console.log(response.data.list.entries)
+      console.log(response.data.list.pagination)
     });
   }, []);
 
-  // Get current posts
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = documents.slice(indexOfFirstPost, indexOfLastPost);
+  function next(){
+  
+    //  setSkipCount(skipCount + 10)
+     console.log(skipCount);
+     axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=${skipCount}&who=me&maxItems=10`,
+     {headers:{
+       Authorization: `Basic ${btoa(getToken())}`
+     }}).then((response) => {
+       setDocuments(response.data.list.entries)
+       setMoreItems(response.data.list.pagination.hasMoreItems)
+       setMoreItems(response.data.list.pagination.hasMoreItems)
+     if (response.data.list.pagination.hasMoreItems){
+      setSkipCount(response.data.list.pagination.skipCount + 10)
+     }
+     else{
+      setSkipCount(response.data.list.pagination.skipCount - 10)
+     }
+       console.log(response.data.list.entries)
+       console.log(response.data.list.pagination.skipCount)
+     });
+   
+  }
 
-  const totalPageNo = Math.ceil(documents.length/postsPerPage)
-
-  console.log(indexOfFirstPost, 
-    indexOfLastPost, 
-    currentPosts, totalPageNo,
-    currentPage)
-    
-  // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  // function CheckPosts(){
-  //   const maxitems = (paginationDefualt.maxItems);
-  //   console.log(maxitems)
-
-  //   const hasMoreItem = (paginationDefualt.hasMoreItems);
-  //   console.log(hasMoreItem)
-
-  //   return( hasMoreItem===true ? 
-  //     documents.length+10 && currentPosts.length+100
-  //     : paginationDefualt )
-  // }
-  // CheckPosts();
+  function previous(){
+      axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=${skipCount}&who=me&maxItems=10`,
+      {headers:{
+        Authorization: `Basic ${btoa(getToken())}`
+      }}).then((response) => {
+        setDocuments(response.data.list.entries)
+        setMoreItems(response.data.list.pagination.hasMoreItems)
+        if (response.data.list.pagination.skipCount > 0){
+          setSkipCount(response.data.list.pagination.skipCount - 10)
+        }
+        else{
+          setSkipCount(response.data.list.pagination.skipCount + 10)
+        }
+        console.log(response.data.list.entries)
+        console.log(response.data.list.pagination)
+        console.log(response.data.list.pagination.skipCount)
+      });
+   }
 
   function handleDocument(id,title){
     history.push(`/document-details/${id}/${title}`)
@@ -72,19 +85,24 @@ const Dashboard = () => {
   <Fragment>
 
       <div id="second_section">
-      <h2>Dashboard</h2>
-        
-        <Search />
+
+      <div className="title">
+
+        <h2>Dashboard</h2>
         <ProfilePic />
-        
+        </div>
+
+        <div className="search-profile">
+        <Search />
+      </div>
       
       <div className="filesDetail">
         <h3>My Recent Activities</h3>
 
         <table className='documentsList'>
-            {currentPosts.map(document => (               
+            {documents.map(document => (               
             <tbody key={document.entry.id} >
-                <tr className='files'>
+                <tr >
                   <td className='fileName'>                             
                     <FontAwesomeIcon icon={faFile} />
                         <h4>
@@ -111,9 +129,10 @@ const Dashboard = () => {
   
     <div className="col-md-6">
      <Pagination
-      postsPerPage={postsPerPage}
-      totalPosts={paginationDefualt.count}
-      paginate={paginate}
+     handlePrev={previous}
+     handleNext={next}
+     hasMoreItems={hasMoreItems}
+     skipCount={skipCount}
         />  
     </div>
 
