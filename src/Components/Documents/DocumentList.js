@@ -17,8 +17,6 @@ import Axios from 'axios';
 
 const DocumentsList = () => {
   const user = getUser();
-  const [createmodalIsOpen, createsetmodalIsOpen] = useState(false);
-  // const [editmodalIsOpen, editsetmodalIsOpen] = useState(false);
   const [deletemodalIsOpen, deletesetmodalIsOpen] = useState(false);
   const [ paginationDefualtDept, setPaginationDefaultDept ] = useState([]);
   let history = useHistory();

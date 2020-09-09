@@ -1,6 +1,6 @@
 import React , { Fragment,useRef,useEffect, useState } from 'react';
 import { useHistory,useParams } from "react-router-dom";
-import Axios from 'axios';
+import axios from 'axios';
 import {getToken, getUrl} from "../../Utils/Common";
 // import { instance } from '../ApiUrl/endpointName.instatnce';
 import "./MoreDetails.scss"
@@ -15,9 +15,9 @@ function FullAudittrails() {
 
     const path = window.location.href; 
     const id =  path.slice(32,68) 
-    console.log(id)
 
-    useEffect(() => {Axios.get(getUrl()+`/alfresco/s/ev/nodeaudittrail?nodeRef=workspace://SpacesStore/${id}`,
+    useEffect(() => {axios.get(getUrl()+
+        `alfresco/s/ev/nodeaudittrail?nodeRef=workspace://SpacesStore/${id}`,
         {
             headers: {
               Authorization: `Basic ${btoa(getToken())}`,
@@ -26,7 +26,7 @@ function FullAudittrails() {
               let MoreData=response.data;
               console.log(MoreData)
 
-        setFullAuditDetails(MoreData.data.map(d=>{
+        setFullAuditDetails(MoreData.data.slice(0,20).map(d=>{
             return{
             timeF: d.time.split('T')[0],
             actionF: d.method,
@@ -37,12 +37,10 @@ function FullAudittrails() {
 
     return(
         <Fragment>
-        <div className="modal-header">
+        <div className="audit-header">
         <h2>{title}</h2>
         <button onClick={() => history.goBack()}>Back</button>
-        </div>
-        <div>
-          <div>
+
             <h3>Detailed Document Audit History</h3>
            
                 <table>
@@ -59,7 +57,6 @@ function FullAudittrails() {
                 </tr>))}
                 </tbody>
                 </table>
-          </div>
         </div>
         </Fragment>
         )

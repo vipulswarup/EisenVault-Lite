@@ -2,6 +2,25 @@ $sidebar-color: #E07050;
 $font-color:#073453;
 $white-color: white;
 
+.audit-header{
+    margin-left: 2rem;
+}
+
+.label-input{
+    .actions,
+    .users, .time{
+        border: none;
+    }
+}
+
+.users{
+    padding-right: 6rem;
+}
+
+.actions{
+    padding-right: 20rem;
+}
+
 .pdf-preview {
     display: inline-block;
     position: absolute;

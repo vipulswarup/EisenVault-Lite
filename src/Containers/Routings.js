@@ -92,7 +92,7 @@ const Routings = withRouter (({ location },props) => {
         {/* <PrivateRoute path="/sharedWithMe" component={SharedWithMe} /> */}
         <PrivateRoute path="/changePassword" component={ChangePassword} />
         <PrivateRoute path="/document/:id" component={SubDocument} />
-        <PrivateRoute path="/actions/:id/AuditTrails" component={FullAudittrails}/>
+        <PrivateRoute path="/actions/:id/:name/AuditTrails" component={FullAudittrails}/>
         <PrivateRoute path="/doc/:id/:name" component={PdfViewer} />
         <PrivateRoute path="/search/:result" component={SearchResult} />
 
