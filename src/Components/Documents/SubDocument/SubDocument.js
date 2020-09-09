@@ -47,7 +47,7 @@ function SubDocument(){
     })
   };
   
-const handleDelete=(id,name)=>{
+const handleDelete=(id)=>{
       Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`,
       {
       headers:{
@@ -61,7 +61,8 @@ const handleDelete=(id,name)=>{
       }
     
     function handleDocument(file , id, title){
-      file ? history.push(`/document-details/${id}/${title}`): history.push(`/document/${id}`)
+      file ? history.push(`/document-details/${id}/${title}`)
+      : history.push(`/document/${id}`)
     }
 
     return( 

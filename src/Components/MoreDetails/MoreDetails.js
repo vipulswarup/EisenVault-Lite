@@ -83,13 +83,13 @@ const DocumentDetails = (props) => {
                     return{
                     time: d.time.split('T')[0],
                     action: d.method,
-                    user: d.userName.split('.')[0]
+                    user: d.userName.split('.')[0],
                     }
                 }))
           })}
 
     const handleOnClick = () => {
-        history.push(`/actions/${id}/AuditTrails`);
+        history.push(`/actions/${id}/${title}/AuditTrails`);
     }
 
     useEffect(()=>{
@@ -129,7 +129,8 @@ const DocumentDetails = (props) => {
                             <p> {audit.action} by {audit.user} on {audit.time}</p>
                         ))}
 
-                        <p> <button id="audit-trail" onClick={() => {handleOnClick()}}>
+                        <p> <button id="audit-trail" 
+                            onClick={() => {handleOnClick()}}>
                             (click to view detailed history)</button></p>
 
                         <p>Current Version: {latestVersion}</p>

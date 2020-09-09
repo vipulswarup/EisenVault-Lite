@@ -28,6 +28,7 @@ export const setUrl = (url) => {
    
   // remove the token and user from the Local storage
   export const removeUserLocal = () => {
+    localStorage.removeItem('url');
     localStorage.removeItem('id');
     localStorage.removeItem('userId');
   }
