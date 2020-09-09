@@ -1,9 +1,10 @@
-import React, { Fragment, useState, useEffect } from 'react';
-// import axios from 'axios';
+import React, { Fragment, useState } from 'react';
+import axios from 'axios';
 import Modal from '../Modal/Modal';
 import { ForgotPassword } from '../Modal/DeleteModalSumm/DeleteSumm';
-import { setUserLocal } from '../../Utils/Common';
+import { setUserLocal, getUrl, setUrl } from '../../Utils/Common';
 import './LoginPage.scss';
+// import { instance } from '../ApiUrl/endpointName.instatnce';
 import { instance } from '../ApiUrl/endpointName.instatnce';
 
 const LoginPage = (props) => {
@@ -12,19 +13,29 @@ const LoginPage = (props) => {
 
   const [error, setError] = useState(null);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
-  const [passwordHandler, setPasswordHandler] = useState(false);
 
   const [err, setPswdError] = useState(null);
+
+  // setUrl(url.value)
+  // const userUrl = getUrl()
+  // console.log(userUrl)
 
   const userName = useFormInput ('');
   const password = useFormInput ('');
   const forgotPswdUserName = useFormInput ('');
 
+  const url = useFormInput('');
+
   const handleLogin = () => {
+    setUrl(url.value)
+  const userUrl = url.value
+  console.log(userUrl)
+  
     setError(null);
     setLoading(true);
- //{ userId: 'admin', password: 'Systest@987'}
-    instance.post('/alfresco/api/-default-/public/authentication/versions/1/tickets', 
+    // Axios.post(getUrl()+'/alfresco/api/-default-/public/authentication/versions/1/tickets', 
+
+    axios.post(userUrl+'/alfresco/api/-default-/public/authentication/versions/1/tickets', 
     { userId: userName.value, password: password.value}).then(response => {
       setLoading(false);
       setUserLocal(response.data.entry.id, response.data.entry.userId);
@@ -48,7 +59,7 @@ function HandleForgotPassword() {
   setPswdError(null);
   setPswdLoading(true);
 
-  instance.post('/share/proxy/alfresco-noauth/com/flex-solution/reset-password',
+  axios.post(getUrl()+'/share/proxy/alfresco-noauth/com/flex-solution/reset-password',
   { userName: forgotPswdUserName.value }).then(response => {
     setPswdLoading(false);
     closeModal();
@@ -74,6 +85,9 @@ if (loading) {
 
         <div className="login-box">
             <div className="login-details">
+              <input type="text" {...url} 
+                id="url" placeholder="URL" required/>
+                <br/>
                 <input type="text" {...userName} 
                 id="user-name" placeholder="User Name" required/>
                   <br />
@@ -114,6 +128,18 @@ if (loading) {
 );
   
 }
+
+const useStateWithLocalStorage = localStorageKey => {
+  const [value, setValue] = React.useState(
+    localStorage.getItem(localStorageKey) || ''
+  );
+ 
+  React.useEffect(() => {
+    localStorage.setItem(localStorageKey, value);
+  }, [value]);
+ 
+  return [value, setValue];
+};
 
 const useFormInput = initialValue => {
   const [value, setValue] = useState(initialValue);

@@ -5,11 +5,11 @@ import ProfilePic from "../../Avtar/Avtar";
 import DocumentDetails from "../../MoreDetails/MoreDetails";
 import "../DocumentViewer/DocumentViewer.scss"
 import { Item } from '../../backButton/backButton';
-import {getToken} from  "../../../Utils/Common";
+import {getToken, getUrl} from  "../../../Utils/Common";
 import axios from 'axios';
 import { Animated } from "react-animated-css";
 
-import { instance } from '../../ApiUrl/endpointName.instatnce';
+// import { instance } from '../../ApiUrl/endpointName.instatnce';
 
 function ToggleButton({ label, onClick }) {
   
@@ -57,8 +57,7 @@ function DocPreview() {
     const [fileURI, setFileURI] = useState("");
     const [pdfFileURI, setPdfFileURI] = useState("");
     const [sidebarIsOpen, setSidebarOpen] = useState(false);
-
-    const [error, setError] = useState(null);
+    const cors = "https://cors-anywhere.herokuapp.com/";
     let params = useParams();
     const title = params.title;
     const path = window.location.href; 
@@ -66,7 +65,6 @@ function DocPreview() {
     const id =  path.slice(41,77)   
     const fileType = path.split('.').pop()
     console.log(fileType)
-
     
   function toggleSidebar() {
     setSidebarOpen(!sidebarIsOpen);
@@ -74,7 +72,7 @@ function DocPreview() {
 
   useEffect(() => {
     //First find out content type
-    axios.get(`https://cors-anywhere.herokuapp.com/https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content`,
+    axios.get(cors+getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content`,
         {
           headers: {
             Authorization: `Basic ${btoa(getToken())}`,
@@ -83,7 +81,7 @@ function DocPreview() {
       ).then((response) => {
         // setDataTypes(response.headers["content-type"])
         // console.log(dataType)
-        setFileURI(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content`)
+        setFileURI(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content`)
       });
   }, [id]);
 
@@ -110,12 +108,12 @@ function DocPreview() {
     );
   }
 
-  useEffect(() => {axios.get(`https://cors-anywhere.herokuapp.com/https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?attachment=false`,    
+  useEffect(() => {axios.get(cors+getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?attachment=false`,    
    {headers:
     {
       Authorization: `Basic ${btoa(getToken())}`
     }}).then((response)=>{
-        setPdfFileURI(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?attachment=false`)
+        setPdfFileURI(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?attachment=false`)
          })} , [id]) 
 
  const PdfViewer = () => {

@@ -7,11 +7,12 @@ import alertify from 'alertifyjs';
 
 import { faFile,faTimesCircle,faFolder} from "@fortawesome/free-solid-svg-icons";
 import Pagination from '../../Pagination/Pagination';
-import {instance} from '../../ApiUrl/endpointName.instatnce'
+// import {instance} from '../../ApiUrl/endpointName.instatnce'
 import Search from "../../SearchBar/SearchBar";
 import ProfilePic from "../../Avtar/Avtar";
-import {getToken} from "../../../Utils/Common";
+import {getToken,getUrl} from "../../../Utils/Common";
 import './SubDocument.scss';
+import Axios from 'axios';
 
 function SubDocument(){
   let history = useHistory();
@@ -34,7 +35,7 @@ function SubDocument(){
   },[id]);
 
   const getData = () => {
-    instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/children?skipCount=0`,
+    Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/children?skipCount=0`,
     {
     headers:{
         Authorization: `Basic ${btoa(getToken())}`
@@ -47,7 +48,7 @@ function SubDocument(){
   };
   
 const handleDelete=(id,name)=>{
-      instance.delete(`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`,
+      Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`,
       {
       headers:{
           Authorization: `Basic ${btoa(getToken())}`

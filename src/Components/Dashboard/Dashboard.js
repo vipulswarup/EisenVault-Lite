@@ -1,16 +1,15 @@
 import React,{Fragment, useEffect, useState} from 'react';
 import './styleDashboard.scss';
-// import axios from 'axios';
 import { useParams, useHistory } from 'react-router-dom';
 
-// import documentsPreview from '../DocumentsPreview/DocumentsPreview';
-import { getToken, getUser } from "../../Utils/Common";
+import { getToken, getUser, getUrl } from "../../Utils/Common";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFile, faEye } from "@fortawesome/free-solid-svg-icons";
 import Search from "../SearchBar/SearchBar";
 import ProfilePic from "../Avtar/Avtar";
 import Pagination from '../Pagination/Pagination';
-import { instance } from '../ApiUrl/endpointName.instatnce';
+// import { instance } from '../ApiUrl/endpointName.instatnce';
+import axios from 'axios';
 
 const Dashboard = () => {
   let personId = getUser();
@@ -24,7 +23,7 @@ const Dashboard = () => {
 
   //API call to get the activities list.
   useEffect(() => {
-    instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=0&who=me&maxItems=10`,
+    axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=0&who=me&maxItems=10`,
     {headers:{
       Authorization: `Basic ${btoa(getToken())}`
     }}).then((response) => {
@@ -40,7 +39,7 @@ const Dashboard = () => {
   
     //  setSkipCount(skipCount + 10)
      console.log(skipCount);
-     instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=${skipCount}&who=me&maxItems=10`,
+     axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=${skipCount}&who=me&maxItems=10`,
      {headers:{
        Authorization: `Basic ${btoa(getToken())}`
      }}).then((response) => {
@@ -60,7 +59,7 @@ const Dashboard = () => {
   }
 
   function previous(){
-      instance.get(`/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=${skipCount}&who=me&maxItems=10`,
+      axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=${skipCount}&who=me&maxItems=10`,
       {headers:{
         Authorization: `Basic ${btoa(getToken())}`
       }}).then((response) => {
